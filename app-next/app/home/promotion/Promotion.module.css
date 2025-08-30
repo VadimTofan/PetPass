@@ -1,77 +1,70 @@
-.promotionalSection {
+.promotion {
   padding: 5rem 0;
   background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
 }
 
-.container {
+.promotion__container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
 }
 
-.promotionsGrid {
+.promotion__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
 }
 
-.promotionCard {
+.promotion__card {
   position: relative;
-  background: white;
+  background: #ffffff;
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
 
-.promotionCard:hover {
+.promotion__card:hover {
   transform: translateY(-5px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
-.imageContainer {
+.promotion__imageContainer {
   position: relative;
   height: 300px;
   overflow: hidden;
 }
 
-.promotionImage {
+.promotion__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
-.promotionCard:hover .promotionImage {
+.promotion__card:hover .promotion__image {
   transform: scale(1.05);
 }
 
-.overlay {
+.promotion__overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.3) 100%
-  );
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
   opacity: 0;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
-.promotionCard:hover .overlay {
+.promotion__card:hover .promotion__overlay {
   opacity: 1;
 }
 
-.content {
+.promotion__content {
   padding: 2rem;
   text-align: center;
 }
 
-.title {
+.promotion__title {
   font-size: 1.5rem;
   font-weight: 700;
   color: #1e293b;
@@ -79,83 +72,83 @@
   line-height: 1.3;
 }
 
-.description {
+.promotion__description {
   font-size: 1rem;
   color: #64748b;
   line-height: 1.6;
   margin-bottom: 2rem;
 }
 
-.shopButton {
+.promotion__button {
   background: #40d5b0;
-  color: white;
+  color: #ffffff;
   border: none;
   padding: 1rem 2.5rem;
   font-size: 1rem;
   font-weight: 600;
   border-radius: 0.75rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.shopButton:hover {
+.promotion__button:hover {
   transform: translateY(-2px);
 }
 
-.promotionCard:hover .shopButton {
+.promotion__card:hover .promotion__button {
   background: #40d5b0;
 }
 
 @media (max-width: 968px) {
-  .promotionsGrid {
+  .promotion__grid {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
 
-  .imageContainer {
+  .promotion__imageContainer {
     height: 250px;
   }
 }
 
 @media (max-width: 768px) {
-  .promotionalSection {
+  .promotion {
     padding: 3rem 0;
   }
 
-  .container {
+  .promotion__container {
     padding: 0 1rem;
   }
 
-  .content {
+  .promotion__content {
     padding: 1.5rem;
   }
 
-  .title {
+  .promotion__title {
     font-size: 1.25rem;
   }
 
-  .description {
+  .promotion__description {
     font-size: 0.9rem;
   }
 
-  .shopButton {
+  .promotion__button {
     padding: 0.875rem 2rem;
     font-size: 0.9rem;
   }
 }
 
 @media (max-width: 480px) {
-  .imageContainer {
+  .promotion__imageContainer {
     height: 200px;
   }
 
-  .title {
+  .promotion__title {
     font-size: 1.125rem;
   }
 
-  .shopButton {
+  .promotion__button {
     width: 100%;
     padding: 1rem;
   }
