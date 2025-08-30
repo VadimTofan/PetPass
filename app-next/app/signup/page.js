@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSession, signIn } from "next-auth/react";
-import styles from "./signup.module.css";
+import styles from "./page.module.css";
 
 function normalizePhone(raw) {
   if (!raw) return "";
@@ -34,13 +34,15 @@ export default function SignupPage() {
   };
 
   const handleGoogle = async () => {
-    setErr(""); setOk("");
+    setErr("");
+    setOk("");
     await signIn("google", { callbackUrl: "/auth/signup" });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErr(""); setOk("");
+    setErr("");
+    setOk("");
     const { errors, intl } = validate();
     if (errors.length) return setErr(errors.join(" "));
 
@@ -66,28 +68,17 @@ export default function SignupPage() {
       <div className={styles["signup__container"]}>
         <div className={styles["signup__left"]}>
           <h1 className={styles["signup__heading"]}>Create your account</h1>
-          <p className={styles["signup__lead"]}>
-            Sign up with Google and then add your basic details.
-          </p>
+          <p className={styles["signup__lead"]}>Sign up with Google and then add your basic details.</p>
 
           <div className={styles["signup__image-wrap"]}>
-            <img
-              className={styles["signup__image"]}
-              src="/images/pets-signup.png"
-              alt="Cat and dog looking at a phone"
-              loading="eager"
-            />
+            <img className={styles["signup__image"]} src="/images/pets-signup.png" alt="Cat and dog looking at a phone" loading="eager" />
           </div>
         </div>
 
         <div className={styles["signup__right"]}>
           <div className={styles["signup__form"]} role="form" aria-label="Sign up">
             {!isAuthed ? (
-              <button
-                type="button"
-                onClick={handleGoogle}
-                className={styles["signup__google"]}
-              >
+              <button type="button" onClick={handleGoogle} className={styles["signup__google"]}>
                 <span className={styles["signup__google-icon"]}>
                   <img src="/icons/google.svg" alt="Google" />
                 </span>
@@ -130,11 +121,7 @@ export default function SignupPage() {
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    className={styles["signup__primary"]}
-                    disabled={loading}
-                  >
+                  <button type="submit" className={styles["signup__primary"]} disabled={loading}>
                     {loading ? "Saving..." : "Create account"}
                   </button>
                 </form>
@@ -144,9 +131,7 @@ export default function SignupPage() {
             {err && <p className={styles["signup__error"]}>{err}</p>}
             {ok && <p className={styles["signup__ok"]}>{ok}</p>}
 
-            <p className={styles["signup__terms"]}>
-              By continuing, you agree to our Terms and Privacy Policy.
-            </p>
+            <p className={styles["signup__terms"]}>By continuing, you agree to our Terms and Privacy Policy.</p>
           </div>
         </div>
       </div>
