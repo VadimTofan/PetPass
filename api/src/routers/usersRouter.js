@@ -57,19 +57,16 @@ usersRouter.delete("/api/users/:id", async (request, response) => {
 const validateUserData = (user) => {
   if (!user) return `user data is required.`;
 
-  if (
-    !user.full_name ||
-    !user.email ||
-    !user.google_id ||
-    !user.phone ||
-    !user.address ||
-    !user.date_of_birth ||
-    !user.country_of_birth ||
-    !user.passport_number ||
-    !user.created_at ||
-    !user.updated_at
-  )
-    return `All fields are required.`;
+  if (!user.full_name) return "User full name is required";
+  if (!user.email) return "User email is required";
+  if (!user.google_id) return "User google id is required";
+  if (!user.phone) return "User phone number is required";
+  if (!user.address) return "User address is requred";
+  if (!user.date_of_birth) return "User date of birth is required";
+  if (!user.country_of_birth) return "User country of birth is required";
+  if (!user.passport_number) return "User passport number is required";
+  if (!user.created_at) return "User create date is required";
+  if (!user.updated_at) return "User update date is required";
 };
 
 const createUserObject = (user) => {
