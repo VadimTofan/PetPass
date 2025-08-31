@@ -38,7 +38,7 @@ export default function SignupPage() {
   const handleGoogle = async () => {
     setErr("");
     setOk("");
-    await signIn("google", { callbackUrl: "/auth/signup" });
+    await signIn("google", { callbackUrl: "/signup" });
   };
 
   const handleSubmit = async (e) => {
@@ -73,7 +73,15 @@ export default function SignupPage() {
           <p className={styles.signup__lead}>Sign up with Google and then add your basic details.</p>
 
           <div className={styles.signup__imageWrap}>
-            <Image className={styles.signup__image} src="/images/pets-signup.png" width={800} height={800} priority alt="Cat and dog looking at a phone" loading="eager" />
+            <Image
+              className={styles.signup__image}
+              src="/images/pets-signup.png"
+              width={800}
+              height={800}
+              priority
+              alt="Cat and dog looking at a phone"
+              loading="eager"
+            />
           </div>
         </div>
 
