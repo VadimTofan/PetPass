@@ -56,28 +56,23 @@ petsRouter.delete("/api/pets/:id", async (request, response) => {
 
 const validatePetData = (pet) => {
   if (!pet) return `Pet data is required.`;
-
-  if (
-    !pet.name ||
-    !pet.species ||
-    !pet.breed ||
-    !pet.sex ||
-    !pet.color_markings ||
-    !pet.date_of_birth ||
-    !pet.country_of_birth ||
-    !pet.microchip_number ||
-    !pet.microchip_implant_date ||
-    !pet.microchip_implant_location ||
-    !pet.tattoo_number ||
-    !pet.passport_number ||
-    !pet.country_of_issue ||
-    !pet.issue_date ||
-    !pet.issuing_authority ||
-    !pet.current_status ||
-    !pet.created_at ||
-    !pet.updated_at
-  )
-    return `All fields are required.`;
+  if (!pet.name) return "Pet name is required";
+  if (!pet.species) return "Pet species is required";
+  if (!pet.breed) return "Pet breed is required";
+  if (!pet.sex) return "Pet sex is required";
+  if (!pet.color_markings) return "Pet color markings are required";
+  if (!pet.country_of_birth) return "Pet country of birth is required";
+  if (!pet.microchip_number) return "Pet microchip number is required";
+  if (!pet.microchip_implant_date) return "Pet microchip implant date is required";
+  if (!pet.microchip_implant_location) return "Pet microchip implant location is required";
+  if (!pet.tattoo_number) return "Pet tattoo number is required";
+  if (!pet.passport_number) return "Pet passport number is required";
+  if (!pet.country_of_issue) return "Pet passport country of issue is required";
+  if (!pet.issue_date) return "Pet passport issue date is required";
+  if (!pet.issuing_authority) return "Pet passport issuing authority is required";
+  if (!pet.current_status) return "Pet current status is required";
+  if (!pet.created_at) return "Pet profile create date is required";
+  if (!pet.updated_at) return "Pet profile update date is required";
 };
 
 const createPetObject = (pet) => {
