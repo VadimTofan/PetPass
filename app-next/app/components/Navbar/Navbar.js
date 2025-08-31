@@ -1,39 +1,39 @@
-"use client";
+'use client';
 
-import { User } from "lucide-react";
-
-import { useRouter } from "next/navigation";
-import styles from "./Navbar.module.css";
+import Image from 'next/image';
+import { User } from 'lucide-react';
+import styles from './Navbar.module.css';
 
 const Navbar = () => {
-  const navItems = ["Home", "Products", "Blog", "About", "Contact"];
-
-  const router = useRouter();
-  const handleSignup = () => {
-    router.push("/signup");
-  };
+  const navItems = ['Home', 'Products', 'Blog', 'About Us', 'Contact Us'];
 
   return (
     <nav className={styles.navbar}>
-      <div className={styles.navbar__container}>
-        <div className={styles.navbar__logo}>
-          <span className={styles.navbar__logoText}>PetPass</span>
+      <div className={styles.container}>
+        <div className={styles.logo}>
+          <Image
+            className={styles['logo__img']}
+            src="/images/logo.png"
+            alt="PetPass logo"
+            width={120}
+            height={120}
+            priority
+          />
+          <span className={styles['logo__text']}>PetPass</span>
         </div>
 
-        <ul className={styles.navbar__items}>
-          {navItems.map((item) => (
-            <li key={item} className={styles.navbar__item}>
-              <a href={item} className={styles.navbar__link}>
-                {item}
-              </a>
+        <ul className={styles.navItems}>
+          {navItems.map((item, index) => (
+            <li key={index} className={styles.navItem}>
+              <a href="#" className={styles.navLink}>{item}</a>
             </li>
           ))}
         </ul>
 
-        <div className={styles.navbar__auth}>
-          <button onClick={handleSignup} className={styles.navbar__loginButton}>
+        <div className={styles.loginSection}>
+          <button className={styles.loginButton}>
             <User size={20} />
-            <span className={styles.navbar__loginText}>Sign-Up / Login</span>
+            <span>Login</span>
           </button>
         </div>
       </div>
