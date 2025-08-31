@@ -17,6 +17,7 @@ app.get("/", (request, response) => {
 app.use(petsRouter);
 app.use(usersRouter);
 
-app.listen(() => {
-  console.log(`Server is running`);
+const PORT = 8000;
+app.listen(PORT, () => {
+  console.log(`Server is running on localhost:${PORT}`);
 });
