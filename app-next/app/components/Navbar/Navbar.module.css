@@ -21,12 +21,22 @@
 .navbar__logo {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.navbar__logoImg {
+  height: 60px;
+  width: auto;
+  display: block;
 }
 
 .navbar__logoText {
   font-size: 1.5rem;
   font-weight: 700;
   color: #40d5b0;
+  line-height: 1;
+  letter-spacing: 0.2px;
 }
 
 .navbar__items {
@@ -85,32 +95,6 @@
 
 @media (max-width: 768px) {
   .navbar__container {
-    .logo__img {
-      height: 60px;
-      width: auto;
-      display: block;
-    }
-
-    .logo__text {
-      color: #F2C94C;
-      font-size: 2rem;
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: .2px;
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .logo__img {
-    height: 28px;
-  }
-
-  .logo__text {
-    font-size: 1.6rem;
-  }
-
-  .container {
     padding: 1rem;
   }
 
@@ -120,5 +104,13 @@
 
   .navbar__loginText {
     display: none;
+  }
+
+  .navbar__logoImg {
+    height: 28px;
+  }
+
+  .navbar__logoText {
+    font-size: 1.6rem;
   }
 }
