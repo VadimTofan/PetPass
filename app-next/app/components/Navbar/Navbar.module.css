@@ -1,9 +1,9 @@
 .navbar {
-  background: rgba(255, 255, 255, 0.95);
+  background: #ebe9e6;
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 1000;
@@ -15,7 +15,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
+  padding: 0.3rem 1rem;
 }
 
 .navbar__logo {
@@ -33,7 +33,7 @@
 
 .navbar__logoText {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 1200;
   color: #40d5b0;
   line-height: 1;
   letter-spacing: 0.2px;
@@ -43,8 +43,9 @@
   display: flex;
   list-style: none;
   margin: 0;
-  padding: 0;
-  gap: 2rem;
+  padding: 0.1rem 0;
+  width: 100%;
+  justify-content: space-around;
 }
 
 .navbar__item {
@@ -52,18 +53,29 @@
 }
 
 .navbar__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
   color: #374151;
-  font-weight: 500;
-  font-size: 0.95rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  padding: 0.1rem 0;
+  gap: 0.1rem;
+}
+.navbar__link img {
+  width: 50px;
+  height: 45px;
+}
+
+.navbar__linkText {
+  font-size: 0.9rem;
+  text-align: center;
+  color: #40d5b0;
 }
 
 .navbar__link:hover {
   color: #40d5b0;
-  background-color: #eff6ff;
+  background-color: #c1e0dc;
 }
 
 .navbar__auth {
@@ -87,6 +99,7 @@
 
 .navbar__loginButton:hover {
   transform: translateY(-1px);
+  filter: brightness(1.1);
 }
 
 .navbar__loginText {
@@ -99,7 +112,10 @@
   }
 
   .navbar__items {
-    display: none;
+    display: flex;
+    flex-direction: horizontal;
+    gap: 1rem;
+    justify-content: space-around;
   }
 
   .navbar__loginText {
