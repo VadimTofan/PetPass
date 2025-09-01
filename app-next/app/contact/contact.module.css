@@ -105,7 +105,7 @@
 
 .contact__petsWrapper {
   position: absolute;
-  top: -190px;
+  top: -187px;
   left: 50%;
   transform: translateX(-50%);
   pointer-events: none;
@@ -117,22 +117,6 @@
   height: auto;
   display: block;
   filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.12));
-}
-
-@media (max-width: 1200px) {
-  .contact__petsWrapper {
-    left: -140px;
-  }
-
-  .contact__pets {
-    width: 300px;
-  }
-}
-
-@media (max-width: 960px) {
-  .contact__petsWrapper {
-    display: none;
-  }
 }
 
 .form {
@@ -198,4 +182,30 @@
 
 .buttonPrimary:active {
   transform: translateY(1px);
+}
+
+/* ≤ 1018px → hidden */
+@media screen and (max-width: 1018px) {
+  .contact__petsWrapper {
+    display: none !important;
+  }
+}
+/* 1019px–1199px → visible with adjustments */
+@media screen and (min-width: 1019px) and (max-width: 1199px) {
+  .contact__petsWrapper {
+    top: -155px;
+  }
+
+  .contact__pets {
+    width: 240px; 
+  }
+}
+
+
+/* ≥ 1200px → visible with adjustments */
+@media screen and (min-width: 1200px) {
+
+  .contact__pets {
+    width: 300px;
+  }
 }
