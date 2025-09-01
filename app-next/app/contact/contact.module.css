@@ -189,6 +189,9 @@
   .contact__petsWrapper {
     display: none !important;
   }
+  .contact__grid {
+  grid-template-columns: 1fr;
+}
 }
 /* 1019px–1199px → visible with adjustments */
 @media screen and (min-width: 1019px) and (max-width: 1199px) {
