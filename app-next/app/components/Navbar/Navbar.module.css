@@ -17,6 +17,9 @@
   justify-content: space-between;
   padding: 0.3rem 1rem;
 }
+.navbar__top {
+  width: 100%;
+}
 
 .navbar__logo {
   display: flex;

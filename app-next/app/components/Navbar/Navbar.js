@@ -61,8 +61,11 @@ const Navbar = () => {
             ))}
           </ul>
 
-          <div className={styles.navbar__auth} onClick={handleLogin}>
-            <button className={styles.navbar__loginButton}>
+          <div className={styles.navbar__auth}>
+            <button
+              className={styles.navbar__loginButton}
+              onClick={handleLogin}
+            >
               <User size={20} />
               <span className={styles.navbar__loginText}>Login</span>
             </button>
