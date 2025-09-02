@@ -8,9 +8,13 @@ import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const navItems = [
-    { name: "Home", icon: "/icons/home-icon.png", path: "/home" },
-    { name: "About Us", icon: "/icons/about-icon.png", path: "/about" },
-    { name: "Contact Us", icon: "/icons/contact-icon.png", path: "/contact" },
+    { name: "Home", icon: "/icons/animal-home.png", path: "/home" },
+    { name: "About Us", icon: "/icons/animal-about.png", path: "/about" },
+    {
+      name: "Contact Us",
+      icon: "/icons/animal-contact.jpeg",
+      path: "/contact",
+    },
   ];
 
   const router = useRouter();
@@ -37,7 +41,6 @@ const Navbar = () => {
             height={120}
             priority
           />
-          <span className={styles.navbar__logoText}>PetPass</span>
         </div>
       </div>
       <nav className={styles.navbar}>

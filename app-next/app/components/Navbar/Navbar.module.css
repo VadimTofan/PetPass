@@ -71,6 +71,7 @@
   font-size: 0.9rem;
   text-align: center;
   color: #40d5b0;
+  font-weight: 700;
 }
 
 .navbar__link:hover {
@@ -128,5 +129,8 @@
 
   .navbar__logoText {
     font-size: 1.6rem;
+  }
+  .navbar__linkText {
+    display: none;
   }
 }
