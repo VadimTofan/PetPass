@@ -8,8 +8,8 @@ export async function deleteUserByGoogleId(id) {
   return dbClient("users").where("google_id", id).del();
 }
 
-export async function getUserByGoogleId(googleId) {
-  return dbClient("users").select("*").where("google_id", googleId);
+export async function getUserById(id) {
+  return dbClient("users").select("*").where("id", id);
 }
 
 export async function updateUserByGoogleId(googleId, user) {
