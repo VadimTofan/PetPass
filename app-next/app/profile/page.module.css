@@ -8,6 +8,9 @@
   gap: 2rem;
 }
 
+.profile__loading {
+  padding: 15rem 0;
+}
 .profile__header {
   text-align: center;
   display: flex;

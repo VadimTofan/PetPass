@@ -3,12 +3,24 @@
 import styles from "./page.module.css";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import FetchUserData from "./FetchUser";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
 
+  console.log(status);
+  FetchUserData(session?.user?.email);
+
   const userPicture = session?.user?.image ?? "/images/loading.svg";
 
+  if (status === "unauthenticated")
+    return (
+      <section className={styles.profile}>
+        <div className={styles.profile__header}>
+          <p className={styles.profile__loading}>You have to log in first.</p>
+        </div>
+      </section>
+    );
   return (
     <section className={styles.profile}>
       <div className={styles.profile__header}>
