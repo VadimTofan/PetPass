@@ -9,7 +9,8 @@ export async function getPetByName(petName) {
 }
 
 export async function getPetById(id) {
-  return dbClient("pets").select("*").where("id", id);
+  const [pet] = await dbClient("pets").select("*").where("id", id);
+  return pet;
 }
 
 export async function getPetByMicrochipNumber(microchipNumber) {
