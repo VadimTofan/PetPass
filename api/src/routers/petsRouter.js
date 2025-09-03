@@ -14,13 +14,13 @@ petsRouter.post("/api/pets", async (request, response) => {
   response.status(201).json({ message: "Pet added successfully." });
 });
 
-petsRouter.get("/api/pets/:id", async (request, response) => {
-  const id = Number(request.query);
+petsRouter.get("/api/pet/:id", async (request, response) => {
+  const id = request.params.id;
   if (!id) return response.status(400).send({ error: `No pets here` });
 
-  const pets = await db.getPetsByUserId(id);
+  const pets = await db.getPetById(id);
 
-  if (!pets) return response.status(404).send({ error: `User with such ID has no pets` });
+  if (!pets) return response.status(404).send({ error: `There is no pet with such ID` });
 
   response.send(pets);
 });
