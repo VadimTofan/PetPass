@@ -15,12 +15,24 @@ petsRouter.post("/api/pets", async (request, response) => {
 });
 
 petsRouter.get("/api/pet/:id", async (request, response) => {
-  const id = request.params.id;
+  const id = Number(request.params.id);
+
   if (!id) return response.status(400).send({ error: `No pets here` });
 
-  const pets = await db.getPetById(id);
+  const pet = await db.getPetById(id);
 
-  if (!pets) return response.status(404).send({ error: `There is no pet with such ID` });
+  if (!pet) return response.status(404).send({ error: `There is no pet with such ID` });
+
+  response.send(pet);
+});
+
+petsRouter.get("/api/pets/:id", async (request, response) => {
+  const id = Number(request.params.id);
+  if (!id) return response.status(400).send({ error: `This user has no pets` });
+
+  const pets = await db.getPetByUserId(id);
+
+  if (!pets) return response.status(404).send({ error: `No pet belongs to such user ID` });
 
   response.send(pets);
 });

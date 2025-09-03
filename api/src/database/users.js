@@ -25,5 +25,6 @@ export async function getUserByPhoneNumber(phone) {
 }
 
 export async function getUserByEmail(email) {
-  return dbClient("users").select("*").where("email", email);
+  const [user] = await dbClient("users").select("*").where("email", email);
+  return user;
 }
