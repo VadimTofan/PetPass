@@ -14,13 +14,13 @@ usersRouter.post("/api/users", async (request, response) => {
   response.status(201).json({ message: "user added successfully." });
 });
 
-usersRouter.get("/api/users/:id", async (request, response) => {
-  const id = Number(request.query);
-  if (!id) return response.status(400).send({ error: `No id is provided` });
+usersRouter.get("/api/users/:email", async (request, response) => {
+  const email = request.params.email;
+  if (!email) return response.status(400).send({ error: `No email is provided` });
 
-  const user = await db.getUserByGoogleId(id);
+  const user = await db.getUserByEmail(email);
 
-  if (!user) return response.status(404).send({ error: `user with such ID has no data` });
+  if (!user) return response.status(404).send({ error: `user with such email has no data` });
 
   response.send(user);
 });
