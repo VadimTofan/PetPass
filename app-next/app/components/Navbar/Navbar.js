@@ -1,11 +1,44 @@
 "use client";
 
+import styles from "./Navbar.module.css";
+
 import Image from "next/image";
 import { User } from "lucide-react";
-import styles from "./Navbar.module.css";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useState, useEffect, useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const { data: session, status } = useSession();
+  const profile = session?.user?.image ?? "";
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const profileMenuRef = useRef(null);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  let isAuthed = false;
+  if (status === "authenticated") isAuthed = true;
+
+  const handleProfileClick = () => {
+    router.push("/profile");
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+        setShowProfileMenu(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const navItems = [
     { name: "Home", icon: "/icons/home.png", path: "/home" },
     { name: "Contact", icon: "/icons/contact.png", path: "/contact" },
@@ -32,14 +65,32 @@ export default function Navbar() {
             ))}
           </ul>
         </div>
-        <Link href="/signup">
+        {!isAuthed ? (
           <div className={styles.navbar__auth}>
-            <button className={styles.navbar__loginButton}>
+            <button className={styles.navbar__loginButton} onClick={() => setShowLoginModal(true)}>
               <User size={20} />
               <span className={styles.navbar__loginText}>Login</span>
             </button>
           </div>
-        </Link>
+        ) : (
+          <>
+            {profile && (
+              <div ref={profileMenuRef} className={styles.navbar__profile}>
+                <Image src={profile} alt="Profile" width={150} height={150} className={styles.navbar__image} onClick={() => setShowProfileMenu((prev) => !prev)} />
+                {showProfileMenu && (
+                  <div className={styles.navbar__dropdown}>
+                    <button onClick={handleProfileClick} className={styles.navbar__button}>
+                      Profile
+                    </button>
+                    <button type="button" onClick={() => signOut()} className={styles.navbar__button}>
+                      Sign out
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        )}
       </nav>
 
       <ul className={styles.navbar__itemsMobile}>
@@ -51,6 +102,21 @@ export default function Navbar() {
           </li>
         ))}
       </ul>
+
+      {showLoginModal && (
+        <div className={styles.navbar__modal}>
+          <div className={styles.navbar__modalContent}>
+            <h2 style={{ marginBottom: "1rem" }}>Sign in with Google</h2>
+            <button type="button" className={styles.navbar__signup} onClick={() => signIn("google", { callbackUrl: `/${pathname}` })}>
+              <Image src="/icons/google.svg" width={25} height={25} alt="google logo" />
+              Continue with Google
+            </button>
+            <button onClick={() => setShowLoginModal(false)} className={styles.navbar__cancelButton}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
