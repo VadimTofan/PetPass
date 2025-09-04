@@ -5,10 +5,12 @@ import styles from "./page.module.css";
 
 import { useState, useEffect } from "react";
 
-export default function FetchPetData({ id }) {
+export default function FetchPetData({ params }) {
   const [pet, setPet] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const id = params.id;
 
   const fetchData = async () => {
     try {
