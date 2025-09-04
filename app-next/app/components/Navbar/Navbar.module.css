@@ -1,116 +1,146 @@
 .navbar {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #e5e7eb;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  height: 70px;
+  background: #ebe9e6;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #e5e7eb;
   z-index: 1000;
-}
-
-.navbar__container {
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
+  justify-content: space-around;
+  padding: 0 1rem;
 }
 
 .navbar__logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
 }
 
 .navbar__logoImg {
-  height: 60px;
-  width: auto;
-  display: block;
+  width: 50px;
+  height: 50px;
 }
 
 .navbar__logoText {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.4rem;
+  font-weight: 800;
   color: #40d5b0;
-  line-height: 1;
-  letter-spacing: 0.2px;
+}
+
+.navbar__container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .navbar__items {
   display: flex;
+  align-items: center;
+  gap: 5rem;
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 2rem;
-}
-
-.navbar__item {
-  margin: 0;
 }
 
 .navbar__link {
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
   color: #374151;
-  font-weight: 500;
-  font-size: 0.95rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  font-weight: 600;
 }
 
-.navbar__link:hover {
+.navbar__linkText {
+  font-size: 1rem;
+  font-weight: 700;
   color: #40d5b0;
-  background-color: #eff6ff;
 }
 
-.navbar__auth {
-  display: flex;
-  align-items: center;
+.navbar__linkText:hover {
+  text-decoration: underline;
 }
 
 .navbar__loginButton {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   background: #40d5b0;
-  color: #ffffff;
+  color: #fff;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, filter 0.2s ease;
+  transition: transform 0.15s ease, filter 0.15s ease;
 }
 
 .navbar__loginButton:hover {
   transform: translateY(-1px);
+  filter: brightness(1.08);
 }
 
-.navbar__loginText {
-  display: inline;
+.navbar__itemsMobile {
+  display: none;
 }
 
 @media (max-width: 768px) {
-  .navbar__container {
-    padding: 1rem;
+  .navbar {
+    height: 60px;
+    justify-content: space-between;
+    padding: 0 1rem;
   }
 
   .navbar__items {
     display: none;
   }
 
+  .navbar__container {
+    gap: 0.75rem;
+  }
+
+  .navbar__loginButton {
+    padding: 0.45rem 0.8rem;
+    border-radius: 8px;
+    font-weight: 700;
+  }
+
+  .navbar__itemsMobile {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: 60px;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    z-index: 5;
+  }
+
   .navbar__loginText {
     display: none;
   }
-
-  .navbar__logoImg {
-    height: 28px;
+  .navbar__linkMobile {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #374151;
+    font-weight: 600;
+    font-size: 0.9rem;
   }
 
-  .navbar__logoText {
-    font-size: 1.6rem;
+  .navbar__iconMobile {
+    width: 24px;
+    height: 24px;
+    display: block;
   }
 }
