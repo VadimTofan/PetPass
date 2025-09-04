@@ -1,17 +1,13 @@
 .navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  background: #ebe9e6;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #e5e7eb;
-  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 0 1rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 70px;
+  background: var(--bg);
+  z-index: 100;
 }
 
 .navbar__logo {
@@ -42,17 +38,12 @@
   display: flex;
   align-items: center;
   gap: 5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
 }
 
 .navbar__link {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  color: #374151;
-  font-weight: 600;
 }
 
 .navbar__linkText {
@@ -104,7 +95,7 @@
   top: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  background-color: #fff;
+  background-color: var(--bg);
   border: 1px solid #ccc;
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -112,14 +103,6 @@
   z-index: 1100;
 }
 
-.navbar__profileLink {
-  background: none;
-  border: none;
-  width: 150px;
-  text-align: center;
-  padding: 10px 16px;
-  cursor: pointer;
-}
 .navbar__button {
   background: none;
   border: none;
@@ -129,8 +112,8 @@
   cursor: pointer;
 }
 
-.navbar__signout:hover {
-  background-color: #f0f0f0;
+.navbar__button:hover {
+  text-decoration: underline;
 }
 
 .navbar__modal {
@@ -149,7 +132,7 @@
 .navbar__modalContent {
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: var(--bg);
   padding: 2rem;
   border-radius: 12px;
   text-align: center;
@@ -199,7 +182,6 @@
   .navbar {
     height: 60px;
     justify-content: space-between;
-    padding: 0 1rem;
   }
 
   .navbar__items {
@@ -226,15 +208,13 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    z-index: 5;
+    z-index: 100;
   }
 
   .navbar__loginText {
     display: none;
   }
+
   .navbar__linkMobile {
     display: inline-flex;
     flex-direction: column;
