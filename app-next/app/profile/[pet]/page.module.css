@@ -57,8 +57,7 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   padding: 20px 20px 24px;
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  gap: 15rem;
 }
 
 .petProfile__sectionTitle {

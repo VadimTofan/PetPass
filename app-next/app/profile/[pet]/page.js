@@ -4,14 +4,14 @@ import Image from "next/image";
 import styles from "./page.module.css";
 
 import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 
-export default function FetchPetData({ params }) {
+export default function FetchPetData() {
   const [pet, setPet] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const id = params.id;
-
+  const id = useParams().pet;
   const fetchData = async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pet/${id}`);
@@ -63,19 +63,16 @@ export default function FetchPetData({ params }) {
 
   return (
     <section className={styles.petProfile}>
-      <header className={styles.petProfile__header} aria-labelledby="pet-name">
+      {/* <div className={styles.petProfile__header} aria-labelledby="pet-name">
         <div className={styles.petProfile__avatarWrap}>
           <Image src="/images/cat.jpg" alt={pet.name} width={160} height={160} className={styles.petProfile__avatar} />
         </div>
         <h1 id="pet-name" className={styles.petProfile__name}>
           {pet.name}
         </h1>
-      </header>
-
-      <span className={styles.petProfile__divider} />
+      </div> */}
 
       <div className={styles.petProfile__detailsCard}>
-        <h2 className={styles.petProfile__sectionTitle}>Details</h2>
         <dl className={styles.petProfile__grid}>
           <div className={styles.petProfile__row}>
             <dt className={styles.petProfile__label}>Species</dt>
@@ -105,6 +102,7 @@ export default function FetchPetData({ params }) {
             <dt className={styles.petProfile__label}>Microchip Implant Date</dt>
             <dd className={styles.petProfile__value}>{formatDate(pet.microchip_implant_date)}</dd>
           </div>
+
           <div className={styles.petProfile__row}>
             <dt className={styles.petProfile__label}>Microchip Implant Location</dt>
             <dd className={styles.petProfile__value}>{pet.microchip_implant_location}</dd>
@@ -112,6 +110,16 @@ export default function FetchPetData({ params }) {
           <div className={styles.petProfile__row}>
             <dt className={styles.petProfile__label}>Passport Number</dt>
             <dd className={styles.petProfile__value}>{pet.passport_number}</dd>
+          </div>
+        </dl>
+        <dl className={styles.petProfile__grid}>
+          <div className={styles.petProfile__header} aria-labelledby="pet-name">
+            <div className={styles.petProfile__avatarWrap}>
+              <Image src="/images/cat.jpg" alt={pet.name} width={160} height={160} className={styles.petProfile__avatar} />
+            </div>
+            <h1 id="pet-name" className={styles.petProfile__name}>
+              {pet.name}
+            </h1>
           </div>
           <div className={styles.petProfile__row}>
             <dt className={styles.petProfile__label}>Country of Issue</dt>
