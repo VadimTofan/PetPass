@@ -6,6 +6,7 @@ import FetchUserData from "../components/FetchUserData";
 import { useState, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function SignupPage() {
   const { data: session, status } = useSession();
@@ -23,16 +24,15 @@ export default function SignupPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState("");
-  const [ok, setOk] = useState("");
 
   const handleGoogle = async () => {
     setErr("");
-    setOk("");
     await signIn("google", { callbackUrl: "/profile/edit" });
   };
 
   const handleSubmit = async () => {
     setIsLoading(true);
+    setErr(null);
     try {
       const now = new Date().toISOString();
 
@@ -47,16 +47,14 @@ export default function SignupPage() {
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to update pet info");
+      if (!res.ok) throw new Error("Failed to update user info");
 
-      const updated = await res.json();
-      setPet(updated);
-    } catch (e) {
-      setErr(err.message);
-    } finally {
-      setDraft(null);
-      setIsLoading(false);
       setSuccess(true);
+      setDraft(null);
+    } catch (e) {
+      setErr(e.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -160,16 +158,24 @@ export default function SignupPage() {
                 </div>
 
                 <button type="submit" className={styles.signup__primary} disabled={isLoading}>
-                  {isLoading ? "Saving..." : "Create account"}
+                  {isLoading ? "Saving..." : "Update account"}
                 </button>
+                {err && (
+                  <p className={styles.signup__fail}>
+                    {err}, please try again later <br />
+                  </p>
+                )}
+                <p className={styles.signup__terms}>By continuing, you agree to our Terms and Privacy Policy.</p>
               </form>
             )}
-
-            {err && <p className={styles.signup__error}>{err}</p>}
-            <p className={styles.signup__terms}>By continuing, you agree to our Terms and Privacy Policy.</p>
           </>
         ) : (
-          <>{err ? <p className={styles.signup__error}>{err}</p> : <p className={styles.signup__ok}>You successfully updated your information.</p>}</>
+          <div>
+            <p className={styles.signup__ok}>You successfully updated your information.</p>
+            <Link href="/profile" className={styles.signup__profile}>
+              Go back to your profile.
+            </Link>
+          </div>
         )}
       </div>
     </section>
