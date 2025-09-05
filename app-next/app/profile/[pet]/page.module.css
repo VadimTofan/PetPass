@@ -45,6 +45,70 @@
   cursor: pointer;
 }
 
+.petProfile__cancelButton {
+  box-shadow: 3px 4px 0px 0px #e6a19a;
+  background: linear-gradient(to bottom, #d19994 5%, #cf665f 100%);
+  background-color: #d19994;
+  border-radius: 18px;
+  border: 1px solid #ab6d69;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 17px;
+  padding: 7px 25px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #810e05;
+}
+.petProfile__cancelButton:hover {
+  background: linear-gradient(to bottom, #cf665f 5%, #d19994 100%);
+  background-color: #cf665f;
+}
+.petProfile__cancelButton:active {
+  position: relative;
+  top: 1px;
+}
+
+.petProfile__saveButton {
+  background-color: #44c767;
+  border-radius: 28px;
+  border: 1px solid #18ab29;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 17px;
+  padding: 16px 31px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
+}
+.petProfile__saveButton:hover {
+  .myButton {
+    background-color: #44c767;
+    border-radius: 28px;
+    border: 1px solid #18ab29;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 17px;
+    padding: 16px 31px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #2f6627;
+  }
+  .myButton:hover {
+    background-color: #5cbf2a;
+  }
+  .myButton:active {
+    position: relative;
+    top: 1px;
+  }
+}
+.petProfile__saveButton:active {
+  position: relative;
+  top: 1px;
+}
+
 .petProfile__divider {
   inline-size: 100%;
   block-size: 1px;
