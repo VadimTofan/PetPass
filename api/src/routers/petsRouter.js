@@ -51,7 +51,7 @@ petsRouter.put("/api/pet/:id", async (request, response) => {
 
   const newPet = createPetObject(pet);
 
-  await db.updatePetById(id, createPetObject(newPet));
+  await db.updatePetById(id, newPet);
 
   response.status(201).send({ message: "Pet updated successfully." });
 });
@@ -72,45 +72,43 @@ const validatePetData = (pet) => {
   if (!pet) return `Pet data is required.`;
   if (!pet.name) return "Pet name is required";
   if (!pet.species) return "Pet species is required";
-  if (!pet.breed) return "Pet breed is required";
-  if (!pet.sex) return "Pet sex is required";
-  if (!pet.color_markings) return "Pet color markings are required";
-  if (!pet.country_of_birth) return "Pet country of birth is required";
-  if (!pet.microchip_number) return "Pet microchip number is required";
-  if (!pet.microchip_implant_date) return "Pet microchip implant date is required";
-  if (!pet.microchip_implant_location) return "Pet microchip implant location is required";
-  if (!pet.passport_number) return "Pet passport number is required";
-  if (!pet.country_of_issue) return "Pet passport country of issue is required";
-  if (!pet.issue_date) return "Pet passport issue date is required";
-  if (!pet.issuing_authority) return "Pet passport issuing authority is required";
-  if (!pet.current_status) return "Pet current status is required";
-  if (!pet.created_at) return "Pet profile create date is required";
-  if (!pet.updated_at) return "Pet profile update date is required";
+  if (pet.owner_user_id !== undefined && Number.isNaN(Number(pet.owner_user_id))) {
+    return "Invalid owner_user_id";
+  }
 };
+
+
+const clean = (v) => (v === "" ? undefined : v);
 
 const createPetObject = (pet) => {
-  const createPet = {
+  const now = new Date();
+  return {
+    owner_user_id: pet.owner_user_id ? Number(pet.owner_user_id) : undefined,
+    
     name: pet.name,
     species: pet.species,
-    breed: pet.breed,
-    sex: pet.sex,
-    color_markings: pet.color_markings,
-    date_of_birth: pet.date_of_birth,
-    country_of_birth: pet.country_of_birth,
+
+    breed: clean(pet.breed),
+    sex: clean(pet.sex),
+    color_markings: clean(pet.color_markings),
+    date_of_birth: clean(pet.date_of_birth),
+    country_of_birth: clean(pet.country_of_birth),
+
     microchip_number: pet.microchip_number,
-    microchip_implant_date: pet.microchip_implant_date,
-    microchip_implant_location: pet.microchip_implant_location,
-    tattoo_number: pet.tattoo_number,
+    microchip_implant_date: clean(pet.microchip_implant_date),
+    microchip_implant_location: clean(pet.microchip_implant_location),
+
     passport_number: pet.passport_number,
     country_of_issue: pet.country_of_issue,
-    issue_date: pet.issue_date,
-    issuing_authority: pet.issuing_authority,
-    current_status: pet.current_status,
-    created_at: pet.created_at,
-    updated_at: pet.updated_at,
-  };
+    issue_date: clean(pet.issue_date),
+    issuing_authority: clean(pet.issuing_authority),
 
-  return createPet;
+    current_status: clean(pet.current_status) ?? "active", 
+
+    created_at: pet.created_at ?? now,
+    updated_at: pet.updated_at ?? now,
+  };
 };
+
 
 export default petsRouter;
