@@ -1,7 +1,7 @@
 .petProfile {
   min-height: 100vh;
   background: #f7f7f8;
-  padding: 6rem 20px 40px;
+  padding: 3.75rem 20px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,7 +19,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .petProfile__row {
@@ -52,7 +52,6 @@
   box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.25);
 }
 
-
 .petProfile__submit {
   margin-top: 20px;
   padding: 14px 20px;
@@ -82,8 +81,50 @@
   .petProfile__form {
     padding: 20px;
   }
-
   .petProfile__submit {
     inline-size: 100%;
   }
+}
+
+.petProfile__upload {
+  border: 2px dashed #dadde1;
+  border-radius: 16px;
+  padding: 16px;
+  background: #fbfbfc;
+}
+
+.petProfile__drop {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.petProfile__browse {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #111827;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.petProfile__hint {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+.petProfile__preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.petProfile__previewImg {
+  border-radius: 12px;
+  object-fit: cover;
 }
