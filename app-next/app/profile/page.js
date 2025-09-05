@@ -49,7 +49,7 @@ export default function ProfilePage() {
   }
 
   const handlePetCardClick = (id) => {
-    router.push(`/profile/pet/${id}`);
+    router.push(`/profile/${id}`);
   };
 
   return (
@@ -68,11 +68,7 @@ export default function ProfilePage() {
 
         {!petsLoading &&
           pets?.map((pet) => (
-            <div
-              key={pet.id}
-              onClick={() => handlePetCardClick(pet.id)} // <-- don’t invoke immediately
-              className={`${styles.profile__card} ${styles.profile__cardPet}`}
-            >
+            <div key={pet.id} onClick={() => handlePetCardClick(pet.id)} className={`${styles.profile__card} ${styles.profile__cardPet}`}>
               <p className={styles.profile__petName}>{pet.name}</p>
               <Image className={styles.profile__petImage} src={`/images/${pet.species}.jpg`} width={150} height={150} alt={pet.name} />
             </div>

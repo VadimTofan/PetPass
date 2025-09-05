@@ -14,6 +14,7 @@ petsRouter.post("/api/pets", async (request, response) => {
   response.status(201).json({ message: "Pet added successfully." });
 });
 
+//Get pets by pet ID
 petsRouter.get("/api/pet/:id", async (request, response) => {
   const id = Number(request.params.id);
 
@@ -26,6 +27,7 @@ petsRouter.get("/api/pet/:id", async (request, response) => {
   response.send(pet);
 });
 
+//Get pets by user ID
 petsRouter.get("/api/pets/:id", async (request, response) => {
   const id = Number(request.params.id);
   if (!id) return response.status(400).send({ error: `This user has no pets` });
@@ -37,14 +39,14 @@ petsRouter.get("/api/pets/:id", async (request, response) => {
   response.send(pets);
 });
 
-petsRouter.put("/api/pets/:id", async (request, response) => {
+//Update pets by pet ID
+petsRouter.put("/api/pet/:id", async (request, response) => {
   const id = Number(request.params.id);
   const pet = request.body;
 
   if (!id) return response.status(400).send({ error: `Id is mandatory` });
 
   const petError = validatePetData(pet);
-
   if (petError) return response.status(400).send({ error: petError });
 
   const newPet = createPetObject(pet);
@@ -77,7 +79,6 @@ const validatePetData = (pet) => {
   if (!pet.microchip_number) return "Pet microchip number is required";
   if (!pet.microchip_implant_date) return "Pet microchip implant date is required";
   if (!pet.microchip_implant_location) return "Pet microchip implant location is required";
-  if (!pet.tattoo_number) return "Pet tattoo number is required";
   if (!pet.passport_number) return "Pet passport number is required";
   if (!pet.country_of_issue) return "Pet passport country of issue is required";
   if (!pet.issue_date) return "Pet passport issue date is required";
