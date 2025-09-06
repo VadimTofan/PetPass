@@ -1,37 +1,129 @@
-"use client";
-
 import Image from "next/image";
 import styles from "./page.module.css";
+import UserIdHidden from "../components/UserIdHidden";
+import CreatePetSubmit from "../components/CreatePetSubmit";
+import UploadPhoto from "../components/UploadPhoto";
 
-import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+export default async function FetchPetData(props) {
+  const p = props.params?.then ? await props.params : props.params;
+  const id = p.pet;
 
-export default function FetchPetData() {
-  const [pet, setPet] = useState(null);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
-  const [draft, setDraft] = useState(null);
+  if (id === "new") {
+    const postUrl = `${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pets`;
 
-  const id = useParams().pet;
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pet/${id}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch pet");
-      }
-      const data = await response.json();
-      setPet(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    return (
+      <section className={styles.petProfile}>
+        <h1 className={styles.petProfile__name}>Create New Pet</h1>
 
-  useEffect(() => {
-    fetchData();
-  }, [id]);
+        <form id="create-pet-form" className={styles.petProfile__form} encType="multipart/form-data">
+          <UploadPhoto />
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="name">
+              Name <span className={styles.petProfile__required}>*</span>
+            </label>
+            <input className={styles.petProfile__input} type="text" id="name" name="name" required />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="species">
+              Species <span className={styles.petProfile__required}>*</span>
+            </label>
+            <input className={styles.petProfile__input} type="text" id="species" name="species" required />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="microchip_number">
+              Microchip Number <span className={styles.petProfile__required}>*</span>
+            </label>
+            <input className={styles.petProfile__input} type="text" id="microchip_number" name="microchip_number" required />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="passport_number">
+              Passport Number <span className={styles.petProfile__required}>*</span>
+            </label>
+            <input className={styles.petProfile__input} type="text" id="passport_number" name="passport_number" required />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="country_of_issue">
+              Country of Issue <span className={styles.petProfile__required}>*</span>
+            </label>
+            <input className={styles.petProfile__input} type="text" id="country_of_issue" name="country_of_issue" required />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="date_of_birth">
+              Date of Birth <span className={styles.petProfile__required}>*</span>
+            </label>
+            <input className={styles.petProfile__input} type="date" id="date_of_birth" name="date_of_birth" required />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="issue_date">
+              Issue Date <span className={styles.petProfile__required}>*</span>
+            </label>
+            <input className={styles.petProfile__input} type="date" id="issue_date" name="issue_date" required />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="breed">Breed</label>
+            <input className={styles.petProfile__input} type="text" id="breed" name="breed" />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="sex">Sex</label>
+            <input className={styles.petProfile__input} type="text" id="sex" name="sex" />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="color_markings">Color / Markings</label>
+            <input className={styles.petProfile__input} type="text" id="color_markings" name="color_markings" />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="country_of_birth">Country of Birth</label>
+            <input className={styles.petProfile__input} type="text" id="country_of_birth" name="country_of_birth" />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="microchip_implant_date">Microchip Implant Date</label>
+            <input className={styles.petProfile__input} type="date" id="microchip_implant_date" name="microchip_implant_date" />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="microchip_implant_location">Microchip Implant Location</label>
+            <input className={styles.petProfile__input} type="text" id="microchip_implant_location" name="microchip_implant_location" />
+          </div>
+
+          <div className={styles.petProfile__row}>
+            <label className={styles.petProfile__label} htmlFor="issuing_authority">Issuing Authority</label>
+            <input className={styles.petProfile__input} type="text" id="issuing_authority" name="issuing_authority" />
+          </div>
+
+          <UserIdHidden />
+
+          <CreatePetSubmit
+            formId="create-pet-form"
+            postUrl={postUrl}
+            className={styles.petProfile__submit}
+          />
+        </form>
+      </section>
+    );
+  }
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pet/${id}`, { next: { revalidate: 10 } });
+  if (!res.ok) {
+    return (
+      <section className={styles.petProfile}>
+        <p className={styles.petProfile__loading}>Error: Failed to fetch pet</p>
+      </section>
+    );
+  }
+
+  const pet = await res.json();
 
   const formatDate = (iso) => {
     if (!iso) return "";
@@ -39,195 +131,18 @@ export default function FetchPetData() {
     return isNaN(d) ? iso : d.toLocaleDateString();
   };
 
-  if (isLoading) {
-    return (
-      <section className={styles.petProfile}>
-        <p className={styles.petProfile__loading}>Loading pet data...</p>
-      </section>
-    );
-  }
+  const imgSrc = pet.photo_url || "/images/cat.jpg";
 
-  if (error) {
-    return (
-      <section className={styles.petProfile}>
-        <p className={styles.petProfile__loading}>Error: {error}</p>
-      </section>
-    );
-  }
-
-  if (!pet) {
-    return (
-      <section className={styles.petProfile}>
-        <p>No pet data found.</p>
-      </section>
-    );
-  }
-
-  const handleEditProfile = () => {
-    const today = new Date().toISOString().slice(0, 10);
-    setDraft({ ...pet, updated_at: today });
-    setIsEditing(true);
-  };
-
-  const handleCancel = () => {
-    setDraft(null);
-    setIsEditing(false);
-  };
-
-  const handleSaveProfile = async () => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pet/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(draft),
-      });
-
-      if (!res.ok) throw new Error("Failed to update pet info");
-
-      const updated = await res.json();
-      setPet(updated);
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setIsEditing(false);
-      setDraft(null);
-    }
-  };
-  console.log(draft);
   return (
     <section className={styles.petProfile}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSaveProfile();
-        }}
-      >
-        <div className={styles.petProfile__detailsCard}>
-          <dl className={styles.petProfile__grid}>
-            <div className={styles.petProfile__header} aria-labelledby="pet-name">
-              <div className={styles.petProfile__avatarWrap}>
-                <Image src="/images/cat.jpg" alt={pet.name} width={160} height={160} className={styles.petProfile__avatar} priority />
-              </div>
-
-              <h1 id="pet-name" className={styles.petProfile__name}>
-                {pet.name}
-              </h1>
-              {isEditing ? (
-                <div className={styles.petProfile__actions}>
-                  <button type="submit" onClick={handleSaveProfile} className={styles.petProfile__saveButton}>
-                    Save
-                  </button>
-                  <button onClick={handleCancel} className={styles.petProfile__cancelButton}>
-                    Cancel
-                  </button>
-                </div>
-              ) : (
-                <Image src="/icons/settings.png" onClick={handleEditProfile} width={25} height={25} alt="settings" className={styles.petProfile__edit} />
-              )}
-            </div>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Species</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? <input type="text" value={draft?.species || ""} onChange={(e) => setDraft({ ...draft, species: e.target.value })} /> : pet.species}
-              </dd>
-            </div>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Breed</dt>
-              <dd className={styles.petProfile__value}>{isEditing ? <input type="text" value={draft?.breed ?? ""} onChange={(e) => setDraft({ ...draft, breed: e.target.value })} /> : pet.breed}</dd>
-            </div>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Sex</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? (
-                  <select value={draft?.sex ?? ""} onChange={(e) => setDraft({ ...draft, sex: e.target.value })}>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="unknown">Unknown</option>
-                  </select>
-                ) : pet.sex ? (
-                  pet.sex.charAt(0).toUpperCase() + pet.sex.slice(1)
-                ) : (
-                  ""
-                )}
-              </dd>
-            </div>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Color / Markings</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? <input type="text" value={draft?.color_markings ?? ""} onChange={(e) => setDraft({ ...draft, color_markings: e.target.value })} /> : pet.color_markings}
-              </dd>
-            </div>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Date of Birth</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? (
-                  <input type="date" value={(draft?.date_of_birth ?? "").slice(0, 10)} onChange={(e) => setDraft({ ...draft, date_of_birth: e.target.value })} />
-                ) : (
-                  formatDate(pet.date_of_birth)
-                )}
-              </dd>
-            </div>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Microchip Number</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? <input type="text" value={draft?.microchip_number ?? ""} onChange={(e) => setDraft({ ...draft, microchip_number: e.target.value })} /> : pet.microchip_number}
-              </dd>
-            </div>
-          </dl>
-          <dl className={styles.petProfile__grid}>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Microchip Implant Date</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? (
-                  <input type="date" value={(draft?.microchip_implant_date ?? "").slice(0, 10)} onChange={(e) => setDraft({ ...draft, microchip_implant_date: e.target.value })} />
-                ) : (
-                  formatDate(pet.microchip_implant_date)
-                )}
-              </dd>
-            </div>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Microchip Implant Location</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? (
-                  <input type="text" value={draft?.microchip_implant_location ?? ""} onChange={(e) => setDraft({ ...draft, microchip_implant_location: e.target.value })} />
-                ) : (
-                  pet.microchip_implant_location
-                )}
-              </dd>
-            </div>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Passport Number</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? <input type="text" value={draft?.passport_number ?? ""} onChange={(e) => setDraft({ ...draft, passport_number: e.target.value })} /> : pet.passport_number}
-              </dd>
-            </div>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Country of Issue</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? <input type="text" value={draft?.country_of_issue ?? ""} onChange={(e) => setDraft({ ...draft, country_of_issue: e.target.value })} /> : pet.country_of_issue}
-              </dd>
-            </div>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Issuing Date</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? <input type="date" value={(draft?.issue_date ?? "").slice(0, 10)} onChange={(e) => setDraft({ ...draft, issue_date: e.target.value })} /> : formatDate(pet.issue_date)}
-              </dd>
-            </div>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Issuing Authority</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? <input type="text" value={draft?.issuing_authority ?? ""} onChange={(e) => setDraft({ ...draft, issuing_authority: e.target.value })} /> : pet.issuing_authority}
-              </dd>
-            </div>
-            <div className={styles.petProfile__row}>
-              <dt className={styles.petProfile__label}>Current Status</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? <input type="text" value={draft?.current_status ?? ""} onChange={(e) => setDraft({ ...draft, current_status: e.target.value })} /> : pet.current_status}
-              </dd>
-            </div>
-          </dl>
+      <header className={styles.petProfile__header} aria-labelledby="pet-name">
+        <div className={styles.petProfile__avatarWrap}>
+          <Image src={imgSrc} alt={pet.name} width={160} height={160} className={styles.petProfile__avatar} />
         </div>
-      </form>
+        <h1 id="pet-name" className={styles.petProfile__name}>{pet.name}</h1>
+      </header>
+
+      <span className={styles.petProfile__divider} />
     </section>
   );
 }
