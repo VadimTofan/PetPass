@@ -25,19 +25,26 @@ usersRouter.get("/api/users/:email", async (request, response) => {
   response.send(user);
 });
 
-usersRouter.put("/api/users/:id", async (request, response) => {
-  const id = Number(request.params.id);
+usersRouter.put("/api/users/:email", async (request, response) => {
+  const email = request.params.email;
   const user = request.body;
 
-  if (!id) return response.status(400).send({ error: `Id is mandatory` });
+  if (!email) return response.status(400).send({ error: `Email address is mandatory` });
 
   const userError = validateUserData(user);
 
   if (userError) return response.status(400).send({ error: userError });
 
-  const newuser = createUserObject(user);
+  const newUser = createUserObject(user);
 
-  await db.updateUserByGoogleId(id, createUserObject(newuser));
+  const existingUser = await db.getUserByEmail(email);
+
+  if (!existingUser) {
+    await db.addUser(newUser);
+    return response.status(201).json({ message: "user added successfully." });
+  }
+
+  await db.updateUserByEmail(email, newUser);
 
   response.status(201).send({ message: "user updated successfully." });
 });
@@ -59,11 +66,9 @@ const validateUserData = (user) => {
 
   if (!user.full_name) return "User full name is required";
   if (!user.email) return "User email is required";
-  if (!user.google_id) return "User google id is required";
   if (!user.phone) return "User phone number is required";
   if (!user.address) return "User address is requred";
   if (!user.date_of_birth) return "User date of birth is required";
-  if (!user.country_of_birth) return "User country of birth is required";
   if (!user.passport_number) return "User passport number is required";
   if (!user.created_at) return "User create date is required";
   if (!user.updated_at) return "User update date is required";
@@ -73,7 +78,6 @@ const createUserObject = (user) => {
   const createUser = {
     full_name: user.full_name,
     email: user.email,
-    google_id: user.google_id,
     phone: user.phone,
     address: user.address,
     date_of_birth: user.date_of_birth,
