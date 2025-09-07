@@ -54,6 +54,10 @@ export default function ProfilePage() {
     router.push(`/profile/${id}`);
   };
 
+  const handleAddPickClick = () => {
+    router.push(`/profile/new`);
+  };
+
   return (
     <section className={styles.profile}>
       <div className={styles.profile__header}>
@@ -76,7 +80,7 @@ export default function ProfilePage() {
             </div>
           ))}
 
-        <div className={`${styles.profile__card} ${styles.profile__cardPetAdd}`}>
+        <div className={`${styles.profile__card}  ${styles.profile__cardPetAdd}`} onClick={handleAddPickClick}>
           <span className={styles.profile__cardAddText}>+ Add New Pet</span>
         </div>
       </div>

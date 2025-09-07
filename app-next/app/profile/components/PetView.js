@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import styles from "../[pet]/page.module.css";
+import styles from "./PetView.module.css";
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
