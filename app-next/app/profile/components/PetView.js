@@ -106,7 +106,7 @@ export default function FetchPetData() {
           <dl className={styles.petProfile__grid}>
             <div className={styles.petProfile__header} aria-labelledby="pet-name">
               <div className={styles.petProfile__avatarWrap}>
-                <Image src="/images/cat.jpg" alt={pet.name} width={160} height={160} className={styles.petProfile__avatar} priority />
+                <Image src={pet.photo_url} alt={pet.name} width={160} height={160} className={styles.petProfile__avatar} priority />
               </div>
 
               <h1 id="pet-name" className={styles.petProfile__name}>

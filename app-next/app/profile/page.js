@@ -76,7 +76,7 @@ export default function ProfilePage() {
           pets?.map((pet) => (
             <div key={pet.id} onClick={() => handlePetCardClick(pet.id)} className={`${styles.profile__card} ${styles.profile__cardPet}`}>
               <p className={styles.profile__petName}>{pet.name}</p>
-              <Image className={styles.profile__petImage} src={`/images/${pet.species}.jpg`} width={150} height={150} alt={pet.name} />
+              <Image className={styles.profile__petImage} src={pet.photo_url} width={150} height={150} alt={pet.name} />
             </div>
           ))}
 
