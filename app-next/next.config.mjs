@@ -9,7 +9,7 @@ const nextConfig = {
         pathname: "/uploads/**",
       },
       {
-        protocol: "http",
+        protocol: "https",
         hostname: "petpass-fulf.onrender.com",
         pathname: "/uploads/**",
       },
