@@ -12,8 +12,8 @@ export async function getUserById(id) {
   return dbClient("users").select("*").where("id", id);
 }
 
-export async function updateUserByGoogleId(googleId, user) {
-  return dbClient("users").where("id", googleId).update(user);
+export async function updateUserByEmail(email, user) {
+  return dbClient("users").where("email", email).update(user);
 }
 
 export async function getUserByName(userName) {

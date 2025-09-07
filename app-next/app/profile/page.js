@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import FetchUserData, { FetchUserPetData } from "./components/FetchUserData";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -42,7 +43,8 @@ export default function ProfilePage() {
     return (
       <section className={styles.profile}>
         <div className={styles.profile__header}>
-          <p className={styles.profile__loading}>Error: {userError}</p>
+          <p className={styles.profile__loading}>This user has no profile yet.</p>
+          <Link href="/profile/edit">Set up user Profile?</Link>
         </div>
       </section>
     );
