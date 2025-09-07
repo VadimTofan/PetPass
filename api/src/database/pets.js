@@ -26,7 +26,8 @@ export async function updatePetById(id, pet) {
 }
 
 export async function addPet(pet) {
-  return dbClient("pets").insert(pet);
+  const [id] = await dbClient("pets").insert(pet).returning("id");
+  return id;
 }
 
 export async function deletePetById(id) {
