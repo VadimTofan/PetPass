@@ -57,7 +57,7 @@ export default function ProfilePage() {
   const handleAddPickClick = () => {
     router.push(`/profile/new`);
   };
-
+  console.log(pets);
   return (
     <section className={styles.profile}>
       <div className={styles.profile__header}>
@@ -76,7 +76,7 @@ export default function ProfilePage() {
           pets?.map((pet) => (
             <div key={pet.id} onClick={() => handlePetCardClick(pet.id)} className={`${styles.profile__card} ${styles.profile__cardPet}`}>
               <p className={styles.profile__petName}>{pet.name}</p>
-              <Image className={styles.profile__petImage} src={pet.photo_url} width={150} height={150} alt={pet.name} />
+              <Image src={pet.photo_url || "/images/logo.png"} className={styles.profile__petImage} width={150} height={150} alt={pet.name || "Pet"} />
             </div>
           ))}
 
