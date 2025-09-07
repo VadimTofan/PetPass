@@ -1,7 +1,6 @@
-
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import { authOptions } from "../auth/[...nextauth]/route";
 import db from "@/api/database_client";
 
 export async function POST(req) {
@@ -9,7 +8,6 @@ export async function POST(req) {
   if (!session?.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
 
   const user = await db("users").where({ email: session.user.email }).first();
   if (!user) {
@@ -20,7 +18,7 @@ export async function POST(req) {
 
   const payload = {
     ...body,
- 
+
     owner_user_id: user.id,
   };
 
