@@ -33,3 +33,7 @@ export async function addPet(pet) {
 export async function deletePetById(id) {
   return dbClient("pets").where("id", id).del();
 }
+
+export async function getAllPets() {
+  return dbClient("pets").select("*");
+}

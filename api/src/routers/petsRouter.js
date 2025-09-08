@@ -54,6 +54,15 @@ petsRouter.get("/api/pet/:id", async (request, response, next) => {
   }
 });
 
+petsRouter.get("/api/allpets", async (request, response, next) => {
+  try {
+    const pets = await db.getAllPets();
+    return response.send(pets);
+  } catch (e) {
+    return next(e);
+  }
+});
+
 petsRouter.get("/api/pets/:id", async (request, response, next) => {
   try {
     const id = Number(request.params.id);
