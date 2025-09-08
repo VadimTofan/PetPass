@@ -2,7 +2,7 @@
 
 import { useRef, useState, useCallback } from "react";
 import Image from "next/image";
-import styles from "../[pet]/page.module.css";
+import styles from "../../pets/[pet]/page.module.css";
 
 export default function UploadPhoto() {
   const inputRef = useRef(null);
@@ -46,25 +46,11 @@ export default function UploadPhoto() {
           </button>
         </div>
 
-        <input
-          ref={inputRef}
-          type="file"
-          id="photo"
-          name="photo"
-          accept="image/*"
-          style={{ display: "none" }}
-          onChange={onChange}
-        />
+        <input ref={inputRef} type="file" id="photo" name="photo" accept="image/*" style={{ display: "none" }} onChange={onChange} />
 
         {preview ? (
           <div className={styles.petProfile__preview}>
-            <Image
-              src={preview}
-              alt="Pet photo preview"
-              width={120}
-              height={120}
-              className={styles.petProfile__previewImg}
-            />
+            <Image src={preview} alt="Pet photo preview" width={120} height={120} className={styles.petProfile__previewImg} />
             <div className={styles.petProfile__fileMeta}>
               <div className={styles.petProfile__fileName}>{fileName}</div>
               <button type="button" onClick={openPicker} className={styles.petProfile__browse}>
