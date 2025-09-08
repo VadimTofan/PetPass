@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./page.module.css";
-import FetchUserData from "../components/FetchUserData";
+import FetchUserData from "../components/DBFunctions/FetchUserData";
 
 import { useState, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";

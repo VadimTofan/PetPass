@@ -1,8 +1,7 @@
-import Image from "next/image";
-import styles from "../[pet]/page.module.css";
-import UserIdHidden from "../components/UserIdHidden";
-import CreatePetSubmit from "../components/CreatePetSubmit";
-import UploadPhoto from "../components/UploadPhoto";
+import styles from "../../pets/[pet]/page.module.css";
+import UserIdHidden from "./UserIdHidden";
+import CreatePetSubmit from "./CreatePetSubmit";
+import UploadPhoto from "./UploadPhoto";
 
 export default async function AddPetData() {
   const postUrl = `${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pets`;

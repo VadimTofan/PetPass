@@ -93,7 +93,7 @@ export default function FetchPetData() {
       setDraft(null);
     }
   };
-  console.log(draft);
+
   return (
     <section className={styles.petProfile}>
       <form
@@ -133,9 +133,7 @@ export default function FetchPetData() {
             </div>
             <div className={styles.petProfile__row}>
               <dt className={styles.petProfile__label}>Breed</dt>
-              <dd className={styles.petProfile__value}>
-                {isEditing ? <input type="text" value={draft?.breed ?? ""} onChange={(e) => setDraft({ ...draft, breed: e.target.value })} /> : pet.breed}
-              </dd>
+              <dd className={styles.petProfile__value}>{isEditing ? <input type="text" value={draft?.breed ?? ""} onChange={(e) => setDraft({ ...draft, breed: e.target.value })} /> : pet.breed}</dd>
             </div>
             <div className={styles.petProfile__row}>
               <dt className={styles.petProfile__label}>Sex</dt>
@@ -156,22 +154,14 @@ export default function FetchPetData() {
             <div className={styles.petProfile__row}>
               <dt className={styles.petProfile__label}>Color / Markings</dt>
               <dd className={styles.petProfile__value}>
-                {isEditing ? (
-                  <input type="text" value={draft?.color_markings ?? ""} onChange={(e) => setDraft({ ...draft, color_markings: e.target.value })} />
-                ) : (
-                  pet.color_markings
-                )}
+                {isEditing ? <input type="text" value={draft?.color_markings ?? ""} onChange={(e) => setDraft({ ...draft, color_markings: e.target.value })} /> : pet.color_markings}
               </dd>
             </div>
             <div className={styles.petProfile__row}>
               <dt className={styles.petProfile__label}>Date of Birth</dt>
               <dd className={styles.petProfile__value}>
                 {isEditing ? (
-                  <input
-                    type="date"
-                    value={(draft?.date_of_birth ?? "").slice(0, 10)}
-                    onChange={(e) => setDraft({ ...draft, date_of_birth: e.target.value })}
-                  />
+                  <input type="date" value={(draft?.date_of_birth ?? "").slice(0, 10)} onChange={(e) => setDraft({ ...draft, date_of_birth: e.target.value })} />
                 ) : (
                   formatDate(pet.date_of_birth)
                 )}
@@ -180,11 +170,7 @@ export default function FetchPetData() {
             <div className={styles.petProfile__row}>
               <dt className={styles.petProfile__label}>Microchip Number</dt>
               <dd className={styles.petProfile__value}>
-                {isEditing ? (
-                  <input type="text" value={draft?.microchip_number ?? ""} onChange={(e) => setDraft({ ...draft, microchip_number: e.target.value })} />
-                ) : (
-                  pet.microchip_number
-                )}
+                {isEditing ? <input type="text" value={draft?.microchip_number ?? ""} onChange={(e) => setDraft({ ...draft, microchip_number: e.target.value })} /> : pet.microchip_number}
               </dd>
             </div>
           </dl>
@@ -193,11 +179,7 @@ export default function FetchPetData() {
               <dt className={styles.petProfile__label}>Microchip Implant Date</dt>
               <dd className={styles.petProfile__value}>
                 {isEditing ? (
-                  <input
-                    type="date"
-                    value={(draft?.microchip_implant_date ?? "").slice(0, 10)}
-                    onChange={(e) => setDraft({ ...draft, microchip_implant_date: e.target.value })}
-                  />
+                  <input type="date" value={(draft?.microchip_implant_date ?? "").slice(0, 10)} onChange={(e) => setDraft({ ...draft, microchip_implant_date: e.target.value })} />
                 ) : (
                   formatDate(pet.microchip_implant_date)
                 )}
@@ -207,11 +189,7 @@ export default function FetchPetData() {
               <dt className={styles.petProfile__label}>Microchip Implant Location</dt>
               <dd className={styles.petProfile__value}>
                 {isEditing ? (
-                  <input
-                    type="text"
-                    value={draft?.microchip_implant_location ?? ""}
-                    onChange={(e) => setDraft({ ...draft, microchip_implant_location: e.target.value })}
-                  />
+                  <input type="text" value={draft?.microchip_implant_location ?? ""} onChange={(e) => setDraft({ ...draft, microchip_implant_location: e.target.value })} />
                 ) : (
                   pet.microchip_implant_location
                 )}
@@ -220,51 +198,31 @@ export default function FetchPetData() {
             <div className={styles.petProfile__row}>
               <dt className={styles.petProfile__label}>Passport Number</dt>
               <dd className={styles.petProfile__value}>
-                {isEditing ? (
-                  <input type="text" value={draft?.passport_number ?? ""} onChange={(e) => setDraft({ ...draft, passport_number: e.target.value })} />
-                ) : (
-                  pet.passport_number
-                )}
+                {isEditing ? <input type="text" value={draft?.passport_number ?? ""} onChange={(e) => setDraft({ ...draft, passport_number: e.target.value })} /> : pet.passport_number}
               </dd>
             </div>
             <div className={styles.petProfile__row}>
               <dt className={styles.petProfile__label}>Country of Issue</dt>
               <dd className={styles.petProfile__value}>
-                {isEditing ? (
-                  <input type="text" value={draft?.country_of_issue ?? ""} onChange={(e) => setDraft({ ...draft, country_of_issue: e.target.value })} />
-                ) : (
-                  pet.country_of_issue
-                )}
+                {isEditing ? <input type="text" value={draft?.country_of_issue ?? ""} onChange={(e) => setDraft({ ...draft, country_of_issue: e.target.value })} /> : pet.country_of_issue}
               </dd>
             </div>
             <div className={styles.petProfile__row}>
               <dt className={styles.petProfile__label}>Issuing Date</dt>
               <dd className={styles.petProfile__value}>
-                {isEditing ? (
-                  <input type="date" value={(draft?.issue_date ?? "").slice(0, 10)} onChange={(e) => setDraft({ ...draft, issue_date: e.target.value })} />
-                ) : (
-                  formatDate(pet.issue_date)
-                )}
+                {isEditing ? <input type="date" value={(draft?.issue_date ?? "").slice(0, 10)} onChange={(e) => setDraft({ ...draft, issue_date: e.target.value })} /> : formatDate(pet.issue_date)}
               </dd>
             </div>
             <div className={styles.petProfile__row}>
               <dt className={styles.petProfile__label}>Issuing Authority</dt>
               <dd className={styles.petProfile__value}>
-                {isEditing ? (
-                  <input type="text" value={draft?.issuing_authority ?? ""} onChange={(e) => setDraft({ ...draft, issuing_authority: e.target.value })} />
-                ) : (
-                  pet.issuing_authority
-                )}
+                {isEditing ? <input type="text" value={draft?.issuing_authority ?? ""} onChange={(e) => setDraft({ ...draft, issuing_authority: e.target.value })} /> : pet.issuing_authority}
               </dd>
             </div>
             <div className={styles.petProfile__row}>
               <dt className={styles.petProfile__label}>Current Status</dt>
               <dd className={styles.petProfile__value}>
-                {isEditing ? (
-                  <input type="text" value={draft?.current_status ?? ""} onChange={(e) => setDraft({ ...draft, current_status: e.target.value })} />
-                ) : (
-                  pet.current_status
-                )}
+                {isEditing ? <input type="text" value={draft?.current_status ?? ""} onChange={(e) => setDraft({ ...draft, current_status: e.target.value })} /> : pet.current_status}
               </dd>
             </div>
           </dl>

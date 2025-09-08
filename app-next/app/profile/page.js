@@ -3,7 +3,8 @@
 import styles from "./page.module.css";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import FetchUserData, { FetchUserPetData } from "./components/FetchUserData";
+import FetchUserData from "./components/DBFunctions/FetchUserData";
+import FetchUserPetData from "./components/DBFunctions/FetchUserPetData";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -51,21 +52,17 @@ export default function ProfilePage() {
   }
 
   const handlePetCardClick = (id) => {
-    router.push(`/profile/${id}`);
+    router.push(`/profile/pets/${id}`);
   };
 
   const handleAddPickClick = () => {
-    router.push(`/profile/new`);
-  };
-
-  const loaderProp = ({ src }) => {
-    return src;
+    router.push(`/profile/pets/new`);
   };
 
   return (
     <section className={styles.profile}>
       <div className={styles.profile__header}>
-        <Image src={userPicture} alt="Profile" width={300} height={300} className={styles.profile__avatar} />
+        <Image src={userPicture} alt="Profile" width={300} height={300} className={styles.profile__avatar} priority />
         <h1 className={styles.profile__name}>{user?.full_name}</h1>
       </div>
 
@@ -80,14 +77,7 @@ export default function ProfilePage() {
           pets?.map((pet) => (
             <div key={pet.id} onClick={() => handlePetCardClick(pet.id)} className={`${styles.profile__card} ${styles.profile__cardPet}`}>
               <p className={styles.profile__petName}>{pet.name}</p>
-              <Image
-                src={pet.photo_url || "/images/logo.png"}
-                className={styles.profile__petImage}
-                width={150}
-                height={150}
-                alt={pet.name || "Pet"}
-                loader={loaderProp}
-              />
+              <Image src={pet.photo_url || "/images/logo.png"} className={styles.profile__petImage} width={150} height={150} alt={pet.name || "Pet"} priority />
             </div>
           ))}
 
