@@ -29,7 +29,7 @@ export default function DoctorDashboard() {
     return pets.slice(start, start + ITEMS_PER_PAGE);
   }, [pets, safePage]);
 
-  const fmtDate = (d) => (d ? new Date(d).toLocaleDateString("da-DK") : "—");
+  const formatDate = (d) => (d ? new Date(d).toLocaleDateString("da-DK") : "—");
 
   const cell = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
 
@@ -89,7 +89,7 @@ export default function DoctorDashboard() {
                   <td className={styles.pets__cell}>{cell(pet.species)}</td>
                   <td className={styles.pets__cell}>{cell(pet.breed)}</td>
                   <td className={styles.pets__cell}>{cell(pet.sex)}</td>
-                  <td className={styles.pets__cell}>{fmtDate(pet.date_of_birth)}</td>
+                  <td className={styles.pets__cell}>{formatDate(pet.date_of_birth)}</td>
                   <td className={styles.pets__cell}>{cell(pet.owner_user_id)}</td>
                   <td className={styles.pets__cell}>{cell(pet.country_of_birth)}</td>
                   <td className={styles.pets__cell}>{cell(pet.passport_number)}</td>
@@ -110,7 +110,7 @@ export default function DoctorDashboard() {
           Page {safePage} of {totalPages}
         </span>
 
-        <button className={styles.pageBtn} disabled={safePage === totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>
+        <button className={styles.pets__button} disabled={safePage === totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>
           Next ›
         </button>
       </nav>
