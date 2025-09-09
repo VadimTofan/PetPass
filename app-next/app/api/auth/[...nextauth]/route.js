@@ -9,6 +9,32 @@ const handler = NextAuth({
     }),
   ],
   session: { strategy: "jwt" },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user?.email) {
+        try {
+          const base = process.env.NEXT_PUBLIC_DB_ACCESS; 
+          const url = `${base}/api/users/${encodeURIComponent(user.email)}`;
+          const res = await fetch(url, { headers: { "Content-Type": "application/json" } });
+
+          if (res.ok) {
+            const data = await res.json();
+            token.role = data?.admin ? "admin" : "owner";
+          } else {
+            // If 404 error or other
+            token.role = "owner";
+          }
+        } catch {
+          token.role = "owner";
+        }
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.role = token.role || "owner";
+      return session;
+    },
+  },
 });
 
 export { handler as GET, handler as POST };

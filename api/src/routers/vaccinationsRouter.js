@@ -33,20 +33,35 @@ router.post("/pets/:petId/vaccinations", async (req, res) => {
       notes,
     } = req.body;
 
+    // required fields
     if (!vaccine_name || !date_administered) {
       return res
         .status(400)
         .json({ error: "vaccine_name and date_administered are required" });
     }
 
-    const created = await addVaccination(petId, {
-      vaccine_name,
-      date_administered,
-      next_due,
-      veterinarian,
-      notes,
-    });
+    const payload = {
+      vaccine_name: String(vaccine_name).trim(),
+      date_administered, // expect YYYY-MM-DD
+      next_due: next_due || null,
+      veterinarian: veterinarian ? String(veterinarian).trim() : null,
+      notes: notes ? String(notes).trim() : null,
+    };
 
+    // validation: dates
+    const today = new Date().toISOString().slice(0, 10);
+    if (payload.date_administered > today) {
+      return res
+        .status(400)
+        .json({ error: "Date administered cannot be in the future." });
+    }
+    if (payload.next_due && payload.next_due <= payload.date_administered) {
+      return res
+        .status(400)
+        .json({ error: "Next due date must be after administered date." });
+    }
+
+    const created = await addVaccination(petId, payload);
     res.status(201).json(created);
   } catch (err) {
     console.error("POST /pets/:petId/vaccinations", err);
