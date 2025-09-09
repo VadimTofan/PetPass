@@ -7,6 +7,7 @@ import FetchUserData from "./components/DBFunctions/FetchUserData";
 import FetchUserPetData from "./components/DBFunctions/FetchUserPetData";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -19,6 +20,16 @@ export default function ProfilePage() {
 
   const userPicture = session?.user?.image ?? "/images/loading.svg";
   const amountOfPets = pets?.length > 1 ? "My pets" : "My pet";
+
+  const carouselRef = useRef(null);
+  const setIndex = (i) => {
+    if (carouselRef.current) {
+      carouselRef.current.style.setProperty("--index", i);
+    }
+  };
+  useEffect(() => {
+    setIndex(0);
+  }, []);
 
   if (status === "unauthenticated") {
     return (
@@ -69,21 +80,37 @@ export default function ProfilePage() {
       <span className={styles.profile__divider}></span>
       <h2 className={styles.profile__cardTitle}>{amountOfPets}</h2>
 
-      <div className={styles.profile__cards}>
+      <div className={styles.profile__pets}>
         {petsLoading && <p className={styles.profile__loading}>Loading pets…</p>}
-        {!petsLoading && pets?.length === 0 && <p>No pets yet.</p>}
+        {!petsLoading && pets?.length === 0 && <p className={styles.profile__loading}>No pets yet.</p>}
 
-        {!petsLoading &&
-          pets?.map((pet) => (
-            <div key={pet.id} onClick={() => handlePetCardClick(pet.id)} className={`${styles.profile__card} ${styles.profile__cardPet}`}>
-              <p className={styles.profile__petName}>{pet.name}</p>
-              <Image src={pet.photo_url || "/images/logo.png"} className={styles.profile__petImage} width={150} height={150} alt={pet.name || "Pet"} priority />
+        {!petsLoading && (
+          <div className={styles.carousel3d} style={{ "--count": (pets?.length || 0) + 1 }} ref={(el) => (carouselRef.current = el)}>
+            {Array.from({ length: (pets?.length || 0) + 1 }).map((_, i) => (
+              <input key={`radio-${i}`} type="radio" name="slide" id={`s${i + 1}`} defaultChecked={i === 0} onChange={() => setIndex(i)} />
+            ))}
+
+            <div className={styles.carousel3d__stage}>
+              {(pets || []).map((pet, i) => (
+                <figure key={pet.id} className={styles.carousel3d__item} style={{ "--i": i }} onClick={() => handlePetCardClick(pet.id)} role="button" aria-label={pet.name || "Pet"}>
+                  <Image src={pet.photo_url || "/images/logo.png"} alt={pet.name || "Pet"} width={220} height={220} className={styles.carousel3d__img} priority />
+                  <figcaption className={styles.carousel3d__name}>{pet.name}</figcaption>
+                </figure>
+              ))}
+
+              <figure className={`${styles.carousel3d__item} ${styles.carousel3d__itemAdd}`} style={{ "--i": pets?.length || 0 }} onClick={handleAddPickClick} role="button" aria-label="Add new pet">
+                <span className={styles.carousel3d__addIcon}>＋</span>
+                <figcaption className={styles.carousel3d__addText}>Add New Pet</figcaption>
+              </figure>
             </div>
-          ))}
 
-        <div className={`${styles.profile__card}  ${styles.profile__cardPetAdd}`} onClick={handleAddPickClick}>
-          <span className={styles.profile__cardAddText}>+ Add New Pet</span>
-        </div>
+            <div className={styles.carousel3d__dots} aria-label="Carousel pagination">
+              {Array.from({ length: (pets?.length || 0) + 1 }).map((_, i) => (
+                <label key={`dot-${i}`} htmlFor={`s${i + 1}`} aria-label={`Go to slide ${i + 1}`} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

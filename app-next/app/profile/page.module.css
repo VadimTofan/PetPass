@@ -1,7 +1,7 @@
 .profile {
   min-height: 100vh;
-  background-color: #f5f5f5;
-  padding: 10rem 2rem 2rem;
+  background-color: var(--bg);
+  padding: 8rem 1.5rem 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,8 +9,12 @@
 }
 
 .profile__loading {
-  padding: 5rem 0 0 0;
+  padding: 5rem 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+  text-align: center;
 }
+
 .profile__header {
   text-align: center;
   display: flex;
@@ -23,78 +27,314 @@
   width: 8rem;
   height: 8rem;
   border-radius: 50%;
-  display: block;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  border: 3px solid var(--brand);
+  box-shadow: var(--shadow-lg);
 }
 
 .profile__name {
-  font-size: 1.75rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
-  color: #333;
+  color: var(--ink);
   line-height: 1.2;
 }
 
 .profile__divider {
   width: 100%;
-  height: 1px;
-  background-color: #ccc;
-}
-
-.profile__cards {
-  width: 100%;
-  max-width: 900px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  padding-block-start: 0.5rem;
-}
-
-.profile__card {
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  cursor: pointer;
-}
-
-.profile__petImage {
-  height: 100%;
-  width: 100%;
-}
-
-.profile__petName {
-  font-weight: 700;
-  font-size: 24px;
-  text-align: center;
-}
-
-.profile__cardPet {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.profile__cardPetAdd {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s ease-in-out;
-}
-
-.profile__cardPetAdd:hover {
-  background: #fafafa;
+  max-width: 800px;
+  height: 2px;
+  background-color: var(--brand);
+  border-radius: 2px;
+  margin: 1rem 0;
 }
 
 .profile__cardTitle {
   font-size: 1.25rem;
   font-weight: 600;
-  line-height: 1.3;
-  padding-block-end: 0.25rem;
+  color: var(--orange);
+  margin-bottom: 0.5rem;
 }
 
-.profile__cardText,
+.profile__pets {
+  width: 100%;
+  max-width: 900px;
+  display: grid;
+  place-items: center;
+}
+
+.profile__cards {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  padding-top: 0.5rem;
+}
+
+.profile__card {
+  background: var(--card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.profile__card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.profile__petImage {
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  border-radius: var(--radius-xl);
+  object-fit: cover;
+}
+
+.profile__petName {
+  font-weight: 700;
+  font-size: 1.125rem;
+  text-align: center;
+  color: var(--ink);
+}
+
+.profile__cardPetAdd {
+  border: 2px dashed var(--orange);
+  background: var(--bg);
+  color: var(--orange);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  transition: background 0.25s ease-in-out, transform 0.25s ease;
+}
+
+.profile__cardPetAdd:hover {
+  background: #fff7e6;
+  transform: scale(1.02);
+}
+
 .profile__cardAddText {
   font-size: 1rem;
-  color: #555;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .profile {
+    padding-top: 6rem;
+  }
+
+  .profile__avatar {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .profile__name {
+    font-size: 1.5rem;
+  }
+
+  .profile__cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile {
+    padding: 4rem 1rem 2rem;
+  }
+
+  .profile__card {
+    padding: 0.75rem;
+  }
+
+  .profile__petName {
+    font-size: 1rem;
+  }
+}
+
+.carousel3d {
+  --count: 5;
+  --index: 0;
+  --theta: calc(360deg / var(--count));
+  --radius: clamp(140px, 40vmin, 320px);
+  --item-w: clamp(180px, 36vmin, 360px);
+  --item-h: clamp(160px, 32vmin, 320px);
+  --perspective: 1200px;
+  --duration: 700ms;
+  --easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(92vw, 900px);
+  margin: 1.5rem auto 2.25rem;
+  padding: 2.5rem 2rem 3.5rem;
+  perspective: var(--perspective);
+  perspective-origin: 50% 40%;
+  container-type: inline-size;
+}
+
+.carousel3d > input[type="radio"] {
+  position: absolute;
+  inline-size: 0;
+  block-size: 0;
+  opacity: 0;
+}
+
+.carousel3d:has(#s1:checked) {
+  --index: 0;
+}
+.carousel3d:has(#s2:checked) {
+  --index: 1;
+}
+.carousel3d:has(#s3:checked) {
+  --index: 2;
+}
+.carousel3d:has(#s4:checked) {
+  --index: 3;
+}
+.carousel3d:has(#s5:checked) {
+  --index: 4;
+}
+
+.carousel3d__stage {
+  position: relative;
+  width: var(--item-w);
+  height: var(--item-h);
+  transform-style: preserve-3d;
+  transition: transform var(--duration) var(--easing);
+  transform: translateZ(calc(-1 * var(--radius))) rotateY(calc(var(--index) * var(--theta) * -1));
+}
+
+.carousel3d__item {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-xl);
+  padding: 0.75rem;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: var(--shadow-lg);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transform: rotateY(calc(var(--i) * var(--theta))) translateZ(var(--radius));
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.carousel3d__item:hover {
+  transform: rotateY(calc(var(--i) * var(--theta))) translateZ(calc(var(--radius) + 14px));
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
+}
+
+.carousel3d__img {
+  width: 100%;
+  height: 100%;
+  max-width: calc(var(--item-w) - 24px);
+  max-height: calc(var(--item-h) - 48px);
+  object-fit: cover;
+  border-radius: var(--radius-xl);
+  border: 3px solid color-mix(in oklab, var(--brand) 60%, white 40%);
+}
+
+.carousel3d__name {
+  font-weight: 700;
+  font-size: clamp(0.95rem, 2.8cqi, 1.1rem);
+  text-align: center;
+  color: var(--ink);
+}
+
+.carousel3d__itemAdd {
+  background: linear-gradient(180deg, color-mix(in oklab, var(--brand) 18%, white 82%), var(--card));
+  border: 2px dashed var(--orange);
+  display: grid;
+  place-items: center;
+}
+
+.carousel3d__addIcon {
+  font-size: clamp(1.6rem, 6cqi, 2.2rem);
+  line-height: 1;
+  color: var(--orange);
+}
+
+.carousel3d__addText {
+  font-weight: 600;
+  color: var(--orange);
+  font-size: clamp(0.95rem, 2.8cqi, 1.05rem);
+}
+
+.carousel3d::before {
+  content: "";
+  position: absolute;
+  inset-inline: 10%;
+  bottom: 2.6rem;
+  height: 30px;
+  filter: blur(18px);
+  background: radial-gradient(80% 100% at 50% 50%, rgba(0, 0, 0, 0.18), transparent 70%);
+  transform: translateZ(-300px);
+  pointer-events: none;
+}
+
+.carousel3d__dots {
+  position: absolute;
+  bottom: 0.75rem;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.carousel3d__dots > label {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  outline-offset: 4px;
+  background: color-mix(in oklab, var(--ink) 20%, var(--card) 80%);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ink) 12%, var(--card) 88%);
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.carousel3d:has(#s1:checked) .carousel3d__dots label[for="s1"],
+.carousel3d:has(#s2:checked) .carousel3d__dots label[for="s2"],
+.carousel3d:has(#s3:checked) .carousel3d__dots label[for="s3"],
+.carousel3d:has(#s4:checked) .carousel3d__dots label[for="s4"],
+.carousel3d:has(#s5:checked) .carousel3d__dots label[for="s5"] {
+  transform: scale(1.2);
+  background: var(--orange);
+  box-shadow: 0 0 0 6px color-mix(in oklab, var(--orange) 22%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel3d__stage {
+    transition: opacity 250ms linear;
+    transform: none;
+    opacity: 1;
+  }
+  .carousel3d__item {
+    transform: none !important;
+    opacity: 0;
+  }
+
+  .carousel3d:has(#s1:checked) .carousel3d__item:nth-child(1),
+  .carousel3d:has(#s2:checked) .carousel3d__item:nth-child(2),
+  .carousel3d:has(#s3:checked) .carousel3d__item:nth-child(3),
+  .carousel3d:has(#s4:checked) .carousel3d__item:nth-child(4),
+  .carousel3d:has(#s5:checked) .carousel3d__item:nth-child(5) {
+    opacity: 1;
+  }
+}
+
+@container (max-width: 520px) {
+  .carousel3d {
+    --radius: clamp(120px, 36vmin, 260px);
+    --item-w: clamp(170px, 34vmin, 320px);
+    --item-h: clamp(150px, 30vmin, 280px);
+  }
 }
