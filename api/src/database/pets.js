@@ -37,3 +37,47 @@ export async function deletePetById(id) {
 export async function getAllPets() {
   return dbClient("pets").select("*");
 }
+
+export async function getPetsFiltered(filters = {}) {
+  const query = dbClient("pets").innerJoin("users", "pets.owner_user_id", "users.id").select("users.email", "users.phone", "users.full_name", "pets.*");
+
+  const filterText = String(filters.search);
+  if (filters.search) {
+    const searchTerm = `%${filterText}%`;
+
+    query.where(function () {
+      this.whereILike("pets.name", searchTerm)
+        .orWhereILike("pets.breed", searchTerm)
+        .orWhereILike("pets.species", searchTerm)
+        .orWhereILike("pets.microchip_number", searchTerm)
+        .orWhereILike("users.full_name", searchTerm)
+        .orWhereILike("users.phone", searchTerm)
+        .orWhereILike("users.email", searchTerm);
+    });
+  }
+
+  const sortMap = {
+    Name: "pets.name",
+    Species: "pets.species",
+    Breed: "pets.breed",
+    Sex: "pets.sex",
+    Birthday: "pets.date_of_birth",
+    Country: "pets.country_of_birth",
+    Passport: "pets.passport_number",
+    Microchip: "pets.microchip_number",
+    Owner: "users.full_name",
+    Email: "users.email",
+    Phone: "users.phone",
+  };
+
+  const sortKey = filters.sortKey && sortMap[filters.sortKey];
+  const sortOrder = filters.sortOrder === "desc" ? "desc" : "asc";
+
+  if (sortKey) {
+    query.orderBy([{ column: sortKey, order: sortOrder }]);
+  } else {
+    query.orderBy([{ column: "pets.name", order: "asc" }]);
+  }
+
+  return query;
+}

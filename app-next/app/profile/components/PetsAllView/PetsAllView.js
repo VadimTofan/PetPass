@@ -3,18 +3,51 @@
 import styles from "./PetsAllView.module.css";
 
 import useUserData from "../DBFunctions/FetchUserData";
-import useAllPets from "../DBFunctions/FetchAllPetData";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function DoctorDashboard() {
   const { data: session, status } = useSession();
   const email = session?.user?.email ?? "";
-  const router = useRouter();
-  const { pets, error: petsError, isLoading: petsLoading } = useAllPets();
+  const [pets, setPets] = useState(null);
+  const [petsError, setPetsError] = useState(null);
+  const [petsLoading, setPetsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const { user, error: userError, isLoading: userLoading } = useUserData(email);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let query = "";
+
+        if (searchTerm) query += `title=${encodeURIComponent(searchTerm)}&`;
+        if (sortConfig.key) {
+          query += `sortKey=${encodeURIComponent(sortConfig.key)}&`;
+          query += `sortOrder=${sortConfig.direction}&`;
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pets?${query}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch pets");
+        }
+
+        const data = await response.json();
+
+        setPets(data);
+      } catch (err) {
+        setPetsError(err.message);
+      } finally {
+        setPetsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [searchTerm, sortConfig]);
 
   const [page, setPage] = useState(1);
 
@@ -43,14 +76,20 @@ export default function DoctorDashboard() {
     return <div className={styles.pets__denied}>You don't have access</div>;
   }
 
-  if (!totalItems) {
-    return (
-      <section className={styles.pets}>
-        <h2>Full list of pets</h2>
-        <p>No pets found.</p>
-      </section>
-    );
-  }
+  const columns = ["Name", "Species", "Breed", "Sex", "Birthday", "Country", "Passport", "Microchip", "Owner", "Email", "Phone"];
+
+  const handleSort = (column) => {
+    setSortConfig((prev) => {
+      if (prev.key === column) {
+        return {
+          key: column,
+          direction: prev.direction === "asc" ? "desc" : "asc",
+        };
+      }
+
+      return { key: column, direction: "asc" };
+    });
+  };
 
   const handlePetClick = (id) => {
     router.push(`/profile/pets/${id}`);
@@ -59,42 +98,40 @@ export default function DoctorDashboard() {
   return (
     <section className={styles.pets}>
       <div className={styles.pets__header}>
-        <h2>Full list of pets</h2>
+        <h2 className={styles.pets__h2}>Full list of pets</h2>
+        <form className={styles.pets__search} onSubmit={(e) => e.preventDefault()}>
+          <input className={styles.pets__input} type="text" placeholder="Search pets..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+        </form>
         <span className={styles.pets__pages}>
           Showing {(safePage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(safePage * ITEMS_PER_PAGE, totalItems)} of {totalItems}
         </span>
       </div>
       <div className={styles.pets__spreadsheet}>
-        <div className={styles.pets__left}>I will add filters on this side later.</div>
         <div className={styles.pets__right}>
           <table className={styles.pets__table} role="table">
             <thead>
               <tr>
-                <th className={styles.pets__titile}>Name</th>
-                <th className={styles.pets__titile}>Species</th>
-                <th className={styles.pets__titile}>Breed</th>
-                <th className={styles.pets__titile}>Sex</th>
-                <th className={styles.pets__titile}>Date of birth</th>
-                <th className={styles.pets__titile}>Owner ID</th>
-                <th className={styles.pets__titile}>Country of birth</th>
-                <th className={styles.pets__titile}>Passport number</th>
-                <th className={styles.pets__titile}>Microchip number</th>
-                <th className={styles.pets__titile}>Microchip location</th>
+                {columns.map((column) => (
+                  <th key={column} className={styles.pets__title} onClick={() => handleSort(column)}>
+                    {column} <span className={sortConfig.key === column ? (sortConfig.direction === "asc" ? styles.pets__arrowUp : styles.pets__arrowDown) : ""} />
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {pageItems.map((pet) => (
-                <tr key={pet.id} onClick={() => handlePetClick(pet.id)}>
+              {pageItems.map((pet, index) => (
+                <tr key={pet.id || index} onClick={() => handlePetClick(pet.id)}>
                   <td className={`${styles.pets__cell} ${styles.pets__name}`}>{cell(pet.name)}</td>
                   <td className={styles.pets__cell}>{cell(pet.species)}</td>
                   <td className={styles.pets__cell}>{cell(pet.breed)}</td>
                   <td className={styles.pets__cell}>{cell(pet.sex)}</td>
                   <td className={styles.pets__cell}>{formatDate(pet.date_of_birth)}</td>
-                  <td className={styles.pets__cell}>{cell(pet.owner_user_id)}</td>
                   <td className={styles.pets__cell}>{cell(pet.country_of_birth)}</td>
                   <td className={styles.pets__cell}>{cell(pet.passport_number)}</td>
                   <td className={styles.pets__cell}>{cell(pet.microchip_number)}</td>
-                  <td className={styles.pets__cell}>{cell(pet.microchip_implant_location)}</td>
+                  <td className={styles.pets__cell}>{cell(pet.full_name)}</td>
+                  <td className={styles.pets__cell}>{cell(pet.email)}</td>
+                  <td className={styles.pets__cell}>{cell(pet.phone)}</td>
                 </tr>
               ))}
             </tbody>

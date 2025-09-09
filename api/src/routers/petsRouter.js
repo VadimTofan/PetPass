@@ -77,6 +77,25 @@ petsRouter.get("/api/pets/:id", async (request, response, next) => {
   }
 });
 
+petsRouter.get("/api/pets", async (request, response) => {
+  const filter = request.query;
+
+  try {
+    const { sortKey, sortOrder, title } = filter;
+
+    const rows = await db.getPetsFiltered({
+      search: title,
+      sortKey,
+      sortOrder,
+    });
+
+    response.send(rows);
+  } catch (error) {
+    console.error("Error in GET /api/pets:", error);
+    response.status(500).send({ error: "Internal server error" });
+  }
+});
+
 petsRouter.put("/api/pet/:id", async (request, response, next) => {
   try {
     const id = Number(request.params.id);
