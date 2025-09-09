@@ -1,11 +1,9 @@
 import dbClient from "./database_client.js";
 
-// گرفتن همه واکسین‌های یک پت
 export async function getVaccinationsByPetId(petId) {
   return dbClient("vaccinations").select("*").where({ pet_id: petId });
 }
 
-// گرفتن واکسن خاص با id
 export async function getVaccinationById(id) {
   const [vaccination] = await dbClient("vaccinations")
     .select("*")
