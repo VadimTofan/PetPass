@@ -1,156 +1,212 @@
+/* Card Layout */
 .petProfile {
-  min-height: 100%;
-  background: #f7f7f8;
-  padding: 10rem 20px 24px 32px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: #f7f9fb;
+  padding: 48px 0;
 }
 
-.petProfile__loading {
-  padding: 20rem 0;
+.petProfile__card {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 6px 32px rgba(30, 41, 59, 0.1),
+    0 1.5px 4px rgba(30, 41, 59, 0.04);
+  padding: 40px 36px 32px 36px;
+  max-width: 540px;
+  width: 100%;
+  margin: 0 16px;
 }
 
+/* Header */
 .petProfile__header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  text-align: center;
-  padding-block: 4px;
+  gap: 32px;
+  margin-bottom: 32px;
 }
 
 .petProfile__avatarWrap {
-  inline-size: 160px;
-  block-size: 160px;
-  border-radius: 9999px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .petProfile__avatar {
-  block-size: 100%;
+  border-radius: 50%;
+  border: 4px solid #e0e7ef;
+  box-shadow: 0 2px 12px rgba(30, 41, 59, 0.08);
   object-fit: cover;
+  background: #f3f4f6;
+}
+
+.petProfile__headerInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .petProfile__name {
-  font-size: 1.75rem;
+  font-size: 2.2rem;
   font-weight: 700;
-  line-height: 1.2;
-  color: #222;
+  margin: 0;
+  color: #1e293b;
+  letter-spacing: -0.5px;
 }
 
-.petProfile__edit {
-  cursor: pointer;
+.petProfile__species {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 500;
 }
 
+.petProfile__headerActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.petProfile__editButton,
+.petProfile__saveButton,
 .petProfile__cancelButton {
-  box-shadow: 3px 4px 0px 0px #e6a19a;
-  background: linear-gradient(to bottom, #d19994 5%, #cf665f 100%);
-  background-color: #d19994;
-  border-radius: 18px;
-  border: 1px solid #ab6d69;
-  display: inline-block;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
   cursor: pointer;
-  color: #ffffff;
-  font-family: Arial;
-  font-size: 17px;
-  padding: 7px 25px;
-  text-decoration: none;
-  text-shadow: 0px 1px 0px #810e05;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.petProfile__cancelButton:hover {
-  background: linear-gradient(to bottom, #cf665f 5%, #d19994 100%);
-  background-color: #cf665f;
-}
-
-.petProfile__cancelButton:active {
-  position: relative;
-  top: 1px;
+.petProfile__editButton:hover {
+  background: #e0e7ef;
 }
 
 .petProfile__saveButton {
-  background-color: #44c767;
-  border-radius: 28px;
-  border: 1px solid #18ab29;
-  display: inline-block;
-  cursor: pointer;
-  color: #ffffff;
-  font-family: Arial;
-  font-size: 17px;
-  padding: 16px 31px;
-  text-decoration: none;
-  text-shadow: 0px 1px 0px #2f6627;
+  background: #22c55e;
 }
-
 .petProfile__saveButton:hover {
-  background-color: #5cbf2a;
+  background: #16a34a;
+}
+.petProfile__cancelButton {
+  background: #f87171;
+}
+.petProfile__cancelButton:hover {
+  background: #dc2626;
 }
 
-.petProfile__saveButton:active {
-  position: relative;
-  top: 1px;
-}
-
-.petProfile__divider {
-  inline-size: 100%;
-  block-size: 1px;
-  background: #ddd;
-}
-
-.petProfile__detailsCard {
-  inline-size: 100%;
-  max-inline-size: 960px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-  padding: 20px 20px 24px;
+/* Main Sections */
+.petProfile__main {
   display: flex;
-  gap: 15rem;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.petProfile__section {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 24px 20px 18px 20px;
+  margin-bottom: 0;
+  box-shadow: 0 1px 4px rgba(30, 41, 59, 0.04);
 }
 
 .petProfile__sectionTitle {
-  font-size: 1.125rem;
+  font-size: 1.15rem;
   font-weight: 600;
-  color: #333;
+  color: #334155;
+  margin-bottom: 18px;
+  letter-spacing: 0.2px;
 }
 
-.petProfile__grid {
+/* Fields */
+.petProfile__fields {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 32px;
 }
 
-.petProfile__row {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  align-items: start;
-  gap: 12px;
-  padding: 12px 0;
-  border-top: 1px solid #f0f0f0;
+.petProfile__field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.petProfile__row:first-child {
-  border-top: none;
-  padding-block-start: 0;
+.petProfile__field label {
+  font-size: 0.98rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 2px;
+  letter-spacing: 0.1px;
 }
 
-.petProfile__label {
-  font-weight: 600;
-  color: #555;
+.petProfile__field span {
+  font-size: 1.08rem;
+  color: #1e293b;
+  font-weight: 500;
+  background: transparent;
+  padding: 6px 0 2px 0;
 }
 
-.petProfile__value {
-  color: #222;
-  word-break: break-word;
+/* Inputs for Edit Mode */
+.petProfile__field input,
+.petProfile__field select,
+.petProfile__nameInput {
+  font-size: 1.08rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  color: #1e293b;
+  font-weight: 500;
+  outline: none;
+  transition: border 0.15s;
 }
 
-@media (max-width: 640px) {
-  .petProfile__row {
+.petProfile__field input:focus,
+.petProfile__field select:focus,
+.petProfile__nameInput:focus {
+  border-color: #38bdf8;
+  background: #f0f9ff;
+}
+
+.petProfile__nameInput {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+  border: none;
+  background: #f8fafc;
+  padding: 8px 12px;
+  color: #1e293b;
+}
+
+.petProfile__loading {
+  color: #64748b;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 48px 0;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .petProfile__card {
+    padding: 20px 6px 16px 6px;
+    max-width: 100vw;
+  }
+  .petProfile__header {
+    flex-direction: column;
+    gap: 18px;
+    align-items: flex-start;
+  }
+  .petProfile__main {
+    gap: 18px;
+  }
+  .petProfile__fields {
     grid-template-columns: 1fr;
-    gap: 6px;
-    padding: 10px 0;
+    gap: 14px 0;
   }
 }
