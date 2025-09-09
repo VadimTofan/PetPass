@@ -234,4 +234,10 @@
     grid-template-columns: 1fr;
     gap: 14px 0;
   }
+  .petProfile__headerActions {
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    justify-content: flex-start;
+  }
 }
