@@ -112,7 +112,7 @@ export default function DoctorDashboard() {
             <thead>
               <tr>
                 {columns.map((column) => (
-                  <th key={column} className={styles.pets__title} onClick={() => handleSort(column)}>
+                  <th key={column} className={`${styles.pets__title} ${styles[`pets__${column}`]}`} onClick={() => handleSort(column)}>
                     {column} <span className={sortConfig.key === column ? (sortConfig.direction === "asc" ? styles.pets__arrowUp : styles.pets__arrowDown) : ""} />
                   </th>
                 ))}

@@ -17,7 +17,6 @@
 .pets__h2 {
   font-size: clamp(1.25rem, 1.6vw + 1rem, 1.75rem);
   line-height: 1.2;
-  margin: 0;
   flex: 0 0 auto;
 }
 
@@ -90,6 +89,8 @@
   cursor: pointer;
   transition: background-color 120ms ease, color 120ms ease;
   border-right: 1px solid #f3eee4;
+  gap: 1rem;
+  min-width: 120px;
 }
 
 .pets__title:last-child {
@@ -100,11 +101,17 @@
   background: color-mix(in srgb, var(--brand) 14%, #fff);
 }
 
+.pets__Breed,
+.pets__Owner,
+.pets__Email,
+.pets__Phone {
+  min-width: 200px;
+}
+
 .pets__arrowUp::before,
 .pets__arrowDown::before {
   display: inline-block;
   font-size: 0.8em;
-  margin-left: 0.4rem;
   opacity: 0.9;
   vertical-align: middle;
   content: "";
