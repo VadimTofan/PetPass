@@ -195,11 +195,12 @@
 .pets__loading,
 .pets__error,
 .pets__denied {
-  padding: 1rem 1.25rem;
+  padding: 15rem 1.25rem;
   border-radius: var(--radius-xl);
   background: var(--card);
   border: 1px solid #ece7dc;
   box-shadow: var(--shadow-lg);
+  text-align: center;
 }
 
 .pets__loading {
