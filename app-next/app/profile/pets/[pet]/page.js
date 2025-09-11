@@ -1,6 +1,6 @@
 import PetAdd from "../../components/DBFunctions/PetAdd";
 import PetView from "../../components/PetView/PetView";
-import PetsAllView from "../../components/petsAllView/PetsAllView";
+import PetsAllView from "../../components/PetsAllView/PetsAllView";
 
 export default async function Page({ params }) {
   const { pet: id } = await params;
