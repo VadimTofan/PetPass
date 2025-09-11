@@ -115,7 +115,6 @@ export default function ProfilePage() {
 
       <div className={styles.profile__pets}>
         {petsLoading && <p className={styles.profile__loading}>Loading pets…</p>}
-        {!petsLoading && pets?.length === 0 && <p className={styles.profile__loading}>No pets yet.</p>}
 
         {!petsLoading && (
           <div
