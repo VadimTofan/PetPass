@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import styles from "./page.module.css";
+import styles from "./PetView.module.css";
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
@@ -93,7 +93,7 @@ export default function FetchPetData() {
       setDraft(null);
     }
   };
-  console.log(draft);
+
   return (
     <section className={styles.petProfile}>
       <form
@@ -106,7 +106,7 @@ export default function FetchPetData() {
           <dl className={styles.petProfile__grid}>
             <div className={styles.petProfile__header} aria-labelledby="pet-name">
               <div className={styles.petProfile__avatarWrap}>
-                <Image src="/images/cat.jpg" alt={pet.name} width={160} height={160} className={styles.petProfile__avatar} priority />
+                <Image src={pet.photo_url} alt={pet.name} width={160} height={160} className={styles.petProfile__avatar} priority />
               </div>
 
               <h1 id="pet-name" className={styles.petProfile__name}>
