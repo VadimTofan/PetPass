@@ -2,7 +2,7 @@
 
 import styles from "./PetsAllView.module.css";
 
-import useUserData from "../DBFunctions/FetchUserData";
+import FetchUserData from "../DBFunctions/FetchUserData";
 
 import { useState, useEffect, useMemo } from "react";
 import { useSession } from "next-auth/react";
@@ -16,7 +16,7 @@ export default function DoctorDashboard() {
   const [petsLoading, setPetsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
-  const { user, error: userError, isLoading: userLoading } = useUserData(email);
+  const { user, error: userError, isLoading: userLoading } = FetchUserData(email);
 
   const router = useRouter();
 
