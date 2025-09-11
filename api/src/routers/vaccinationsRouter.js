@@ -20,7 +20,7 @@ vaccinationsRouter.get(
       response.json(rows);
     } catch (error) {
       console.error("Error fetching vaccinations:", error);
-      res.status(500).json({ error: "Failed to fetch vaccinations" });
+      response.status(500).json({ error: "Failed to fetch vaccinations" });
     }
   }
 );

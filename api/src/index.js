@@ -1,9 +1,6 @@
 import express from "express";
 import petsRouter from "./routers/petsRouter.js";
 import usersRouter from "./routers/usersRouter.js";
-import vaccinationsRouter from "./routers/vaccinationsRouter.js";
-
-import cors from "cors";
 
 const app = express();
 
@@ -17,7 +14,12 @@ app.get("/", (request, response) => {
 
 app.use(petsRouter);
 app.use(usersRouter);
-app.use(vaccinationsRouter);
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  const status = err.status || 500;
+  res.status(status).json({ error: err.message || "Internal Server Error" });
+});
 
 const PORT = 8000;
 app.listen(PORT, () => {
