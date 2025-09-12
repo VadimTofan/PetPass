@@ -7,6 +7,7 @@ import FetchUserData from "./components/DBFunctions/FetchUserData";
 import FetchUserPetData from "./components/DBFunctions/FetchUserPetData";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -14,11 +15,55 @@ export default function ProfilePage() {
 
   const email = session?.user?.email ?? "";
   const { user, isLoading: userLoading, error: userError } = FetchUserData(email);
-
-  const { pets = [], isLoading: petsLoading, error: petsError } = FetchUserPetData(user?.id);
+  const { pets = [], isLoading: petsLoading } = FetchUserPetData(user?.id);
 
   const userPicture = session?.user?.image ?? "/images/loading.svg";
   const amountOfPets = pets?.length > 1 ? "My pets" : "My pet";
+
+  const count = (pets?.length || 0) + 1;
+  const [index, setIndex] = useState(0);
+  const carouselRef = useRef(null);
+
+  const goTo = (i) => {
+    const next = (i + count) % count;
+    setIndex(next);
+    if (carouselRef.current) {
+      carouselRef.current.style.setProperty("--index", String(next));
+      carouselRef.current.style.setProperty("--count", String(count));
+    }
+  };
+
+  useEffect(() => {
+    goTo(0);
+  }, [count]);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "ArrowLeft") goTo(index - 1);
+      if (e.key === "ArrowRight") goTo(index + 1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [index, count]);
+
+  useEffect(() => {
+    let startX = 0;
+    const el = carouselRef.current;
+    if (!el) return;
+
+    const onTouchStart = (e) => (startX = e.touches[0].clientX);
+    const onTouchEnd = (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) goTo(index + (dx < 0 ? 1 : -1));
+    };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [index, count]);
 
   if (status === "unauthenticated") {
     return (
@@ -51,13 +96,12 @@ export default function ProfilePage() {
     );
   }
 
-  const handlePetCardClick = (id) => {
-    router.push(`/profile/pets/${id}`);
-  };
+  const handlePetCardClick = (id) => router.push(`/profile/pets/${id}`);
+  const handleAddPickClick = () => router.push(`/profile/pets/new`);
 
-  const handleAddPickClick = () => {
-    router.push(`/profile/pets/new`);
-  };
+  const isActive = (i) => i === index;
+  const isPrev = (i) => (index - 1 + count) % count === i;
+  const isNext = (i) => (index + 1) % count === i;
 
   return (
     <section className={styles.profile}>
@@ -69,21 +113,64 @@ export default function ProfilePage() {
       <span className={styles.profile__divider}></span>
       <h2 className={styles.profile__cardTitle}>{amountOfPets}</h2>
 
-      <div className={styles.profile__cards}>
+      <div className={styles.profile__pets}>
         {petsLoading && <p className={styles.profile__loading}>Loading pets…</p>}
-        {!petsLoading && pets?.length === 0 && <p>No pets yet.</p>}
 
-        {!petsLoading &&
-          pets?.map((pet) => (
-            <div key={pet.id} onClick={() => handlePetCardClick(pet.id)} className={`${styles.profile__card} ${styles.profile__cardPet}`}>
-              <p className={styles.profile__petName}>{pet.name}</p>
-              <Image src={pet.photo_url || "/images/logo.png"} className={styles.profile__petImage} width={150} height={150} alt={pet.name || "Pet"} priority />
+        {!petsLoading && (
+          <div
+            className={styles.profile__carousel}
+            ref={carouselRef}
+            style={{
+              "--count": count,
+              "--index": index,
+            }}
+            aria-roledescription="carousel"
+            aria-label="Pets carousel"
+          >
+            <div className={styles.profile__carouselStage}>
+              {(pets || []).map((pet, i) => (
+                <figure
+                  key={pet.id}
+                  className={styles.profile__carouselItem}
+                  style={{ "--i": i }}
+                  data-active={isActive(i) ? "true" : undefined}
+                  data-near={isPrev(i) || isNext(i) ? "true" : undefined}
+                  onClick={() => handlePetCardClick(pet.id)}
+                  role="button"
+                  aria-label={pet.name || "Pet"}
+                  tabIndex={0}
+                >
+                  <Image src={pet.photo_url || "/images/logo.png"} alt={pet.name || "Pet"} width={220} height={220} className={styles.profile__carouselImg} priority />
+                  <figcaption className={styles.profile__carouselName}>{pet.name}</figcaption>
+                </figure>
+              ))}
+              <figure
+                className={`${styles.profile__carouselItem} ${styles.profile__carouselItemAdd}`}
+                style={{ "--i": pets?.length || 0 }}
+                data-active={isActive(pets?.length || 0) ? "true" : undefined}
+                data-near={isPrev(pets?.length || 0) || isNext(pets?.length || 0) ? "true" : undefined}
+                onClick={handleAddPickClick}
+                role="button"
+                aria-label="Add new pet"
+                tabIndex={0}
+              >
+                <span className={styles.profile__carouselAddIcon}>＋</span>
+                <figcaption className={styles.profile__carouselAddText}>Add New Pet</figcaption>
+              </figure>
             </div>
-          ))}
-
-        <div className={`${styles.profile__card}  ${styles.profile__cardPetAdd}`} onClick={handleAddPickClick}>
-          <span className={styles.profile__cardAddText}>+ Add New Pet</span>
-        </div>
+            <button className={`${styles.profile__carouselArrow} ${styles.profile__carouselArrowLeft}`} aria-label="Previous" onClick={() => goTo(index - 1)}>
+              ‹‹
+            </button>
+            <button className={`${styles.profile__carouselArrow} ${styles.profile__carouselArrowRight}`} aria-label="Next" onClick={() => goTo(index + 1)}>
+              ››
+            </button>
+            <div className={styles.profile__carouselDots} aria-label="Carousel Dots">
+              {Array.from({ length: count }).map((_, i) => (
+                <button key={`dot-${i}`} aria-label={`Go to slide ${i + 1}`} className={`${styles.profile__carouselDot} ${i === index ? styles.isActive : ""}`} onClick={() => goTo(i)} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
