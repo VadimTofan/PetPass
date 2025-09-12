@@ -3,6 +3,7 @@
 import styles from "./PetsAllView.module.css";
 
 import FetchUserData from "../DBFunctions/FetchUserData";
+import Error404 from "@/app/components/Error404/Error404";
 
 import { useState, useEffect, useMemo } from "react";
 import { useSession } from "next-auth/react";
@@ -66,14 +67,16 @@ export default function DoctorDashboard() {
 
   const cell = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
 
-  if (status === "loading" || userLoading || petsLoading) {
-    return <div className={styles.pets__loading}>Loading…</div>;
-  }
-
   if (userError) return <div className={styles.pets__error}>User error: {userError}</div>;
   if (petsError) return <div className={styles.pets__error}>Pets error: {petsError}</div>;
+  if (!user) return <Error404 />;
+
   if (!user?.admin) {
     return <div className={styles.pets__denied}>You don't have access</div>;
+  }
+
+  if (status === "loading" || userLoading || petsLoading) {
+    return <div className={styles.pets__loading}>Loading…</div>;
   }
 
   const columns = ["Name", "Species", "Breed", "Sex", "Birthday", "Country", "Passport", "Microchip", "Owner", "Email", "Phone"];
