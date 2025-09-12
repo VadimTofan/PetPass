@@ -8,10 +8,12 @@ import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import FetchUserData from "../../profile/components/DBFunctions/FetchUserData";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
   const profile = session?.user?.image ?? "";
+  const email = session?.user?.email ?? "";
 
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -45,6 +47,8 @@ export default function Navbar() {
     { name: "About Us", icon: "/icons/about.png", path: "/about" },
   ];
 
+  const { user } = FetchUserData(email);
+
   return (
     <>
       <nav className={styles.navbar}>
@@ -63,6 +67,15 @@ export default function Navbar() {
                 </Link>
               </li>
             ))}
+            {user?.admin ? (
+              <li className={styles.navbar__item}>
+                <Link href="/profile/pets/all" className={styles.navbar__link}>
+                  <span className={styles.navbar__linkText}>Pets Dashboard</span>
+                </Link>
+              </li>
+            ) : (
+              ""
+            )}
           </ul>
         </div>
         {!isAuthed ? (
@@ -101,6 +114,15 @@ export default function Navbar() {
             </Link>
           </li>
         ))}
+        {user?.admin ? (
+          <li className={styles.navbar__item}>
+            <Link href="/profile/pets/all" className={styles.navbar__linkMobile}>
+              <Image src="/icons/spreadsheet.png" alt="Pets Dashboard" width={24} height={24} className={styles.navbar__iconMobile} />
+            </Link>
+          </li>
+        ) : (
+          ""
+        )}
       </ul>
 
       {showLoginModal && (
