@@ -5,14 +5,17 @@ import styles from "./PetView.module.css";
 
 export function PetProfileDisplay({ pet, onEdit, formatDate }) {
   return (
-    <form className={styles.petProfile__form} onSubmit={e => e.preventDefault()}>
+    <form
+      className={styles.petProfile__form}
+      onSubmit={(e) => e.preventDefault()}
+    >
       <header className={styles.petProfile__header}>
         <div className={styles.petProfile__avatarWrap}>
           <Image
-            src={pet.photo_url}
+            src={pet?.photo_url || "/images/loading.svg"}
             alt={pet.name}
-            width={140}
-            height={140}
+            width={160}
+            height={160}
             className={styles.petProfile__avatar}
             priority
           />
@@ -43,7 +46,9 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
             <div className={styles.petProfile__field}>
               <label>Sex</label>
               <span>
-                {pet.sex ? pet.sex.charAt(0).toUpperCase() + pet.sex.slice(1) : ""}
+                {pet.sex
+                  ? pet.sex.charAt(0).toUpperCase() + pet.sex.slice(1)
+                  : ""}
               </span>
             </div>
             <div className={styles.petProfile__field}>

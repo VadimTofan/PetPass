@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import styles from "./PetView.module.css";
 
 export function PetProfileEdit({ draft, setDraft, onSave, onCancel }) {
@@ -13,13 +14,13 @@ export function PetProfileEdit({ draft, setDraft, onSave, onCancel }) {
     >
       <header className={styles.petProfile__header}>
         <div className={styles.petProfile__avatarWrap}>
-          <img
-            src={draft.photo_url}
-            alt={draft.name}
-            width={140}
-            height={140}
+          <Image
+            src={draft?.photo_url || "/images/loading.svg"}
+            alt={draft?.name}
+            width={160}
+            height={160}
             className={styles.petProfile__avatar}
-            style={{ objectFit: "cover" }}
+            priority
           />
         </div>
         <div className={styles.petProfile__headerInfo}>
