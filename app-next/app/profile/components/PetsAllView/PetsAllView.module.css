@@ -226,8 +226,8 @@
 }
 
 .pets__error {
-  border-color: color-mix(in srgb, var(--orange) 50%, #0000);
-  background: color-mix(in srgb, var(--orange) 12%, #fff);
+  border-color: color-mix(in srgb, var(--lime) 50%, #0000);
+  background: color-mix(in srgb, var(--lime) 12%, #fff);
 }
 
 .pets__denied {

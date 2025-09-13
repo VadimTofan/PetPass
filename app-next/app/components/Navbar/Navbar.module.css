@@ -6,7 +6,7 @@
   top: 0;
   width: 100%;
   height: 70px;
-  background: var(--bg);
+  background: var(--ink);
   z-index: 100;
 }
 
@@ -25,7 +25,7 @@
 .navbar__logoText {
   font-size: 1.4rem;
   font-weight: 800;
-  color: var(--orange);
+  color: var(--lime);
 }
 
 .navbar__container {
@@ -49,7 +49,7 @@
 .navbar__linkText {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--orange);
+  color: var(--lime);
 }
 
 .navbar__linkText:hover {
@@ -60,7 +60,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--orange);
+  background: var(--lime);
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
@@ -95,7 +95,7 @@
   top: calc(100% + 15px);
   left: calc(50% - 30px);
   transform: translateX(-50%);
-  background-color: var(--bg);
+  background-color: var(--ink);
   border: 1px solid #ccc;
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -107,6 +107,9 @@
   background: none;
   border: none;
   width: 150px;
+  color: var(--bg);
+  font-size: 20px;
+  font-weight: 700;
   text-align: center;
   padding: 10px 16px;
   cursor: pointer;
