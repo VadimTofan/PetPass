@@ -1,58 +1,26 @@
-/* Card Layout */
-.petProfile {
+.pet {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  background: #f7f9fb;
+  background: var(--bg);
   padding: 48px 0;
 }
 
-.petProfile__card {
+.pet__card {
   background: #fff;
   border-radius: 24px;
-  box-shadow: 0 6px 32px rgba(30, 41, 59, 0.1),
-    0 1.5px 4px rgba(30, 41, 59, 0.04);
+  box-shadow: 0 6px 32px rgba(30, 41, 59, 0.1), 0 1.5px 4px rgba(30, 41, 59, 0.04);
   padding: 40px 36px 32px 36px;
-  max-width: 700px; /* Increased for more space */
+  max-width: 700px;
   width: 100%;
+  min-height: 75vh;
   margin: 0 16px;
   box-sizing: border-box;
   overflow: visible;
 }
 
-/* Header */
-.petProfile__header {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  margin-bottom: 32px;
-}
-
-.petProfile__avatarWrap {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.petProfile__avatar {
-  border-radius: 50%;
-  border: 4px solid #e0e7ef;
-  box-shadow: 0 2px 12px rgba(30, 41, 59, 0.08);
-  object-fit: cover;
-  background: #f3f4f6;
-}
-
-.petProfile__headerInfo {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-}
-
-.petProfile__name {
+.pet__name {
   font-size: 2.2rem;
   font-weight: 700;
   margin: 0;
@@ -61,21 +29,13 @@
   word-break: break-word;
 }
 
-.petProfile__species {
+.pet__species {
   font-size: 1.1rem;
   color: #64748b;
   font-weight: 500;
 }
 
-.petProfile__headerActions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.petProfile__editButton,
-.petProfile__saveButton,
-.petProfile__cancelButton {
+.pet__editButton {
   background: #f1f5f9;
   border: none;
   border-radius: 50%;
@@ -86,72 +46,11 @@
   align-items: center;
   justify-content: center;
 }
-
-.petProfile__editButton:hover {
+.pet__editButton:hover {
   background: #e0e7ef;
 }
 
-.petProfile__saveButton {
-  background: #22c55e;
-}
-.petProfile__saveButton:hover {
-  background: #16a34a;
-}
-.petProfile__cancelButton {
-  background: #f87171;
-}
-.petProfile__cancelButton:hover {
-  background: #dc2626;
-}
-
-/* Main Sections */
-.petProfile__main {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-.petProfile__section {
-  background: #f8fafc;
-  border-radius: 16px;
-  padding: 24px 20px 18px 20px;
-  margin-bottom: 0;
-  box-shadow: 0 1px 4px rgba(30, 41, 59, 0.04);
-}
-
-.petProfile__sectionTitle {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: #334155;
-  margin-bottom: 18px;
-  letter-spacing: 0.2px;
-}
-
-/* Fields */
-.petProfile__fields {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px 32px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.petProfile__field {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  min-width: 0;
-}
-
-.petProfile__field label {
-  font-size: 0.98rem;
-  color: #64748b;
-  font-weight: 500;
-  margin-bottom: 2px;
-  letter-spacing: 0.1px;
-}
-
-.petProfile__field span {
+.pet__field span {
   font-size: 1.08rem;
   color: #1e293b;
   font-weight: 500;
@@ -160,84 +59,23 @@
   word-break: break-word;
 }
 
-/* Inputs for Edit Mode */
-.petProfile__field input,
-.petProfile__field select,
-.petProfile__nameInput {
-  font-size: 1.08rem;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1.5px solid #e2e8f0;
-  background: #fff;
-  color: #1e293b;
-  font-weight: 500;
-  outline: none;
-  transition: border 0.15s;
-  width: 100%;
-  box-sizing: border-box;
-  min-width: 0;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.petProfile__field input:focus,
-.petProfile__field select:focus,
-.petProfile__nameInput:focus {
-  border-color: #38bdf8;
-  background: #f0f9ff;
-}
-
-.petProfile__nameInput {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 2px;
-  border: none;
-  background: #f8fafc;
-  padding: 8px 12px;
-  color: #1e293b;
-  width: 100%;
-  box-sizing: border-box;
-  min-width: 0;
-  max-width: 100%;
-}
-
-/* Loading */
-.petProfile__loading {
+.pet__loading {
   color: #64748b;
   font-size: 1.2rem;
   text-align: center;
   padding: 48px 0;
 }
 
-/* Responsive */
 @media (max-width: 900px) {
-  .petProfile__card {
+  .pet__card {
     max-width: 98vw;
     padding: 24px 4vw 18px 4vw;
   }
 }
 
 @media (max-width: 700px) {
-  .petProfile__card {
+  .pet__card {
     padding: 16px 2vw 12px 2vw;
     max-width: 100vw;
-  }
-  .petProfile__header {
-    flex-direction: column;
-    gap: 18px;
-    align-items: flex-start;
-  }
-  .petProfile__main {
-    gap: 18px;
-  }
-  .petProfile__fields {
-    grid-template-columns: 1fr;
-    gap: 14px 0;
-  }
-  .petProfile__headerActions {
-    flex-direction: row;
-    gap: 10px;
-    width: 100%;
-    justify-content: flex-start;
   }
 }
