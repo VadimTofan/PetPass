@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./features.module.css";
+import styles from "./Features.module.css";
 import Image from "next/image";
 
 import { useRouter } from "next/navigation";
