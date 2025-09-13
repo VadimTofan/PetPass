@@ -1,13 +1,13 @@
 import Hero from "@/app/home/hero/Hero";
 import Category from "@/app/home/category/Category";
-import Promotion from "@/app/home/promotion/Promotion";
+import Features from "@/app/home/features/Features";
 
 export default function Main() {
   return (
     <div>
       <Hero />
       <Category />
-      <Promotion />
+      <Features />
     </div>
   );
 }

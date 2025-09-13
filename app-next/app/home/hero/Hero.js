@@ -1,30 +1,40 @@
+"use client";
+
 import styles from "./Hero.module.css";
-
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-const Hero = () => {
+export default function Hero() {
+  const { status } = useSession();
+  const router = useRouter();
+
+  const isAuthed = status === "authenticated";
+
+  const handleGetStarted = () => {
+    router.push("/profile/edit");
+  };
+
   return (
     <section className={styles.hero}>
       <div className={styles.hero__image}>
-        <Image
-          src="https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
-          alt="Beautiful cat"
-          width={1500}
-          height={1500}
-          className={styles.hero__background}
-        />
+        <Image src="/images/hero.webp" alt="Beautiful cat" width={2500} height={2500} className={styles.hero__background} />
         <div className={styles.hero__overlay}></div>
       </div>
 
       <div className={styles.hero__content}>
         <div className={styles.hero__text}>
-          <h1 className={styles.hero__title}>Everything Your Pet Needs, All In One Place</h1>
-          <p className={styles.hero__description}>Discover premium pet products, expert advice, and caring services for your beloved companions. From nutrition to toys, we've got you covered.</p>
-          <button className={styles.hero__button}>SHOP NOW</button>
+          <h1 className={styles.hero__title}>Your Pet’s Passport, Always With You</h1>
+          <p className={styles.hero__description}>
+            Keep all your pet’s important documents in one secure place. From vaccination records to travel papers — everything is safe, accessible, and ready when you need it.
+          </p>
+          {!isAuthed && (
+            <button className={styles.hero__button} onClick={handleGetStarted}>
+              GET STARTED
+            </button>
+          )}
         </div>
       </div>
     </section>
   );
-};
-
-export default Hero;
+}

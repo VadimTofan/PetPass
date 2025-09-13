@@ -150,7 +150,7 @@
 
 .profile__carouselItemAdd {
   background: linear-gradient(180deg, color-mix(in oklab, var(--brand) 18%, white 82%), var(--card));
-  border: 2px dashed var(--orange);
+  border: 2px dashed var(--lime);
   display: grid;
   place-items: center;
 }
@@ -158,12 +158,12 @@
 .profile__carouselAddIcon {
   font-size: 5rem;
   line-height: 1;
-  color: var(--orange);
+  color: var(--lime);
 }
 
 .profile__carouselAddText {
   font-weight: 600;
-  color: var(--orange);
+  color: var(--lime);
   font-size: 1.1rem;
 }
 
@@ -213,7 +213,7 @@
 }
 
 .profile__carouselArrow:focus-visible {
-  outline: 2px solid var(--orange);
+  outline: 2px solid var(--lime);
   outline-offset: 3px;
 }
 
@@ -243,12 +243,12 @@
 .isActive,
 .profile__carouselDot.isActive {
   transform: scale(1.25);
-  background: var(--orange);
-  box-shadow: 0 0 0 6px color-mix(in oklab, var(--orange) 22%, transparent);
+  background: var(--lime);
+  box-shadow: 0 0 0 6px color-mix(in oklab, var(--lime) 22%, transparent);
 }
 
 .profile__carouselDot:focus-visible {
-  outline: 2px solid var(--orange);
+  outline: 2px solid var(--lime);
   outline-offset: 3px;
 }
 

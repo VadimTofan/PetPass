@@ -1,5 +1,6 @@
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react";
 import styles from "./Footer.module.css";
+import Link from "next/link";
 
 const Footer = () => {
   const socialLinks = [
@@ -9,8 +10,12 @@ const Footer = () => {
     { icon: Youtube, href: "#", label: "YouTube" },
   ];
 
-  const quickLinks = ["Home", "Products", "Blog", "About Us", "Contact Us"];
-  const categories = ["Dogs", "Cats", "Fish", "Rabbits", "Birds"];
+  const quickLinks = [
+    { name: "Home", path: "/home" },
+    { name: "My Pets", path: "/profile" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
+  ];
 
   return (
     <footer className={styles.footer}>
@@ -18,83 +23,66 @@ const Footer = () => {
         <div className={styles.footer__content}>
           <div className={styles.footer__section}>
             <h3 className={styles.footer__sectionTitle}>PetPass</h3>
-            <p className={styles.footer__description}>Your trusted partner in pet care for over 15 years. We provide premium products and services for your beloved companions.</p>
+            <p className={styles.footer__description}>The digital passport for your pets. Store vaccinations, medical history, and travel documents securely in one place.</p>
             <div className={styles.footer__contact}>
               <div className={styles.footer__contactItem}>
-                <Phone size={16} className={styles.footer__contactIcon} />
-                <span>+1 (555) 123-4567</span>
-              </div>
-              <div className={styles.footer__contactItem}>
                 <Mail size={16} className={styles.footer__contactIcon} />
-                <span>info@PetPass.com</span>
-              </div>
-              <div className={styles.footer__contactItem}>
-                <MapPin size={16} className={styles.footer__contactIcon} />
-                <span>123 Pet Street, Animal City, AC 12345</span>
+                <span>not@avaliable.yet</span>
               </div>
             </div>
           </div>
+
           <div className={styles.footer__section}>
             <h4 className={styles.footer__sectionTitle}>Quick Links</h4>
             <ul className={styles.footer__list}>
               {quickLinks.map((link, index) => (
                 <li key={index} className={styles.footer__listItem}>
-                  <a href="#" className={styles.footer__link}>
-                    {link}
-                  </a>
+                  <Link href={link.path} className={styles.footer__link}>
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
+
           <div className={styles.footer__section}>
-            <h4 className={styles.footer__sectionTitle}>Pet Categories</h4>
+            <h4 className={styles.footer__sectionTitle}>Support</h4>
             <ul className={styles.footer__list}>
-              {categories.map((category, index) => (
-                <li key={index} className={styles.footer__listItem}>
-                  <a href="#" className={styles.footer__link}>
-                    {category}
-                  </a>
-                </li>
-              ))}
+              <li className={styles.footer__listItem}>
+                <a href="#" className={styles.footer__link}>
+                  FAQ
+                </a>
+              </li>
+              <li className={styles.footer__listItem}>
+                <a href="#" className={styles.footer__link}>
+                  Privacy Policy
+                </a>
+              </li>
+              <li className={styles.footer__listItem}>
+                <a href="#" className={styles.footer__link}>
+                  Terms of Service
+                </a>
+              </li>
             </ul>
           </div>
+
           <div className={styles.footer__section}>
-            <h4 className={styles.footer__sectionTitle}>Stay Updated</h4>
-            <p className={styles.footer__newsletterText}>Subscribe to our newsletter for pet care tips and exclusive offers.</p>
-            <div className={styles.footer__newsletter}>
-              <input type="email" placeholder="Enter your email" className={styles.footer__input} aria-label="Email address" />
-              <button className={styles.footer__button}>Subscribe</button>
+            <h4 className={styles.footer__sectionTitle}>Follow Us</h4>
+            <div className={styles.footer__social}>
+              {socialLinks.map((social, index) => {
+                const Icon = social.icon;
+                return (
+                  <a key={index} href={social.href} className={styles.footer__socialLink} aria-label={social.label}>
+                    <Icon size={20} />
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
-        <div className={styles.footer__bottom}>
-          <div className={styles.footer__social}>
-            {socialLinks.map((social, index) => {
-              const Icon = social.icon;
-              return (
-                <a key={index} href={social.href} className={styles.footer__socialLink} aria-label={social.label}>
-                  <Icon size={20} />
-                </a>
-              );
-            })}
-          </div>
 
-          <div className={styles.footer__copyright}>
-            <p className={styles.footer__copyrightText}>&copy; 2025 PetPass. All rights reserved.</p>
-            <div className={styles.footer__legal}>
-              <a href="#" className={styles.footer__legalLink}>
-                Privacy Policy
-              </a>
-              <span className={styles.footer__separator}>|</span>
-              <a href="#" className={styles.footer__legalLink}>
-                Terms of Service
-              </a>
-              <span className={styles.footer__separator}>|</span>
-              <a href="#" className={styles.footer__legalLink}>
-                Cookie Policy
-              </a>
-            </div>
-          </div>
+        <div className={styles.footer__bottom}>
+          <p className={styles.footer__copyright}>&copy; {new Date().getFullYear()} PetPass. All rights reserved.</p>
         </div>
       </div>
     </footer>
