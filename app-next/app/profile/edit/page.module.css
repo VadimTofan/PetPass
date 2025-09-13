@@ -108,7 +108,8 @@
   margin-bottom: 0.75rem;
 }
 
-.signup__input:focus {
+.signup__input:focus,
+.signup__dobInput:focus {
   outline: none;
   border-color: #93c5fd;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
