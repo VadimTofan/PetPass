@@ -193,7 +193,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem;
-  background: var(--card);
+  background: var(--bg);
   border: 1px solid #ece7dc;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
@@ -202,12 +202,10 @@
 .pets__loading,
 .pets__error,
 .pets__denied {
-  padding: 15rem 1.25rem;
-  border-radius: var(--radius-xl);
-  background: var(--card);
-  border: 1px solid #ece7dc;
-  box-shadow: var(--shadow-lg);
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
 }
 
 .pets__loading {
@@ -233,8 +231,7 @@
 }
 
 .pets__denied {
-  border-color: #e7dccc;
-  background: color-mix(in srgb, var(--brand) 10%, #fff);
+  background: var(--bg);
 }
 
 .pets :focus-visible {

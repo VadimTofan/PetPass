@@ -95,7 +95,7 @@ export default function ProfilePage() {
       </section>
     );
   }
-
+  const handleSettingsClick = () => router.push(`/profile/edit`);
   const handlePetCardClick = (id) => router.push(`/profile/pets/${id}`);
   const handleAddPickClick = () => router.push(`/profile/pets/new`);
 
@@ -107,7 +107,10 @@ export default function ProfilePage() {
     <section className={styles.profile}>
       <div className={styles.profile__header}>
         <Image src={userPicture} alt="Profile" width={300} height={300} className={styles.profile__avatar} priority />
-        <h1 className={styles.profile__name}>{user?.full_name}</h1>
+        <div className={styles.profile__edit}>
+          <h1 className={styles.profile__name}>{user?.full_name}</h1>
+          <Image onClick={handleSettingsClick} className={styles.profile__settings} src="/icons/settings.png" width={35} height={5} alt="settings button" />
+        </div>
       </div>
 
       <span className={styles.profile__divider}></span>

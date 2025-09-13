@@ -135,7 +135,7 @@ export default function SignupPage() {
                     className={styles.signup__dobInput}
                     type="date"
                     name="date_of_birth"
-                    value={draft?.date_of_birth ?? ""}
+                    value={(draft?.date_of_birth ?? "").slice(0, 10)}
                     onChange={(e) => setDraft({ ...draft, date_of_birth: e.target.value })}
                     autoComplete="bday"
                     required
