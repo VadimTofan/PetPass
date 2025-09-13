@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import FetchUserData from "./components/DBFunctions/FetchUserData";
-import FetchUserPetData from "./components/DBFunctions/FetchUserPetData";
+import useFetchUserPetData from "./components/DBFunctions/FetchUserPetData";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -15,7 +15,7 @@ export default function ProfilePage() {
 
   const email = session?.user?.email ?? "";
   const { user, isLoading: userLoading, error: userError } = FetchUserData(email);
-  const { pets = [], isLoading: petsLoading } = FetchUserPetData(user?.id);
+  const { pets = [], isLoading: petsLoading } = useFetchUserPetData(user?.id);
 
   const userPicture = session?.user?.image ?? "/images/loading.svg";
   const amountOfPets = pets?.length > 1 ? "My pets" : "My pet";

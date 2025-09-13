@@ -1,0 +1,216 @@
+.pet__form {
+  display: flex;
+  flex-direction: column;
+  min-height: 80vh;
+  align-items: center;
+}
+
+.pet__header {
+  display: flex;
+  align-items: center;
+
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.pet__avatarWrap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pet__avatar {
+  border-radius: 50%;
+  border: 4px solid #e0e7ef;
+  box-shadow: 0 2px 12px rgba(30, 41, 59, 0.08);
+  object-fit: cover;
+  background: #f3f4f6;
+}
+
+.pet__headerInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  align-items: center;
+}
+
+.pet__name {
+  text-align: center;
+}
+
+.pet__headerActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pet__saveButton,
+.pet__cancelButton {
+  background: #f1f5f9;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pet__saveButton {
+  background: #22c55e;
+}
+.pet__saveButton:hover {
+  background: #16a34a;
+}
+.pet__cancelButton {
+  background: #f87171;
+}
+.pet__cancelButton:hover {
+  background: #dc2626;
+}
+
+.pet__main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.pet__vaccination {
+  background: #1e293b;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 5px 5px;
+  width: 50%;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 2px 6px rgba(30, 41, 59, 0.1);
+}
+
+.pet__vaccination:hover {
+  background: #334155;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.15);
+}
+
+.pet__vaccination:active {
+  background: #0f172a;
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(30, 41, 59, 0.1);
+}
+
+.pet__section {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 24px 20px 18px 20px;
+  margin-bottom: 0;
+  box-shadow: 0 1px 4px rgba(30, 41, 59, 0.04);
+}
+
+.pet__sectionTitle {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 18px;
+  letter-spacing: 0.2px;
+}
+
+.pet__fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 32px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pet__field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.pet__field label {
+  font-size: 0.98rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 2px;
+  letter-spacing: 0.1px;
+}
+
+.pet__field input,
+.pet__field select,
+.pet__nameInput {
+  font-size: 1.08rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  color: #1e293b;
+  font-weight: 500;
+  outline: none;
+  transition: border 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.pet__field input:focus,
+.pet__field select:focus,
+.pet__nameInput:focus {
+  border-color: #38bdf8;
+  background: #f0f9ff;
+}
+
+.pet__nameInput {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+  border: none;
+  background: #f8fafc;
+  padding: 8px 12px;
+  color: #1e293b;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.pet__error {
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .pet__card {
+    max-width: 98vw;
+    padding: 24px 4vw 18px 4vw;
+  }
+}
+
+@media (max-width: 700px) {
+  .pet__header {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .pet__main {
+    gap: 18px;
+  }
+
+  .pet__fields {
+    grid-template-columns: 1fr;
+    gap: 14px 0;
+  }
+
+  .pet__card {
+    padding: 16px 2vw 12px 2vw;
+    max-width: 100vw;
+  }
+}

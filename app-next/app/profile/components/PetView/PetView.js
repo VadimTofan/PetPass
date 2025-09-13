@@ -3,8 +3,8 @@
 import styles from "./PetView.module.css";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { PetProfileDisplay } from "./PetProfileDisplay";
-import { PetProfileEdit } from "./PetProfileEdit";
+import { PetProfileDisplay } from "./components/PetProfileDisplay";
+import { PetProfileEdit } from "./components/PetProfileEdit";
 
 export default function FetchPetData() {
   const [pet, setPet] = useState(null);
@@ -14,26 +14,24 @@ export default function FetchPetData() {
   const [draft, setDraft] = useState(null);
 
   const id = useParams().pet;
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pet/${id}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch pet");
-      }
-      const data = await response.json();
-      setPet(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pet/${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch pet");
+        }
+        const data = await response.json();
+        setPet(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const formatDate = (iso) => {
@@ -44,9 +42,9 @@ export default function FetchPetData() {
 
   if (isLoading) {
     return (
-      <section className={styles.petProfile}>
-        <div className={styles.petProfile__card}>
-          <p className={styles.petProfile__loading}>Loading pet data...</p>
+      <section className={styles.pet}>
+        <div className={styles.pet__card}>
+          <p className={styles.pet__loading}>Loading pet data...</p>
         </div>
       </section>
     );
@@ -54,9 +52,9 @@ export default function FetchPetData() {
 
   if (error) {
     return (
-      <section className={styles.petProfile}>
-        <div className={styles.petProfile__card}>
-          <p className={styles.petProfile__loading}>Error: {error}</p>
+      <section className={styles.pet}>
+        <div className={styles.pet__card}>
+          <p className={styles.pet__loading}>Error: {error}</p>
         </div>
       </section>
     );
@@ -64,8 +62,8 @@ export default function FetchPetData() {
 
   if (!pet) {
     return (
-      <section className={styles.petProfile}>
-        <div className={styles.petProfile__card}>
+      <section className={styles.pet}>
+        <div className={styles.pet__card}>
           <p>No pet data found.</p>
         </div>
       </section>
@@ -85,19 +83,17 @@ export default function FetchPetData() {
 
   const handleSaveProfile = async () => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pet/${id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(draft),
-        }
-      );
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pet/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(draft),
+      });
 
       if (!res.ok) throw new Error("Failed to update pet info");
 
       const updated = await res.json();
       setPet(updated);
+      window.location.reload();
     } catch (e) {
       setError(e.message);
     } finally {
@@ -107,21 +103,12 @@ export default function FetchPetData() {
   };
 
   return (
-    <section className={styles.petProfile}>
-      <div className={styles.petProfile__card}>
+    <section className={styles.pet}>
+      <div className={styles.pet__card}>
         {isEditing ? (
-          <PetProfileEdit
-            draft={draft}
-            setDraft={setDraft}
-            onSave={handleSaveProfile}
-            onCancel={handleCancel}
-          />
+          <PetProfileEdit draft={draft} setDraft={setDraft} onSave={handleSaveProfile} onCancel={handleCancel} />
         ) : (
-          <PetProfileDisplay
-            pet={pet}
-            onEdit={handleEditProfile}
-            formatDate={formatDate}
-          />
+          <PetProfileDisplay pet={pet} onEdit={handleEditProfile} formatDate={formatDate} />
         )}
       </div>
     </section>
