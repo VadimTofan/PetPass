@@ -93,7 +93,7 @@
 .navbar__dropdown {
   position: absolute;
   top: calc(100% + 8px);
-  left: 50%;
+  left: calc(50% - 30px);
   transform: translateX(-50%);
   background-color: var(--bg);
   border: 1px solid #ccc;
