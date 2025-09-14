@@ -4,6 +4,9 @@ export async function getVaccinationsByPetId(petId) {
   return dbClient("vaccinations").select("*").where({ pet_id: petId });
 }
 
+export async function getVaccinationsByPetIdentification(petId) {
+  return dbClient("vaccinations").select("*").where("pet_id", petId);
+}
 export async function getVaccinationById(id) {
   const [vaccination] = await dbClient("vaccinations")
     .select("*")
