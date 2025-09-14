@@ -23,6 +23,7 @@ export default function PetsAllView() {
   const [petsLoading, setPetsLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [page, setPage] = useState(1);
 
@@ -36,7 +37,12 @@ export default function PetsAllView() {
     return pets.slice(start, start + ITEMS_PER_PAGE);
   }, [pets, safePage]);
 
-  useEffect(() => setPage(1), [searchTerm, sortConfig]);
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedSearchTerm(searchTerm), 300);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
+  useEffect(() => setPage(1), [debouncedSearchTerm, sortConfig]);
 
   useEffect(() => {
     if (!isAdmin) return;
@@ -47,7 +53,7 @@ export default function PetsAllView() {
       setPetsError(null);
       try {
         const params = new URLSearchParams();
-        if (searchTerm) params.set("title", searchTerm);
+        if (debouncedSearchTerm) params.set("title", debouncedSearchTerm);
         if (sortConfig.key) {
           params.set("sortKey", sortConfig.key);
           params.set("sortOrder", sortConfig.direction);
@@ -71,7 +77,7 @@ export default function PetsAllView() {
     return () => {
       cancel = true;
     };
-  }, [isAdmin, searchTerm, sortConfig]);
+  }, [isAdmin, debouncedSearchTerm, sortConfig]);
 
   if (isLoadingSession) return <div className={styles.pets__loading}>Loading…</div>;
 

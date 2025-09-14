@@ -211,8 +211,8 @@
     width: 100%;
     bottom: 0;
     height: 60px;
-    background: #fff;
-    border-top: 1px solid #e5e7eb;
+    background: var(--ink);
+    border-top: 1px solid var(--ink);
     display: flex;
     align-items: center;
     justify-content: space-evenly;
