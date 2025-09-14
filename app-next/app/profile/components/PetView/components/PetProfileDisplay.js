@@ -4,7 +4,7 @@ import styles from "./PetProfile.module.css";
 
 import useFetchUserPetData from "../../DBFunctions/FetchUserPetData";
 import FetchUserData from "../../DBFunctions/FetchUserData";
-import VaccinationPage from "../../../../vaccinations/page";
+import VaccinationPage from "./vaccinations/Vaccination";
 
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -40,6 +40,7 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
   const handleVaccinationClick = () => {
     router.push(`/profile/pet/vaccination?pet=${pet.id}`);
   };
+
   return (
     <form className={styles.pet__form} onSubmit={(e) => e.preventDefault()}>
       <header className={styles.pet__header}>
