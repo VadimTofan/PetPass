@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import styles from "./PetProfile.module.css";
 
 import useFetchUserPetData from "../../DBFunctions/FetchUserPetData";
 import FetchUserData from "../../DBFunctions/FetchUserData";
-import VaccinationPage from "@/app/profile/[pet]/vaccination/page";
-import Vaccinations from "./vaccinations/Vaccination";
+import AddVaccination from "./vaccination/AddVaccination/AddVaccination";
+import ProfileVaccination from "./vaccination/ProfileVaccination/ProfileVaccination";
 
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { useEffect, useRef, useState } from "react";
 
 export function PetProfileDisplay({ pet, onEdit, formatDate }) {
   const { data: session, status } = useSession();
@@ -26,7 +26,6 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
 
   const [isVaccinationOpen, setIsVaccinationOpen] = useState(false);
 
-  // prevent background scroll when modal is open
   useEffect(() => {
     if (isVaccinationOpen) {
       document.body.classList.add(styles.noScroll);
@@ -36,7 +35,6 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
     return () => document.body.classList.remove(styles.noScroll);
   }, [isVaccinationOpen]);
 
-  // basic focus management + ESC to close
   const closeBtnRef = useRef(null);
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -44,7 +42,7 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
     };
     if (isVaccinationOpen) {
       document.addEventListener("keydown", onKeyDown);
-      // small delay to ensure element exists
+
       setTimeout(() => closeBtnRef.current && closeBtnRef.current.focus(), 0);
     }
     return () => document.removeEventListener("keydown", onKeyDown);
@@ -117,7 +115,7 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
         </section>
 
         <section className={styles.pet__section}>
-          <Vaccinations petId={pet.id} />
+          <ProfileVaccination petId={pet.id} />
         </section>
 
         <section className={styles.pet__section}>
@@ -165,7 +163,6 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
         </section>
       </main>
 
-      {/* Modal */}
       {isVaccinationOpen && (
         <div
           className={styles.modal}
@@ -173,7 +170,6 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
           aria-modal="true"
           aria-labelledby="vaccinationModalTitle"
           onClick={(e) => {
-            // close when clicking the overlay only
             if (e.target === e.currentTarget) setIsVaccinationOpen(false);
           }}
         >
@@ -187,7 +183,7 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
               </button>
             </header>
             <div className={styles.modal__body}>
-              <VaccinationPage petId={pet.id} />
+              <AddVaccination petId={pet.id} />
             </div>
             <footer className={styles.modal__footer}>
               <button type="button" className={styles.modal__secondary} onClick={() => setIsVaccinationOpen(false)}>

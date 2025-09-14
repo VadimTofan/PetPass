@@ -1,9 +1,9 @@
 "use client";
 
-import styles from "./Vaccination.module.css";
+import styles from "./ProfileVaccination.module.css";
 
 import formatDate from "@/app/components/FormatDate/FormatDate";
-import useVaccinationData from "../../../DBFunctions/FetchPetVaccinations";
+import useVaccinationData from "../../../../DBFunctions/FetchPetVaccinations";
 
 export default function Vaccinations({ petId }) {
   const { vaccinations, error, isLoading } = useVaccinationData(petId);

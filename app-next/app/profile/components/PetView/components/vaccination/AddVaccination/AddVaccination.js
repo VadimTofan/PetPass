@@ -1,18 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-import VaccinationList from "./VaccinationList";
-import VaccinationForm from "./VaccinationForm";
-import EditVaccinationModal from "./EditVaccinationModal";
-import styles from "./vaccination.module.css";
+import styles from "./AddVaccination.module.css";
 
-export default function VaccinationPage({ petId }) {
+import ListVaccination from "../ListVaccination/VaccinationList";
+import FormVaccination from "../FormVaccination/FormVaccination";
+import EditVaccination from "../EditVaccination/EditVaccination";
+
+import { useEffect, useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
+
+export default function AddVaccination({ petId }) {
   const { data: session } = useSession();
   const isAdmin = useMemo(() => session?.user?.role === "admin", [session]);
-
-  const searchParams = useSearchParams();
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -76,19 +75,19 @@ export default function VaccinationPage({ petId }) {
   };
 
   return (
-    <section className={styles.wrap}>
-      <h1 className={styles.title}>Vaccinations</h1>
+    <section className={styles.page}>
+      <h1 className={styles.page__title}>Vaccinations</h1>
 
-      {loading && <p className={styles.info}>Loading…</p>}
-      {err && <p className={styles.error}>{err}</p>}
+      {loading && <p className={styles.page__info}>Loading…</p>}
+      {err && <p className={styles.page__error}>{err}</p>}
 
       {!loading && !err && (
         <>
-          {isAdmin && <VaccinationForm petId={petId} baseUrl={base} onCreated={load} />}
-          <VaccinationList items={items} canEdit={isAdmin} onEdit={handleEdit} onDelete={handleDelete} />
+          {isAdmin && <FormVaccination petId={petId} baseUrl={base} onCreated={load} />}
+          <ListVaccination items={items} canEdit={isAdmin} onEdit={handleEdit} onDelete={handleDelete} />
 
           {editOpen && editing && (
-            <EditVaccinationModal
+            <EditVaccination
               open={editOpen}
               onClose={() => setEditOpen(false)}
               vaccination={editing}

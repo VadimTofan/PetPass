@@ -1,9 +1,9 @@
 "use client";
 
-import styles from "./vaccination.module.css";
+import styles from "./VaccinationForm.module.css";
 
 import { useState } from "react";
-import FetchUserData from "../../components/DBFunctions/FetchUserData";
+import FetchUserData from "../../../../DBFunctions/FetchUserData";
 import { useSession } from "next-auth/react";
 
 export default function VaccinationForm({ petId, baseUrl, onCreated }) {
@@ -92,7 +92,7 @@ export default function VaccinationForm({ petId, baseUrl, onCreated }) {
 
   return (
     <form onSubmit={onSubmit} className={styles.form}>
-      <h2 className={styles.subtitle}>Add vaccination</h2>
+      <h2 className={styles.form__subtitle}>Add vaccination</h2>
 
       <div className={styles.form__row}>
         <label>Vaccine name*</label>
