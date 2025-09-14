@@ -56,12 +56,12 @@ ol {
 
 /* Theme variables */
 :root {
-  --bg: #f6f3ec; /* beige */
+  --bg: #f6f3ec;
   --card: #ffffff;
-  --ink: #263238;
+  --ink: #496675;
   --muted: #6b7280;
   --brand: #d9e26c; /* lemon */
-  --orange: #f1bd10f1; /* color that matches logo color */
+  --lime: #40d5b0;
   --radius-xl: 16px;
   --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.08);
 }

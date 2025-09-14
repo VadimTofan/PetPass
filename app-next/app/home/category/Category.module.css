@@ -1,6 +1,6 @@
 .category {
   padding: 5rem 0;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  background: var(--bg);
 }
 
 .category__container {
@@ -24,7 +24,7 @@
 .category__subtitle {
   font-size: 1.125rem;
   color: #64748b;
-  max-width: 600px;
+  max-width: 50vw;
   margin: 0 auto;
   line-height: 1.6;
 }
@@ -95,7 +95,7 @@
 }
 
 .category__card:hover .category__name {
-  color: #40d5b0;
+  color: var(--lime);
 }
 
 @media (max-width: 768px) {
@@ -113,6 +113,7 @@
 
   .category__subtitle {
     font-size: 1rem;
+    max-width: 90vw;
   }
 
   .category__grid {

@@ -5,6 +5,8 @@ import fs from "fs";
 
 import petsRouter from "./routers/petsRouter.js";
 import usersRouter from "./routers/usersRouter.js";
+import vaccinationsRouter from "./routers/vaccinationsRouter.js";
+
 
 const app = express();
 
@@ -35,3 +37,6 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 8000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+app.use("/api", vaccinationsRouter);
+
