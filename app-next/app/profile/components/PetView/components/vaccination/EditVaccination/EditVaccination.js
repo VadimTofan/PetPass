@@ -93,53 +93,53 @@ export default function EditVaccination({ open, onClose, vaccination, baseUrl, o
   if (!open) return null;
 
   return (
-    <div className={styles.modal} onClick={onClose}>
-      <div className={styles.modal__block} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.modal__header}>
-          <h3 className={styles.modal__title}>Edit vaccination</h3>
-          <button className={styles.modal__buttonClose} onClick={onClose} aria-label="Close">
+    <section className={styles.vaccination} onClick={onClose}>
+      <div className={styles.vaccination__block} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.vaccination__header}>
+          <h3 className={styles.vaccination__title}>Edit vaccination</h3>
+          <button className={styles.vaccination__buttonClose} onClick={onClose} aria-label="Close">
             ×
           </button>
         </div>
 
-        <form onSubmit={onSubmit} className={styles.modal__body}>
-          <div className={styles.modal__row}>
+        <div className={styles.vaccination__body}>
+          <div className={styles.vaccination__row}>
             <label>Vaccine name*</label>
-            <input name="vaccine_name" value={form.vaccine_name} onChange={onChange} required className={styles.modal__field} />
+            <input name="vaccine_name" value={form.vaccine_name} onChange={onChange} required className={styles.vaccination__field} />
           </div>
 
-          <div className={styles.modal__row}>
+          <div className={styles.vaccination__row}>
             <label>Date administered*</label>
-            <input type="date" name="date_administered" value={form.date_administered} onChange={onChange} required className={styles.modal__field} />
+            <input type="date" name="date_administered" value={form.date_administered} onChange={onChange} required className={styles.vaccination__field} />
           </div>
 
-          <div className={styles.modal__row}>
+          <div className={styles.vaccination__row}>
             <label>Next due</label>
-            <input type="date" name="next_due" value={form.next_due} onChange={onChange} className={styles.modal__field} />
+            <input type="date" name="next_due" value={form.next_due} onChange={onChange} className={styles.vaccination__field} />
           </div>
 
-          <div className={styles.modal__row}>
+          <div className={styles.vaccination__row}>
             <label>Veterinarian</label>
-            <input name="veterinarian" value={form.veterinarian} onChange={onChange} className={styles.modal__field} />
+            <input name="veterinarian" value={form.veterinarian} onChange={onChange} className={styles.vaccination__field} />
           </div>
 
-          <div className={styles.modal__row}>
+          <div className={styles.vaccination__row}>
             <label>Notes</label>
-            <textarea name="notes" value={form.notes} onChange={onChange} rows={3} className={styles.modal__field} />
+            <textarea name="notes" value={form.notes} onChange={onChange} rows={3} className={styles.vaccination__field} />
           </div>
 
-          {err && <p className={styles.modal__error}>{err}</p>}
+          {err && <p className={styles.vaccination__error}>{err}</p>}
 
-          <div className={styles.modal__footer}>
-            <button type="button" className={styles.modal__buttonGhost} onClick={onClose}>
+          <div className={styles.vaccination__footer}>
+            <button type="button" className={styles.vaccination__buttonGhost} onClick={onClose}>
               Cancel
             </button>
-            <button className={styles.modal__button} disabled={saving}>
+            <button className={styles.vaccination__button} onClick={onSubmit} disabled={saving}>
               {saving ? "Saving…" : "Save changes"}
             </button>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

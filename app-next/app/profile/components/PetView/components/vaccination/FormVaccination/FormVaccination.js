@@ -2,9 +2,10 @@
 
 import styles from "./VaccinationForm.module.css";
 
-import { useState } from "react";
 import FetchUserData from "../../../../DBFunctions/FetchUserData";
+
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 export default function VaccinationForm({ petId, baseUrl, onCreated }) {
   const { data: session } = useSession();
@@ -91,26 +92,34 @@ export default function VaccinationForm({ petId, baseUrl, onCreated }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className={styles.form}>
-      <h2 className={styles.form__subtitle}>Add vaccination</h2>
+    <section>
+      <div className={styles.vaccination} role="group" aria-labelledby="vaccination-title">
+        <h2 id="vaccination-title" className={styles.vaccination__title}>
+          Add vaccination
+        </h2>
 
-      <div className={styles.form__row}>
-        <label>Vaccine name*</label>
-        <input name="vaccine_name" value={form.vaccine_name} onChange={onChange} required className={styles.form__field} />
-        <label>Next due</label>
-        <input type="date" name="next_due" value={(form.next_due ?? "").slice(0, 10)} onChange={onChange} className={styles.form__field} />
+        <div className={styles.vaccination__block}>
+          <div className={styles.vaccination__row}>
+            <label htmlFor="vaccine_name">Vaccine name*</label>
+            <input id="vaccine_name" name="vaccine_name" value={form.vaccine_name} onChange={onChange} className={styles.vaccination__field} required />
+          </div>
+          <div className={styles.vaccination__row}>
+            <label htmlFor="next_due">Next due</label>
+            <input id="next_due" type="date" name="next_due" value={(form.next_due ?? "").slice(0, 10)} onChange={onChange} className={styles.vaccination__field} />
+          </div>
+        </div>
+        <div className={styles.vaccination__row}>
+          <label htmlFor="notes">Notes</label>
+          <textarea id="notes" name="notes" value={form.notes} onChange={onChange} rows={3} className={styles.vaccination__field} />
+        </div>
+
+        {err && <p className={styles.vaccination__error}>{err}</p>}
+        {ok && <p className={styles.vaccination__ok}>{ok}</p>}
+
+        <button type="button" className={styles.vaccination__button} onClick={onSubmit} disabled={loading}>
+          {loading ? "Saving…" : "Save"}
+        </button>
       </div>
-      <div className={styles.form__row}>
-        <label>Notes</label>
-        <textarea name="notes" value={form.notes} onChange={onChange} rows={3} className={styles.form__field} />
-      </div>
-
-      {err && <p className={styles.form__error}>{err}</p>}
-      {ok && <p className={styles.form__ok}>{ok}</p>}
-
-      <button className={styles.form__button} disabled={loading}>
-        {loading ? "Saving…" : "Save"}
-      </button>
-    </form>
+    </section>
   );
 }

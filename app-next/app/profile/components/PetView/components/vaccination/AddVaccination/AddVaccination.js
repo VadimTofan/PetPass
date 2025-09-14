@@ -75,11 +75,9 @@ export default function AddVaccination({ petId }) {
   };
 
   return (
-    <section className={styles.page}>
-      <h1 className={styles.page__title}>Vaccinations</h1>
-
-      {loading && <p className={styles.page__info}>Loading…</p>}
-      {err && <p className={styles.page__error}>{err}</p>}
+    <section className={styles.vaccination}>
+      {loading && <p className={styles.vaccination__info}>Loading…</p>}
+      {err && <p className={styles.vaccination__error}>{err}</p>}
 
       {!loading && !err && (
         <>

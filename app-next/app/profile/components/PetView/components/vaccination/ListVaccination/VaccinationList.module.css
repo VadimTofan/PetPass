@@ -1,8 +1,8 @@
-.list {
+.vaccination {
   overflow-x: auto;
 }
 
-.list__table {
+.vaccination__table {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
@@ -10,38 +10,38 @@
   overflow: hidden;
 }
 
-.list__info {
+.vaccination__info {
   color: var(--ink);
 }
 
-.list__table th,
-.list__table td {
+.vaccination__table th,
+.vaccination__table td {
   padding: 10px 12px;
   border-bottom: 1px solid #f3f4f6;
   text-align: left;
 }
 
-.list__table th {
+.vaccination__table th {
   background: #f9fafb;
   font-weight: 600;
 }
 
-.list__actions {
+.vaccination__actions {
   width: 120px;
 }
 
-.list__notes {
+.vaccination__notes {
   max-width: 320px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.list__action {
+.vaccination__action {
   white-space: nowrap;
 }
 
-.list__buttonLink {
+.vaccination__buttonLink {
   background: transparent;
   border: none;
   padding: 0;
@@ -50,12 +50,12 @@
   text-decoration: underline;
 }
 
-.list__separator {
+.vaccination__separator {
   margin: 0 6px;
   color: #9ca3af;
 }
 
-.list__buttonDanger {
+.vaccination__buttonDanger {
   background: transparent;
   border: none;
   padding: 0;
