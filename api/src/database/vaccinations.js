@@ -4,13 +4,8 @@ export async function getVaccinationsByPetId(petId) {
   return dbClient("vaccinations").select("*").where({ pet_id: petId });
 }
 
-export async function getVaccinationsByPetIdentification(petId) {
-  return dbClient("vaccinations").select("*").where("pet_id", petId);
-}
 export async function getVaccinationById(id) {
-  const [vaccination] = await dbClient("vaccinations")
-    .select("*")
-    .where({ id });
+  const [vaccination] = await dbClient("vaccinations").select("*").where({ id });
   return vaccination;
 }
 
@@ -31,10 +26,7 @@ export async function addVaccination(petId, vaccinationData) {
 
 // Update
 export async function updateVaccination(id, updates) {
-  const [updated] = await dbClient("vaccinations")
-    .where({ id })
-    .update(updates)
-    .returning("*");
+  const [updated] = await dbClient("vaccinations").where({ id }).update(updates).returning("*");
   return updated;
 }
 
