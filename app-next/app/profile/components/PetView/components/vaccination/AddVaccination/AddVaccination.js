@@ -6,7 +6,7 @@ import ListVaccination from "../ListVaccination/VaccinationList";
 import FormVaccination from "../FormVaccination/FormVaccination";
 import EditVaccination from "../EditVaccination/EditVaccination";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
 
 export default function AddVaccination({ petId }) {
@@ -43,6 +43,10 @@ export default function AddVaccination({ petId }) {
       setLoading(false);
     }
   }, [petId, base]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const handleEdit = (v) => {
     setEditing(v);
