@@ -22,7 +22,7 @@ export default function AddVaccination({ petId }) {
 
   const base = process.env.NEXT_PUBLIC_DB_ACCESS;
 
-  async function load() {
+  const load = useCallback(async () => {
     if (!petId) {
       setErr("Missing pet id (?pet=...)");
       setLoading(false);
@@ -42,11 +42,7 @@ export default function AddVaccination({ petId }) {
     } finally {
       setLoading(false);
     }
-  }
-
-  useEffect(() => {
-    load();
-  }, [petId]);
+  }, [petId, base]);
 
   const handleEdit = (v) => {
     setEditing(v);
