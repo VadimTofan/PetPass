@@ -1,14 +1,18 @@
 "use client";
 
 import styles from "./PetProfile.module.css";
-import Image from "next/image";
-import { useSession } from "next-auth/react";
+
 import useFetchUserPetData from "../../DBFunctions/FetchUserPetData";
 import FetchUserData from "../../DBFunctions/FetchUserData";
+import VaccinationPage from "../../../../vaccinations/page";
+
+import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export function PetProfileDisplay({ pet, onEdit, formatDate }) {
   const { data: session, status } = useSession();
+
   const router = useRouter();
 
   const isAuthed = status === "authenticated";
@@ -18,9 +22,12 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
   const email = session?.user?.email ?? "";
 
   const { user, error: userError } = FetchUserData(email);
-  const { pets = [], error: petsError } = useFetchUserPetData(user?.id);
+
+  const { pets = [], error: petsError, isLoading } = useFetchUserPetData(user?.id);
 
   const isOwner = pets?.some((userPet) => userPet.id === pet.id);
+
+  if (isLoading) return <p className={styles.pet__loading}>Loading pet data...</p>;
 
   if (userError || petsError) {
     return <p>Error loading data.</p>;
@@ -82,6 +89,9 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
               </div>
             )}
           </div>
+        </section>
+        <section className={styles.pet__section}>
+          <VaccinationPage petId={pet.id} />
         </section>
         <section className={styles.pet__section}>
           <h2 className={styles.pet__sectionTitle}>Microchip</h2>

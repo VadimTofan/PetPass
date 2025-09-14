@@ -175,8 +175,12 @@
   min-width: 0;
 }
 
-.pet__error {
+.pet__error,
+.pet__loading {
+  color: #64748b;
+  font-size: 1.2rem;
   text-align: center;
+  padding: 48px 0;
 }
 
 @media (max-width: 900px) {

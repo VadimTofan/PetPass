@@ -15,9 +15,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchPets() {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pets`
-        );
+        const res = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pets`);
         if (!res.ok) throw new Error("Failed to fetch pets");
         const data = await res.json();
 
@@ -40,7 +38,7 @@ export default function Home() {
     const petId = e.target.value;
     setSelectedPet(petId);
     if (petId) {
-      router.push(`/vaccination/${petId}`);
+      router.push(`/vaccinations/${petId}`);
     }
   };
 
@@ -50,15 +48,9 @@ export default function Home() {
   return (
     <main className={styles.container}>
       <h1 className={styles.heading}>Vaccination History</h1>
-      <p className={styles.description}>
-        Select a pet by ID to view its vaccination records:
-      </p>
+      <p className={styles.description}>Select a pet by ID to view its vaccination records:</p>
 
-      <select
-        className={styles.selectBox}
-        value={selectedPet}
-        onChange={handleSelect}
-      >
+      <select className={styles.selectBox} value={selectedPet} onChange={handleSelect}>
         <option value="">-- Select a pet --</option>
         {pets.map((pet) => (
           <option key={pet.id} value={pet.id}>
