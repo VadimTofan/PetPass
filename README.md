@@ -24,8 +24,8 @@ Open your terminal and navigate to a desired folder.
 
 git clone https://github.com/VadimTofan/PetPass.git
 
-cd PetPass ─┬─ cd api —— npm install
-            └─ cd app-next —— npm install
+cd PetPass ─┬─ cd api —— npm install —— npm run dev
+            └─ cd app-next —— npm install —— npm run dev
 
 Get the environmental variables from one of our team members.
 
