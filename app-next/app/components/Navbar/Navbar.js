@@ -34,11 +34,27 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const navItems = [
-    { name: "Home", icon: "/icons/home.png", path: "/home" },
-    { name: "Contact", icon: "/icons/contact.png", path: "/contact" },
-    { name: "About Us", icon: "/icons/about.png", path: "/about" },
-  ];
+  const navItems = (() => {
+    const items = [
+      { name: "Home", path: "/home", icon: "/icons/home.png" },
+      { name: "Contact", path: "/contact", icon: "/icons/contact.png" },
+    ];
+
+    if (!isAuthed) {
+      items.push({ name: "About", path: "/about", icon: "/icons/about.png" });
+    } else if (isAdmin) {
+      items.push({ name: "Pets Dashboard", path: "/profile/pets/all", icon: "/icons/spreadsheet.png" });
+    } else {
+      items.push({ name: "Pets", path: "/profile", icon: "/icons/paw.png" });
+    }
+
+    return items;
+  })();
+
+  const handleSignOut = () => {
+    setShowProfileMenu(false);
+    signOut({ callbackUrl: "/home" });
+  };
 
   return (
     <>
@@ -59,13 +75,6 @@ export default function Navbar() {
                 </Link>
               </li>
             ))}
-            {isAdmin && (
-              <li className={styles.navbar__item}>
-                <Link href="/profile/pets/all" className={styles.navbar__link}>
-                  <span className={styles.navbar__linkText}>Pets Dashboard</span>
-                </Link>
-              </li>
-            )}
           </ul>
         </div>
 
@@ -87,7 +96,7 @@ export default function Navbar() {
                   <button onClick={handleProfileClick} className={styles.navbar__button}>
                     Profile
                   </button>
-                  <button type="button" onClick={() => signOut()} className={styles.navbar__button}>
+                  <button type="button" onClick={handleSignOut} className={styles.navbar__button}>
                     Sign out
                   </button>
                 </div>
@@ -96,22 +105,18 @@ export default function Navbar() {
           )
         )}
       </nav>
-
       <ul className={styles.navbar__itemsMobile}>
         {navItems.map((item) => (
           <li key={item.name} className={styles.navbar__itemMobile}>
             <Link href={item.path} className={styles.navbar__linkMobile}>
-              <Image src={item.icon} alt={item.name} width={24} height={24} className={styles.navbar__iconMobile} />
+              {item.icon ? (
+                <Image src={item.icon} alt={item.name} width={24} height={24} className={styles.navbar__iconMobile} />
+              ) : (
+                <span className={styles.navbar__linkTextMobile}>{item.name}</span>
+              )}
             </Link>
           </li>
         ))}
-        {isAdmin && (
-          <li className={styles.navbar__item}>
-            <Link href="/profile/pets/all" className={styles.navbar__linkMobile}>
-              <Image src="/icons/spreadsheet.png" alt="Pets Dashboard" width={24} height={24} className={styles.navbar__iconMobile} />
-            </Link>
-          </li>
-        )}
       </ul>
 
       {showLoginModal && (
