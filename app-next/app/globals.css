@@ -62,6 +62,7 @@ ol {
   --muted: #6b7280;
   --brand: #d9e26c; /* lemon */
   --lime: #40d5b0;
+  --focus: #38bdf8;
   --radius-xl: 16px;
   --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.08);
 }

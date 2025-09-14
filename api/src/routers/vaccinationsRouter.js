@@ -10,7 +10,7 @@ router.get("/pets/:petId/vaccinations", async (req, res) => {
     const { petId } = req.params;
     if (!petId) return res.status(400).send({ error: `No petId is provided` });
     const rows = await db.getVaccinationsByPetId(petId);
-    if (rows.length === 0) return res.status(404).json({ message: `Pet ID ${petId} has no vaccinations record.` });
+    if (rows.length === 0) return res.status(400).json({ message: `Pet ID ${petId} has no vaccinations record.` });
     res.json(rows);
   } catch (err) {
     console.error("GET /pets/:petId/vaccinations", err);

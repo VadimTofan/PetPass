@@ -34,19 +34,11 @@ export default function VaccinationList({ items, canEdit, onEdit, onDelete }) {
               <td className={styles.notesCell}>{v.notes || "-"}</td>
               {canEdit && (
                 <td className={styles.actionsCell}>
-                  <button
-                    className={styles.linkBtn}
-                    onClick={() => onEdit?.(v)}
-                    aria-label="Edit vaccination"
-                  >
+                  <button className={styles.linkBtn} onClick={() => onEdit?.(v)} aria-label="Edit vaccination">
                     Edit
                   </button>
                   <span className={styles.sep}>·</span>
-                  <button
-                    className={styles.dangerBtn}
-                    onClick={() => onDelete?.(v.id)}
-                    aria-label="Delete vaccination"
-                  >
+                  <button className={styles.dangerBtn} onClick={() => onDelete?.(v.id)} aria-label="Delete vaccination">
                     Delete
                   </button>
                 </td>
