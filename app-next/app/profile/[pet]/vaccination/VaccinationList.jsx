@@ -1,12 +1,7 @@
 "use client";
 
 import styles from "./vaccination.module.css";
-
-function fmtDate(d) {
-  if (!d) return "-";
-  const s = String(d);
-  return s.length >= 10 ? s.slice(0, 10) : s; // YYYY-MM-DD
-}
+import formatDate from "@/app/components/FormatDate/FormatDate";
 
 export default function VaccinationList({ items, canEdit, onEdit, onDelete }) {
   if (!items?.length) return <p className={styles.info}>No records.</p>;
@@ -28,8 +23,8 @@ export default function VaccinationList({ items, canEdit, onEdit, onDelete }) {
           {items.map((v) => (
             <tr key={v.id}>
               <td>{v.vaccine_name}</td>
-              <td>{fmtDate(v.date_administered)}</td>
-              <td>{fmtDate(v.next_due)}</td>
+              <td>{formatDate(v.date_administered)}</td>
+              <td>{formatDate(v.next_due)}</td>
               <td>{v.veterinarian || "-"}</td>
               <td className={styles.notesCell}>{v.notes || "-"}</td>
               {canEdit && (

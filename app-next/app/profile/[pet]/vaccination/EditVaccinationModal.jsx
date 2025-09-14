@@ -3,15 +3,8 @@
 import { useEffect, useState } from "react";
 import styles from "./vaccination.module.css";
 
-export default function EditVaccinationModal({
-  open,
-  onClose,
-  vaccination,
-  baseUrl,    
-  onSaved,
-}) {
-  const API_BASE =
-    baseUrl || (typeof window !== "undefined" ? process.env.NEXT_PUBLIC_DB_ACCESS : "");
+export default function EditVaccinationModal({ open, onClose, vaccination, baseUrl, onSaved }) {
+  const API_BASE = baseUrl || (typeof window !== "undefined" ? process.env.NEXT_PUBLIC_DB_ACCESS : "");
 
   const [form, setForm] = useState({
     vaccine_name: "",
@@ -74,7 +67,7 @@ export default function EditVaccinationModal({
       setSaving(true);
       const url = `${API_BASE}/api/vaccinations/${vaccination.id}`;
       const res = await fetch(url, {
-        method: "PATCH", 
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
@@ -111,57 +104,27 @@ export default function EditVaccinationModal({
         <form onSubmit={onSubmit} className={styles.modalBody}>
           <div className={styles.row}>
             <label>Vaccine name*</label>
-            <input
-              name="vaccine_name"
-              value={form.vaccine_name}
-              onChange={onChange}
-              required
-              className={styles.field}
-            />
+            <input name="vaccine_name" value={form.vaccine_name} onChange={onChange} required className={styles.field} />
           </div>
 
           <div className={styles.row}>
             <label>Date administered*</label>
-            <input
-              type="date"
-              name="date_administered"
-              value={form.date_administered}
-              onChange={onChange}
-              required
-              className={styles.field}
-            />
+            <input type="date" name="date_administered" value={form.date_administered} onChange={onChange} required className={styles.field} />
           </div>
 
           <div className={styles.row}>
             <label>Next due</label>
-            <input
-              type="date"
-              name="next_due"
-              value={form.next_due}
-              onChange={onChange}
-              className={styles.field}
-            />
+            <input type="date" name="next_due" value={form.next_due} onChange={onChange} className={styles.field} />
           </div>
 
           <div className={styles.row}>
             <label>Veterinarian</label>
-            <input
-              name="veterinarian"
-              value={form.veterinarian}
-              onChange={onChange}
-              className={styles.field}
-            />
+            <input name="veterinarian" value={form.veterinarian} onChange={onChange} className={styles.field} />
           </div>
 
           <div className={styles.row}>
             <label>Notes</label>
-            <textarea
-              name="notes"
-              value={form.notes}
-              onChange={onChange}
-              rows={3}
-              className={styles.field}
-            />
+            <textarea name="notes" value={form.notes} onChange={onChange} rows={3} className={styles.field} />
           </div>
 
           {err && <p className={styles.error}>{err}</p>}

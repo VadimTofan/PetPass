@@ -8,12 +8,11 @@ import VaccinationForm from "./VaccinationForm";
 import EditVaccinationModal from "./EditVaccinationModal";
 import styles from "./vaccination.module.css";
 
-export default function VaccinationPage() {
+export default function VaccinationPage({ petId }) {
   const { data: session } = useSession();
   const isAdmin = useMemo(() => session?.user?.role === "admin", [session]);
 
   const searchParams = useSearchParams();
-  const petId = searchParams.get("pet"); // e.g. /profile/pet/vaccination?pet=75
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -85,15 +84,8 @@ export default function VaccinationPage() {
 
       {!loading && !err && (
         <>
-          {isAdmin && (
-            <VaccinationForm petId={petId} baseUrl={base} onCreated={load} />
-          )}
-          <VaccinationList
-            items={items}
-            canEdit={isAdmin}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
+          {isAdmin && <VaccinationForm petId={petId} baseUrl={base} onCreated={load} />}
+          <VaccinationList items={items} canEdit={isAdmin} onEdit={handleEdit} onDelete={handleDelete} />
 
           {editOpen && editing && (
             <EditVaccinationModal

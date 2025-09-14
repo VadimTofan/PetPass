@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { PetProfileDisplay } from "./components/PetProfileDisplay";
 import { PetProfileEdit } from "./components/PetProfileEdit";
+import formatDate from "@/app/components/FormatDate/FormatDate";
 
 export default function FetchPetData() {
   const [pet, setPet] = useState(null);
@@ -33,12 +34,6 @@ export default function FetchPetData() {
 
     fetchData();
   }, [id]);
-
-  const formatDate = (iso) => {
-    if (!iso) return "";
-    const d = new Date(iso);
-    return isNaN(d) ? iso : d.toLocaleDateString();
-  };
 
   if (isLoading) {
     return (

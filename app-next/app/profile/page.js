@@ -10,8 +10,8 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 export default function ProfilePage() {
-  const router = useRouter();
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   const email = session?.user?.email ?? "";
   const { user, isLoading: userLoading, error: userError } = FetchUserData(email);

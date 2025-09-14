@@ -1,45 +1,60 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import styles from "./PetProfile.module.css";
 
 import useFetchUserPetData from "../../DBFunctions/FetchUserPetData";
 import FetchUserData from "../../DBFunctions/FetchUserData";
-import VaccinationPage from "./vaccinations/Vaccination";
+import VaccinationPage from "@/app/profile/[pet]/vaccination/page";
+import Vaccinations from "./vaccinations/Vaccination";
 
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 export function PetProfileDisplay({ pet, onEdit, formatDate }) {
   const { data: session, status } = useSession();
-
-  const router = useRouter();
 
   const isAuthed = status === "authenticated";
   const role = session?.user?.role;
   const isAdmin = isAuthed && role === "admin";
 
   const email = session?.user?.email ?? "";
-
   const { user, error: userError } = FetchUserData(email);
-
   const { pets = [], error: petsError, isLoading } = useFetchUserPetData(user?.id);
 
   const isOwner = pets?.some((userPet) => userPet.id === pet.id);
 
+  const [isVaccinationOpen, setIsVaccinationOpen] = useState(false);
+
+  // prevent background scroll when modal is open
+  useEffect(() => {
+    if (isVaccinationOpen) {
+      document.body.classList.add(styles.noScroll);
+    } else {
+      document.body.classList.remove(styles.noScroll);
+    }
+    return () => document.body.classList.remove(styles.noScroll);
+  }, [isVaccinationOpen]);
+
+  // basic focus management + ESC to close
+  const closeBtnRef = useRef(null);
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setIsVaccinationOpen(false);
+    };
+    if (isVaccinationOpen) {
+      document.addEventListener("keydown", onKeyDown);
+      // small delay to ensure element exists
+      setTimeout(() => closeBtnRef.current && closeBtnRef.current.focus(), 0);
+    }
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isVaccinationOpen]);
+
   if (isLoading) return <p className={styles.pet__loading}>Loading pet data...</p>;
-
-  if (userError || petsError) {
-    return <p>Error loading data.</p>;
-  }
-
+  if (userError || petsError) return <p>Error loading data.</p>;
   if (!isOwner && !isAdmin) {
     return <p className={styles.pet__error}>❌ You don’t have access to this pet.</p>;
   }
-
-  const handleVaccinationClick = () => {
-    router.push(`/profile/pet/vaccination?pet=${pet.id}`);
-  };
 
   return (
     <form className={styles.pet__form} onSubmit={(e) => e.preventDefault()}>
@@ -57,6 +72,7 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
           </button>
         </div>
       </header>
+
       <main className={styles.pet__main}>
         <section className={styles.pet__section}>
           <h2 className={styles.pet__sectionTitle}>Basic Info</h2>
@@ -81,19 +97,29 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
               <label>Country of Birth</label>
               <span>{pet.country_of_birth}</span>
             </div>
+
             {isAdmin && (
               <div className={styles.pet__field}>
                 <label>Vaccination</label>
-                <button className={styles.pet__vaccination} onClick={handleVaccinationClick}>
+                <button
+                  type="button"
+                  className={styles.pet__vaccination}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsVaccinationOpen(true);
+                  }}
+                >
                   Add/Edit
                 </button>
               </div>
             )}
           </div>
         </section>
+
         <section className={styles.pet__section}>
-          <VaccinationPage petId={pet.id} />
+          <Vaccinations petId={pet.id} />
         </section>
+
         <section className={styles.pet__section}>
           <h2 className={styles.pet__sectionTitle}>Microchip</h2>
           <div className={styles.pet__fields}>
@@ -111,6 +137,7 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
             </div>
           </div>
         </section>
+
         <section className={styles.pet__section}>
           <h2 className={styles.pet__sectionTitle}>Passport</h2>
           <div className={styles.pet__fields}>
@@ -137,6 +164,39 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
           </div>
         </section>
       </main>
+
+      {/* Modal */}
+      {isVaccinationOpen && (
+        <div
+          className={styles.modal}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="vaccinationModalTitle"
+          onClick={(e) => {
+            // close when clicking the overlay only
+            if (e.target === e.currentTarget) setIsVaccinationOpen(false);
+          }}
+        >
+          <div className={styles.modal__content}>
+            <header className={styles.modal__header}>
+              <h3 id="vaccinationModalTitle" className={styles.modal__title}>
+                Add / Edit Vaccinations
+              </h3>
+              <button ref={closeBtnRef} className={styles.modal__close} aria-label="Close dialog" onClick={() => setIsVaccinationOpen(false)}>
+                ×
+              </button>
+            </header>
+            <div className={styles.modal__body}>
+              <VaccinationPage petId={pet.id} />
+            </div>
+            <footer className={styles.modal__footer}>
+              <button type="button" className={styles.modal__secondary} onClick={() => setIsVaccinationOpen(false)}>
+                Done
+              </button>
+            </footer>
+          </div>
+        </div>
+      )}
     </form>
   );
 }
