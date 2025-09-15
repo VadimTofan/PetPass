@@ -39,15 +39,8 @@ export default function VaccinationForm({ petId, baseUrl, onCreated }) {
     setErr("");
     setOk("");
 
-    if (!form.vaccine_name || !form.date_administered) {
-      setErr("vaccine_name and date_administered are required");
-      return;
-    }
-
-    const today = new Date().toISOString().slice(0, 10);
-
-    if (form.date_administered > today) {
-      setErr("Date administered cannot be in the future.");
+    if (!form.vaccine_name) {
+      setErr("Vaccination name is required");
       return;
     }
 
