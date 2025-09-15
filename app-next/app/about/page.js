@@ -1,5 +1,7 @@
 import styles from "./page.module.css";
 
+import Image from "next/image";
+
 const About = () => {
   return (
     <section className={styles.about}>
@@ -9,48 +11,42 @@ const About = () => {
             <h2 className={styles.about__title}>About PetPass</h2>
 
             <p className={styles.about__description}>
-              For over 15 years, PetPass has been dedicated to providing the highest quality products and services for your beloved pets. We understand that pets are family, and they deserve nothing
-              but the best.
+              PetPass is your digital solution for managing everything your pet needs. From vaccination records to travel papers, we help you keep all your pet’s important documents safe, organized,
+              and accessible anywhere.
             </p>
 
             <p className={styles.about__description}>
-              Our team of pet experts carefully curates every product in our collection, ensuring that each item meets our strict standards for quality, safety, and effectiveness. From premium
-              nutrition to engaging toys, we have everything your pet needs to live a happy and healthy life.
+              We believe pets are family, and caring for them should be simple. PetPass was designed to give owners peace of mind — whether you’re visiting the vet, crossing borders, or just keeping
+              track of everyday care.
             </p>
 
             <div className={styles.about__features}>
               <div className={styles.about__feature}>
-                <div className={styles["about__feature-icon"]}>✓</div>
-                <span>Premium Quality Products</span>
+                <div className={styles.about__featureIcon}>✓</div>
+                <span>Securely Store Medical Records</span>
               </div>
               <div className={styles.about__feature}>
-                <div className={styles["about__feature-icon"]}>✓</div>
-                <span>Expert Pet Care Advice</span>
+                <div className={styles.about__featureIcon}>✓</div>
+                <span>Easy Access to Travel Documents</span>
               </div>
               <div className={styles.about__feature}>
-                <div className={styles["about__feature-icon"]}>✓</div>
-                <span>Fast & Reliable Delivery</span>
+                <div className={styles.about__featureIcon}>✓</div>
+                <span>Reminders for Vaccinations & Appointments</span>
               </div>
               <div className={styles.about__feature}>
-                <div className={styles["about__feature-icon"]}>✓</div>
-                <span>24/7 Customer Support</span>
+                <div className={styles.about__featureIcon}>✓</div>
+                <span>Simple & User-Friendly Design</span>
               </div>
             </div>
-
-            <button className={styles.about__button}>Learn More About Us</button>
           </div>
 
           <div className={styles.about__media}>
-            <div className={styles["about__image-container"]}>
-              <img
-                src="https://images.pexels.com/photos/4587998/pexels-photo-4587998.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop"
-                alt="Happy pet owner with dog"
-                className={styles.about__image}
-              />
+            <div className={styles.about__imageContainer}>
+              <Image width={150} height={150} src="/images/about.webp" alt="person holding a puppy" className={styles.about__image} />
               <div className={styles.about__overlay}>
-                <div className={styles["about__overlay-content"]}>
-                  <h3>15+ Years</h3>
-                  <p>of Pet Care Excellence</p>
+                <div className={styles.about__overlayContent}>
+                  <h3>One App</h3>
+                  <p>For All Your Pet’s Documents</p>
                 </div>
               </div>
             </div>
