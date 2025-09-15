@@ -1,0 +1,14 @@
+.vaccination {
+  padding: 32px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  min-height: 65vh;
+}
+
+.vaccination__error {
+  color: #b91c1c;
+}
+
+.vaccination__info {
+  color: #374151;
+}

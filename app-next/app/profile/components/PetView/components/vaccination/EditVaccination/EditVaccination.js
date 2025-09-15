@@ -1,17 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import styles from "./vaccination.module.css";
+import styles from "./EditVaccination.module.css";
 
-export default function EditVaccinationModal({
-  open,
-  onClose,
-  vaccination,
-  baseUrl,    
-  onSaved,
-}) {
-  const API_BASE =
-    baseUrl || (typeof window !== "undefined" ? process.env.NEXT_PUBLIC_DB_ACCESS : "");
+import { useEffect, useState } from "react";
+
+export default function EditVaccination({ open, onClose, vaccination, baseUrl, onSaved }) {
+  const API_BASE = baseUrl || (typeof window !== "undefined" ? process.env.NEXT_PUBLIC_DB_ACCESS : "");
 
   const [form, setForm] = useState({
     vaccine_name: "",
@@ -74,7 +68,7 @@ export default function EditVaccinationModal({
       setSaving(true);
       const url = `${API_BASE}/api/vaccinations/${vaccination.id}`;
       const res = await fetch(url, {
-        method: "PATCH", 
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
@@ -99,83 +93,53 @@ export default function EditVaccinationModal({
   if (!open) return null;
 
   return (
-    <div className={styles.modalBackdrop} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.modalHeader}>
-          <h3 className={styles.modalTitle}>Edit vaccination</h3>
-          <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
+    <section className={styles.vaccination} onClick={onClose}>
+      <div className={styles.vaccination__block} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.vaccination__header}>
+          <h3 className={styles.vaccination__title}>Edit vaccination</h3>
+          <button className={styles.vaccination__buttonClose} onClick={onClose} aria-label="Close">
             ×
           </button>
         </div>
 
-        <form onSubmit={onSubmit} className={styles.modalBody}>
-          <div className={styles.row}>
+        <div className={styles.vaccination__body}>
+          <div className={styles.vaccination__row}>
             <label>Vaccine name*</label>
-            <input
-              name="vaccine_name"
-              value={form.vaccine_name}
-              onChange={onChange}
-              required
-              className={styles.field}
-            />
+            <input name="vaccine_name" value={form.vaccine_name} onChange={onChange} required className={styles.vaccination__field} />
           </div>
 
-          <div className={styles.row}>
+          <div className={styles.vaccination__row}>
             <label>Date administered*</label>
-            <input
-              type="date"
-              name="date_administered"
-              value={form.date_administered}
-              onChange={onChange}
-              required
-              className={styles.field}
-            />
+            <input type="date" name="date_administered" value={form.date_administered} onChange={onChange} required className={styles.vaccination__field} />
           </div>
 
-          <div className={styles.row}>
+          <div className={styles.vaccination__row}>
             <label>Next due</label>
-            <input
-              type="date"
-              name="next_due"
-              value={form.next_due}
-              onChange={onChange}
-              className={styles.field}
-            />
+            <input type="date" name="next_due" value={form.next_due} onChange={onChange} className={styles.vaccination__field} />
           </div>
 
-          <div className={styles.row}>
+          <div className={styles.vaccination__row}>
             <label>Veterinarian</label>
-            <input
-              name="veterinarian"
-              value={form.veterinarian}
-              onChange={onChange}
-              className={styles.field}
-            />
+            <input name="veterinarian" value={form.veterinarian} onChange={onChange} className={styles.vaccination__field} />
           </div>
 
-          <div className={styles.row}>
+          <div className={styles.vaccination__row}>
             <label>Notes</label>
-            <textarea
-              name="notes"
-              value={form.notes}
-              onChange={onChange}
-              rows={3}
-              className={styles.field}
-            />
+            <textarea name="notes" value={form.notes} onChange={onChange} rows={3} className={styles.vaccination__field} />
           </div>
 
-          {err && <p className={styles.error}>{err}</p>}
+          {err && <p className={styles.vaccination__error}>{err}</p>}
 
-          <div className={styles.modalFooter}>
-            <button type="button" className={styles.btnGhost} onClick={onClose}>
+          <div className={styles.vaccination__footer}>
+            <button type="button" className={styles.vaccination__buttonGhost} onClick={onClose}>
               Cancel
             </button>
-            <button className={styles.btn} disabled={saving}>
+            <button className={styles.vaccination__button} onClick={onSubmit} disabled={saving}>
               {saving ? "Saving…" : "Save changes"}
             </button>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -1,10 +1,11 @@
 "use client";
 
-import styles from "./Vaccination.module.css";
+import styles from "./ProfileVaccination.module.css";
 
-import useVaccinationData from "../../../DBFunctions/FetchPetVaccinations";
+import formatDate from "@/app/components/FormatDate/FormatDate";
+import useVaccinationData from "../../../../DBFunctions/FetchPetVaccinations";
 
-export default function VaccinationPage({ petId }) {
+export default function Vaccinations({ petId }) {
   const { vaccinations, error, isLoading } = useVaccinationData(petId);
 
   if (!vaccinations.length) {
@@ -17,12 +18,6 @@ export default function VaccinationPage({ petId }) {
       </main>
     );
   }
-
-  const formatDate = (iso) => {
-    if (!iso) return "—";
-    const date = new Date(iso);
-    return isNaN(date) ? iso : date.toLocaleDateString();
-  };
 
   return (
     <main className={styles.vaccination}>
