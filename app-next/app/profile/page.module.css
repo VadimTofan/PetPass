@@ -93,7 +93,7 @@
   display: grid;
   place-items: center;
   width: min(92vw, 900px);
-  padding: 3rem 3rem 4.75rem;
+  padding: 0 3rem 3rem 4.75rem;
   perspective: var(--perspective);
   perspective-origin: 50% 42%;
   overflow: visible;
