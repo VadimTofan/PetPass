@@ -9,8 +9,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function SignupPage() {
+  const today = new Date().toISOString().slice(0, 10);
   const { data: session, status } = useSession();
-  const [draft, setDraft] = useState(null);
+  const [draft, setDraft] = useState({
+    name: "",
+    species: "",
+    sex: "",
+    date_of_birth: today,
+  });
   const isAuthed = status === "authenticated";
   const email = session?.user?.email ?? "";
   const { user } = FetchUserData(email);
@@ -18,7 +24,11 @@ export default function SignupPage() {
 
   useEffect(() => {
     if (user) {
-      setDraft(user);
+      setDraft((prev) => ({
+        ...prev,
+        ...user,
+        date_of_birth: user.date_of_birth || prev.date_of_birth,
+      }));
     }
   }, [user]);
 

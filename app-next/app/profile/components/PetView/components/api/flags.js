@@ -8,7 +8,7 @@ const options = countries.map((country) => ({
   value: country.code,
   label: (
     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <Image src={`https://flagpedia.net/data/flags/w580/${country.code.toLowerCase()}.webp`} alt={country.name} width={15} height={15} />
+      <Image src={`https://flagpedia.net/data/flags/w580/${country.code.toLowerCase()}.webp`} alt={country.name} height={15} width={0} style={{ width: "auto" }} />
       <span>{country.name}</span>
     </div>
   ),

@@ -60,9 +60,10 @@ ol {
   --card: #ffffff;
   --ink: #496675;
   --muted: #6b7280;
-  --brand: #d9e26c; /* lemon */
+  --brand: #d9e26c;
   --lime: #40d5b0;
   --focus: #38bdf8;
+  --danger: #d9534f;
   --radius-xl: 16px;
   --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.08);
 }

@@ -25,11 +25,7 @@ const upload = multer({
 
 petsRouter.post("/api/pets", upload.single("photo"), async (request, response, next) => {
   try {
-    const body = request.body;
-    const baseUrl = process.env.PUBLIC_BASE_URL || `${request.protocol}://${request.get("host")}`;
-    const photo_url = request.file ? `${baseUrl}/uploads/pets/${request.file.filename}` : null;
-
-    const pet = { ...body, photo_url };
+    const pet = request.body;
     const petError = validatePetData(pet);
     if (petError) return response.status(400).send({ error: petError });
 
@@ -151,17 +147,17 @@ const createPetObject = (pet) => {
     color_markings: clean(pet.color_markings),
     date_of_birth: clean(pet.date_of_birth),
     country_of_birth: clean(pet.country_of_birth),
-    microchip_number: pet.microchip_number,
-    microchip_implant_date: clean(pet.microchip_implant_date),
-    microchip_implant_location: clean(pet.microchip_implant_location),
-    passport_number: pet.passport_number,
-    country_of_issue: pet.country_of_issue,
-    issue_date: clean(pet.issue_date),
-    issuing_authority: clean(pet.issuing_authority),
-    current_status: clean(pet.current_status) ?? "active",
-    photo_url: clean(pet.photo_url),
-    created_at: pet.created_at ?? now,
-    updated_at: pet.updated_at ?? now,
+    microchip_number: pet.microchip_number ?? null,
+    microchip_implant_date: clean(pet.microchip_implant_date) ?? null,
+    microchip_implant_location: clean(pet.microchip_implant_location) ?? null,
+    passport_number: pet.passport_number ?? null,
+    country_of_issue: pet.country_of_issue ?? "DK",
+    issue_date: clean(pet.issue_date) ?? now,
+    issuing_authority: clean(pet.issuing_authority) ?? null,
+    current_status: clean(pet.current_status) ?? "Active",
+    photo_url: clean(pet.photo_url) ?? null,
+    created_at: pet.created_at ?? now ?? null,
+    updated_at: pet.updated_at ?? now ?? null,
   };
 };
 

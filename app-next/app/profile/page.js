@@ -90,7 +90,9 @@ export default function ProfilePage() {
       <section className={styles.profile}>
         <div className={styles.profile__header}>
           <p className={styles.profile__loading}>This user has no profile yet.</p>
-          <Link href="/profile/edit">Set up user Profile?</Link>
+          <Link className={styles.profile__login} href="/profile/edit">
+            Set up user Profile?
+          </Link>
         </div>
       </section>
     );
@@ -102,6 +104,16 @@ export default function ProfilePage() {
   const isActive = (i) => i === index;
   const isPrev = (i) => (index - 1 + count) % count === i;
   const isNext = (i) => (index + 1) % count === i;
+
+  const isValidUrl = (str) => {
+    if (!str) return false;
+    try {
+      const u = new URL(str);
+      return u.protocol === "http:" || u.protocol === "https:";
+    } catch {
+      return false;
+    }
+  };
 
   return (
     <section className={styles.profile}>
@@ -131,22 +143,26 @@ export default function ProfilePage() {
             aria-label="Pets carousel"
           >
             <div className={styles.profile__carouselStage}>
-              {(pets || []).map((pet, i) => (
-                <figure
-                  key={pet.id}
-                  className={styles.profile__carouselItem}
-                  style={{ "--i": i }}
-                  data-active={isActive(i) ? "true" : undefined}
-                  data-near={isPrev(i) || isNext(i) ? "true" : undefined}
-                  onClick={() => handlePetCardClick(pet.id)}
-                  role="button"
-                  aria-label={pet.name || "Pet"}
-                  tabIndex={0}
-                >
-                  <Image src={pet.photo_url || "/images/logo.png"} alt={pet.name || "Pet"} width={220} height={220} className={styles.profile__carouselImg} priority />
-                  <figcaption className={styles.profile__carouselName}>{pet.name}</figcaption>
-                </figure>
-              ))}
+              {(pets || []).map((pet, i) => {
+                const imgSrc = isValidUrl(pet?.photo_url) ? pet.photo_url : "/images/logo.png";
+
+                return (
+                  <figure
+                    key={pet.id}
+                    className={styles.profile__carouselItem}
+                    style={{ "--i": i }}
+                    data-active={isActive(i) ? "true" : undefined}
+                    data-near={isPrev(i) || isNext(i) ? "true" : undefined}
+                    onClick={() => handlePetCardClick(pet.id)}
+                    role="button"
+                    aria-label={pet.name || "Pet"}
+                    tabIndex={0}
+                  >
+                    <Image src={imgSrc} alt={pet.name || "Pet"} width={220} height={220} className={styles.profile__carouselImg} priority />
+                    <figcaption className={styles.profile__carouselName}>{pet.name}</figcaption>
+                  </figure>
+                );
+              })}
               <figure
                 className={`${styles.profile__carouselItem} ${styles.profile__carouselItemAdd}`}
                 style={{ "--i": pets?.length || 0 }}
