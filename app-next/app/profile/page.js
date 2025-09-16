@@ -130,16 +130,7 @@ export default function ProfilePage() {
         {petsLoading && <p className={styles.profile__loading}>Loading pets…</p>}
 
         {!petsLoading && (
-          <div
-            className={styles.profile__carousel}
-            ref={carouselRef}
-            style={{
-              "--count": count,
-              "--index": index,
-            }}
-            aria-roledescription="carousel"
-            aria-label="Pets carousel"
-          >
+          <div className={styles.profile__carousel} ref={carouselRef} data-count={count} style={{ "--count": count, "--index": index }} aria-roledescription="carousel" aria-label="Pets carousel">
             <div className={styles.profile__carouselStage}>
               {(pets || []).map((pet, i) => {
                 const imgSrc = isValidUrl(pet?.photo_url) ? pet.photo_url : "/images/logo.png";

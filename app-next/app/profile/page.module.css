@@ -102,7 +102,7 @@
   --count: 5;
   --index: 0;
   --theta: calc(360deg / var(--count));
-  --radius: clamp(190px, 46vmin, 520px);
+  --radius: clamp(190px, 46vmin, 320px);
   --item-w: clamp(170px, 30vmin, 300px);
   --item-h: clamp(160px, 28vmin, 280px);
   --perspective: 1200px;
@@ -117,6 +117,41 @@
   perspective-origin: 50% 42%;
   overflow: visible;
   container-type: inline-size;
+}
+
+.profile__carousel[data-count="2"],
+.profile__carousel[data-count="3"],
+.profile__carousel[data-count="4"] {
+  --item-w: clamp(220px, 40vmin, 380px);
+  --item-h: clamp(200px, 36vmin, 340px);
+}
+
+.profile__carousel[data-count="2"] .profile__carouselItem,
+.profile__carousel[data-count="3"] .profile__carouselItem,
+.profile__carousel[data-count="4"] .profile__carouselItem {
+  position: static;
+  transform: none !important;
+  backface-visibility: visible;
+  filter: none;
+  opacity: 1;
+  flex: 0 1 var(--item-w);
+}
+
+.profile__carousel[data-count="2"] .profile__carouselStage,
+.profile__carousel[data-count="3"] .profile__carouselStage,
+.profile__carousel[data-count="4"] .profile__carouselStage {
+  transform: none !important;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  width: auto;
+  height: var(--item-h);
+}
+
+.profile__carousel[data-count="2"] .profile__carouselArrow,
+.profile__carousel[data-count="3"] .profile__carouselArrow,
+.profile__carousel[data-count="4"] .profile__carouselArrow {
+  display: none;
 }
 
 .profile__carouselStage {
@@ -136,7 +171,6 @@
   place-items: center;
   gap: 0.5rem;
   border-radius: var(--radius-xl);
-  padding: 0.75rem;
   background: var(--card);
   color: var(--ink);
   cursor: pointer;

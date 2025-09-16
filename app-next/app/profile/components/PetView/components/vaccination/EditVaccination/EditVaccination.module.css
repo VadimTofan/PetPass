@@ -23,7 +23,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 16px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--card);
 }
 
 .vaccination__title {
@@ -64,12 +64,12 @@
   border-radius: 10px;
   border: 1px solid #e5e7eb;
   background: #fff;
-  color: #111827;
+  color: var(--ink);
   cursor: pointer;
 }
 
 .vaccination__error {
-  color: #b91c1c;
+  color: var(--danger);
 }
 
 .vaccination__footer {
@@ -84,7 +84,7 @@
   padding: 10px 14px;
   border-radius: 10px;
   border: none;
-  background: #111827;
+  background: var(--ink);
   color: #fff;
   cursor: pointer;
 }

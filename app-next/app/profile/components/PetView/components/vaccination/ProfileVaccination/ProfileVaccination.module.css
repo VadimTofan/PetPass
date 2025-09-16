@@ -83,7 +83,7 @@
 
 .vaccination__summary {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--ink);
 }
 
 .vaccination__controls {
@@ -93,8 +93,8 @@
 }
 
 .vaccination__buttonPage {
-  border: 1px solid #ddd;
-  background: #fff;
+  border: 1px solid var(--bg);
+  background: var(--card);
   padding: 6px 10px;
   border-radius: 8px;
   font-size: 0.9rem;

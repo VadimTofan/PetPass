@@ -5,7 +5,6 @@ export default function useVaccinationData(petId) {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(petId);
   useEffect(() => {
     if (!petId) {
       setError("Pet is missing");

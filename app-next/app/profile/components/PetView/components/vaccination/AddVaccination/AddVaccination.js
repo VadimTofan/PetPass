@@ -33,7 +33,6 @@ export default function AddVaccination({ petId }) {
       const res = await fetch(`${base}/api/pets/${petId}/vaccinations`, {
         cache: "no-store",
       });
-      console.log(res);
       const data = await res.json();
       setItems(data);
       setErr("");
