@@ -1,9 +1,12 @@
 .signup {
-  padding: 10rem 1rem 1rem 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 }
 
 .signup__container {
-  max-width: 1140px;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 420px;
@@ -15,7 +18,7 @@
   font-size: clamp(1.8rem, 2vw + 1rem, 2.4rem);
   line-height: 1.2;
   font-weight: 800;
-  color: #2a3b2f;
+  color: var(--ink);
   margin: 0 0 0.8rem;
 }
 
@@ -24,7 +27,7 @@
 }
 
 .signup__image {
-  width: 100%;
+  width: 55%;
   height: auto;
   display: block;
   border-radius: 1rem;

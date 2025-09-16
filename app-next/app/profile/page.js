@@ -18,7 +18,6 @@ export default function ProfilePage() {
   const { pets = [], isLoading: petsLoading } = useFetchUserPetData(user?.id);
 
   const userPicture = session?.user?.image ?? "/images/loading.svg";
-  const amountOfPets = pets?.length > 1 ? "My pets" : "My pet";
 
   const count = (pets?.length || 0) + 1;
   const [index, setIndex] = useState(0);
@@ -114,7 +113,6 @@ export default function ProfilePage() {
       </div>
 
       <span className={styles.profile__divider}></span>
-      <h2 className={styles.profile__cardTitle}>{amountOfPets}</h2>
 
       <div className={styles.profile__pets}>
         {petsLoading && <p className={styles.profile__loading}>Loading pets…</p>}

@@ -142,7 +142,7 @@
 
 .pet__field input,
 .pet__field select,
-.pet__nameInput {
+.pet__header input {
   font-size: 1.08rem;
   padding: 8px 12px;
   border-radius: 8px;
@@ -152,31 +152,22 @@
   font-weight: 500;
   outline: none;
   transition: border 0.15s;
-  width: 100%;
-  box-sizing: border-box;
-  min-width: 0;
-  max-width: 100%;
-  overflow: hidden;
 }
 
 .pet__field input:focus,
 .pet__field select:focus,
 .pet__nameInput:focus {
-  border-color: #38bdf8;
-  background: #f0f9ff;
+  border-color: var(--focus);
+}
+
+.pet__field input:hover,
+.pet__field select:hover,
+.pet__nameInput:hover {
+  border-color: var(--focus);
 }
 
 .pet__nameInput {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 2px;
-  border: none;
-  background: #f8fafc;
-  padding: 8px 12px;
-  color: #1e293b;
   width: 100%;
-  box-sizing: border-box;
-  min-width: 0;
 }
 
 .pet__error,
@@ -216,23 +207,20 @@
   }
 }
 
-/* prevent background scroll when modal is open */
 .noScroll {
   overflow: hidden;
 }
 
-/* Modal layout */
 .modal {
   position: fixed;
   inset: 0;
   display: grid;
   place-items: center;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999; /* higher than headers etc. */
+  z-index: 25;
   animation: modalFadeIn 150ms ease-out;
 }
 
-/* Dialog card */
 .modal__content {
   background: #fff;
   width: min(880px, 92vw);
@@ -246,7 +234,6 @@
   animation: modalSlideUp 180ms ease-out;
 }
 
-/* Header */
 .modal__header {
   display: flex;
   align-items: center;
@@ -262,7 +249,6 @@
   font-weight: 600;
 }
 
-/* Close button */
 .modal__close {
   appearance: none;
   border: none;
@@ -277,13 +263,11 @@
   background: rgba(0, 0, 0, 0.06);
 }
 
-/* Body: scrolls if content is tall */
 .modal__body {
   padding: 16px;
   overflow: auto;
 }
 
-/* Footer */
 .modal__footer {
   padding: 12px 16px;
   border-top: 1px solid #eee;
@@ -293,7 +277,6 @@
   background: #fafafa;
 }
 
-/* Buttons inside footer (example styles) */
 .modal__secondary {
   background: #f3f4f6;
   border: 1px solid #e5e7eb;
@@ -307,7 +290,6 @@
   background: #e5e7eb;
 }
 
-/* Animations */
 @keyframes modalFadeIn {
   from {
     opacity: 0;
@@ -325,7 +307,6 @@
   }
 }
 
-/* Optional: compact spacing on small screens */
 @media (max-width: 480px) {
   .modal__content {
     width: 94vw;

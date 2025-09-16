@@ -115,7 +115,12 @@ export function PetProfileEdit({ draft, setDraft, onSave, onCancel }) {
                 </div>
                 <div className={styles.pet__field}>
                   <label>Current Status</label>
-                  <input type="text" value={draft.current_status ?? ""} onChange={(e) => setDraft({ ...draft, current_status: e.target.value })} />
+                  <select value={draft.current_status ?? ""} onChange={(e) => setDraft({ ...draft, current_status: e.target.value })}>
+                    <option value="Active">Active</option>
+                    <option value="Deceased">Deceased</option>
+                    <option value="Lost">Lost</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
               </div>
             </section>
