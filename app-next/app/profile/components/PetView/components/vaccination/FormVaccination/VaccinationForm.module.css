@@ -1,5 +1,5 @@
 .vaccination {
-  background: #fff;
+  background: var(--card);
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
@@ -30,7 +30,7 @@
 }
 
 .vaccination__field {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--card);
   border-radius: 8px;
   padding: 10px;
 }
@@ -40,15 +40,15 @@
   padding: 10px 14px;
   border-radius: 10px;
   border: none;
-  background: #111827;
-  color: #fff;
+  background: var(--ink);
+  color: var(--card);
   cursor: pointer;
 }
 
 .vaccination__error {
-  color: #b91c1c;
+  color: var(--danger);
 }
 
 .vaccination__ok {
-  color: #065f46;
+  color: var(--lime);
 }

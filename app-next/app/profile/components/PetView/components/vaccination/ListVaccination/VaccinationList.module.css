@@ -17,12 +17,12 @@
 .vaccination__table th,
 .vaccination__table td {
   padding: 10px 12px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--card);
   text-align: left;
 }
 
 .vaccination__table th {
-  background: #f9fafb;
+  background: var(--card);
   font-weight: 600;
 }
 
@@ -52,7 +52,7 @@
 
 .vaccination__separator {
   margin: 0 6px;
-  color: #9ca3af;
+  color: var(--ink);
 }
 
 .vaccination__buttonDanger {
@@ -60,7 +60,7 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  color: #b91c1c;
+  color: var(--danger);
   text-decoration: underline;
 }
 
@@ -74,7 +74,7 @@
 
 .vaccination__summary {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--ink);
 }
 
 .vaccination__controls {
@@ -84,8 +84,8 @@
 }
 
 .vaccination__buttonPage {
-  border: 1px solid #ddd;
-  background: #fff;
+  border: 1px solid var(--bg);
+  background: var(--card);
   padding: 6px 10px;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -98,6 +98,6 @@
 }
 
 .vaccination__isActive {
-  border-color: #333;
+  border-color: var(--ink);
   font-weight: 600;
 }
