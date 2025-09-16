@@ -3,16 +3,26 @@
 import styles from "./AddPet.module.css";
 import CountrySelect from "../PetView/components/api/flags";
 import FetchUserData from "../DBFunctions/FetchUserData";
-
+import Cookies from 'js-cookie';
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { useSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 
 export default function AddPetData() {
-  const { data: session, status } = useSession();
-  const isAuthed = status === "authenticated";
-  const { user, isLoading: userLoading, error: userError } = FetchUserData(session?.user?.email);
+  let userProfile = null;
+  try {
+  const token = Cookies.get("token");
+  if (token) {
+    userProfile = jwtDecode(token); // contains email, role, etc.
+  }
+} catch (err) {
+  console.error("Invalid token");
+}
+
+  const isAuthed = !!userProfile;
+
+  const { user, isLoading: userLoading, error: userError } = FetchUserData(userProfile.email);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -81,7 +91,7 @@ export default function AddPetData() {
     }
   }
 
-  if (status === "loading" || (isAuthed && userLoading)) {
+  if (userLoading === "loading" || (isAuthed && userLoading)) {
     return <p className={styles.pet__loading}>Loading…</p>;
   }
 

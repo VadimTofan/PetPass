@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
+import Cookies from 'js-cookie';
 export default function FetchUserData(email) {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
@@ -11,6 +11,17 @@ export default function FetchUserData(email) {
     if (!email) return;
 
     const fetchData = async () => {
+
+       const token = Cookies.get('token'); // Reads the cookie
+        if (token) {
+          try {
+            setToken(token);
+            const decoded = jwtDecode(token);
+            setUserProfile(decoded);
+          } catch (err) {
+            console.log("Invalid token");
+          }
+        }
       setIsLoading(true);
       setError(null);
 
