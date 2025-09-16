@@ -23,7 +23,6 @@ export default function Category() {
             <div key={feature.name} className={styles.category__card}>
               <div className={styles.category__imageContainer}>
                 <Image src={feature.image} alt={feature.name} width={250} height={250} className={styles.category__image} />
-                <div className={styles.category__imageOverlay} />
               </div>
               <h3 className={styles.category__name}>{feature.name}</h3>
             </div>
