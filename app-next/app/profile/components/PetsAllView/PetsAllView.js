@@ -2,6 +2,7 @@
 
 import styles from "./PetsAllView.module.css";
 import Error404 from "@/app/components/Error404/Error404";
+import formatDate from "@/app/components/FormatDate/FormatDate";
 
 import { useState, useEffect, useMemo } from "react";
 import { useSession } from "next-auth/react";
@@ -88,7 +89,6 @@ export default function PetsAllView() {
   if (petsError) return <div className={styles.pets__error}>Pets error: {petsError}</div>;
   if (petsLoading) return <div className={styles.pets__loading}>Loading…</div>;
 
-  const formatDate = (d) => (d ? new Date(d).toLocaleDateString("da-DK") : "—");
   const cell = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
   const columns = ["Name", "Species", "Breed", "Sex", "Birthday", "Country", "Passport", "Microchip", "Owner", "Email", "Phone"];
 

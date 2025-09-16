@@ -215,3 +215,127 @@
     gap: 14px 0;
   }
 }
+
+/* prevent background scroll when modal is open */
+.noScroll {
+  overflow: hidden;
+}
+
+/* Modal layout */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999; /* higher than headers etc. */
+  animation: modalFadeIn 150ms ease-out;
+}
+
+/* Dialog card */
+.modal__content {
+  background: #fff;
+  width: min(880px, 92vw);
+  max-height: 86vh;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(6px);
+  animation: modalSlideUp 180ms ease-out;
+}
+
+/* Header */
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid #eee;
+  background: #fafafa;
+}
+
+.modal__title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Close button */
+.modal__close {
+  appearance: none;
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+.modal__close:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* Body: scrolls if content is tall */
+.modal__body {
+  padding: 16px;
+  overflow: auto;
+}
+
+/* Footer */
+.modal__footer {
+  padding: 12px 16px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  background: #fafafa;
+}
+
+/* Buttons inside footer (example styles) */
+.modal__secondary {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #111827;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.modal__secondary:hover {
+  background: #e5e7eb;
+}
+
+/* Animations */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes modalSlideUp {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Optional: compact spacing on small screens */
+@media (max-width: 480px) {
+  .modal__content {
+    width: 94vw;
+    max-height: 88vh;
+    border-radius: 12px;
+  }
+  .modal__header,
+  .modal__body,
+  .modal__footer {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
