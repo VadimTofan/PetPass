@@ -83,7 +83,7 @@ export default function FetchPetData() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(draft),
       });
-
+      console.log(res);
       if (!res.ok) throw new Error("Failed to update pet info");
 
       const updated = await res.json();
