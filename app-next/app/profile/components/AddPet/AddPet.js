@@ -3,32 +3,28 @@
 import styles from "./AddPet.module.css";
 import CountrySelect from "../PetView/components/api/flags";
 import FetchUserData from "../DBFunctions/FetchUserData";
-import Cookies from 'js-cookie';
+import Image from "next/image";
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
-import Image from "next/image";
+import { useAuth } from "@/app/providers";
+import api from "@/lib/api"; 
 
 export default function AddPetData() {
-  let userProfile = null;
-  try {
-  const token = Cookies.get("token");
-  if (token) {
-    userProfile = jwtDecode(token); // contains email, role, etc.
-  }
-} catch (err) {
-  console.error("Invalid token");
-}
+  const { user: authUser, loading: authLoading } = useAuth();
+  const isAuthed = !!authUser;
 
-  const isAuthed = !!userProfile;
-
-  const { user, isLoading: userLoading, error: userError } = FetchUserData(userProfile.email);
+  const email = authUser?.email ?? "";
+  const { user, isLoading: userLoading, error: userError } = FetchUserData(email);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   const species = useMemo(
-    () => ["Dog", "Cat", "Rabbit", "Guinea Pig", "Hamster", "Ferret", "Bird", "Fish", "Turtle", "Tortoise", "Snake", "Lizard", "Frog", "Horse", "Donkey", "Goat", "Pig", "Chicken", "Duck", "Other"],
+    () => [
+      "Dog", "Cat", "Rabbit", "Guinea Pig", "Hamster", "Ferret", "Bird", "Fish",
+      "Turtle", "Tortoise", "Snake", "Lizard", "Frog", "Horse", "Donkey", "Goat",
+      "Pig", "Chicken", "Duck", "Other"
+    ],
     []
   );
 
@@ -46,9 +42,15 @@ export default function AddPetData() {
     country_of_birth: "DK",
     current_status: "Active",
     photo_url: "",
-    created_at: undefined,
-    updated_at: undefined,
   });
+
+  function handleLogin() {
+    try {
+      localStorage.setItem("returnTo", window.location.pathname || "/profile/pets/new");
+    } catch {}
+
+    window.location.href = "/auth/google";
+  }
 
   async function handleAddPet(e) {
     e.preventDefault();
@@ -72,16 +74,12 @@ export default function AddPetData() {
       const payload = {
         ...pet,
         owner_user_id: user.id,
-        date_of_birth: pet.date_of_birth,
       };
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pets`, {
+      await api("/api/pets", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
-      if (!res.ok) throw new Error("Failed to add pet info");
 
       router.push("/profile");
     } catch (err) {
@@ -91,7 +89,7 @@ export default function AddPetData() {
     }
   }
 
-  if (userLoading === "loading" || (isAuthed && userLoading)) {
+  if (authLoading || userLoading) {
     return <p className={styles.pet__loading}>Loading…</p>;
   }
 
@@ -101,15 +99,15 @@ export default function AddPetData() {
         <h1 className={styles.pet__name}>Create New Pet</h1>
         <div>
           <p>You need to log in first.</p>
-          <button onClick={() => signIn()} className={styles.pet__login}>
-            Log in
+          <button onClick={handleLogin} className={styles.pet__login}>
+            Log in with Google
           </button>
         </div>
       </section>
     );
   }
 
-  if (isAuthed && userError && !userLoading && !user?.id) {
+  if (userError && !user?.id) {
     return (
       <section className={styles.pet}>
         <h1 className={styles.pet__name}>Create New Pet</h1>
@@ -122,6 +120,7 @@ export default function AddPetData() {
       </section>
     );
   }
+
   const isValidUrl = (str) => {
     try {
       new URL(str);
@@ -142,14 +141,23 @@ export default function AddPetData() {
               <label className={styles.pet__label} htmlFor="pet-name">
                 Name <span className={styles.pet__required}>*</span>
               </label>
-              <input id="pet-name" className={styles.pet__input} type="text" required value={pet.name} onChange={(e) => setPet({ ...pet, name: e.target.value })} placeholder="Pet name" />
+              <input
+                id="pet-name"
+                className={styles.pet__input}
+                type="text"
+                required
+                value={pet.name}
+                onChange={(e) => setPet({ ...pet, name: e.target.value })}
+                placeholder="Pet name"
+              />
             </div>
+
             <div className={styles.pet__row}>
-              <label className={styles.pet__label} htmlFor="pet-name">
+              <label className={styles.pet__label} htmlFor="pet-photo">
                 Picture Url
               </label>
               <input
-                id="pet-name"
+                id="pet-photo"
                 className={styles.pet__input}
                 type="text"
                 value={pet.photo_url}
@@ -157,11 +165,18 @@ export default function AddPetData() {
                 placeholder="https://pet.picture.com"
               />
             </div>
+
             <div className={styles.pet__row}>
               <label className={styles.pet__label} htmlFor="pet-species">
                 Species <span className={styles.pet__required}>*</span>
               </label>
-              <select id="pet-species" className={styles.pet__input} required value={pet.species} onChange={(e) => setPet({ ...pet, species: e.target.value })}>
+              <select
+                id="pet-species"
+                className={styles.pet__input}
+                required
+                value={pet.species}
+                onChange={(e) => setPet({ ...pet, species: e.target.value })}
+              >
                 <option value="" disabled>
                   Select a species…
                 </option>
@@ -172,18 +187,31 @@ export default function AddPetData() {
                 ))}
               </select>
             </div>
+
             <div className={styles.pet__row}>
               <label className={styles.pet__label} htmlFor="pet-dob">
                 Date of Birth <span className={styles.pet__required}>*</span>
               </label>
-              <input id="pet-dob" className={styles.pet__input} type="date" required value={pet.date_of_birth || isoToday} onChange={(e) => setPet({ ...pet, date_of_birth: e.target.value })} />
+              <input
+                id="pet-dob"
+                className={styles.pet__input}
+                type="date"
+                required
+                value={pet.date_of_birth || isoToday}
+                onChange={(e) => setPet({ ...pet, date_of_birth: e.target.value })}
+              />
             </div>
 
             <div className={styles.pet__row}>
               <label className={styles.pet__label} htmlFor="pet-sex">
                 Sex <span className={styles.pet__required}>*</span>
               </label>
-              <select id="pet-sex" className={styles.pet__input} value={pet.sex} onChange={(e) => setPet({ ...pet, sex: e.target.value })}>
+              <select
+                id="pet-sex"
+                className={styles.pet__input}
+                value={pet.sex}
+                onChange={(e) => setPet({ ...pet, sex: e.target.value })}
+              >
                 <option value="" disabled>
                   Select sex…
                 </option>
@@ -192,10 +220,11 @@ export default function AddPetData() {
               </select>
             </div>
           </div>
+
           {!pet?.photo_url || !isValidUrl(pet.photo_url) ? (
             <Image className={styles.pet__image} src="/images/loading.svg" alt="Pet preview" width={500} height={500} />
           ) : (
-            <Image className={styles.pet__image} src={pet?.photo_url} alt="Pet preview" width={500} height={500} />
+            <Image className={styles.pet__image} src={pet.photo_url} alt="Pet preview" width={500} height={500} />
           )}
         </div>
 
@@ -203,7 +232,14 @@ export default function AddPetData() {
           <label className={styles.pet__label} htmlFor="pet-breed">
             Breed
           </label>
-          <input id="pet-breed" className={styles.pet__input} type="text" value={pet.breed} onChange={(e) => setPet({ ...pet, breed: e.target.value })} placeholder="Pet Breed" />
+          <input
+            id="pet-breed"
+            className={styles.pet__input}
+            type="text"
+            value={pet.breed}
+            onChange={(e) => setPet({ ...pet, breed: e.target.value })}
+            placeholder="Pet Breed"
+          />
         </div>
 
         <div className={styles.pet__row}>
@@ -222,12 +258,20 @@ export default function AddPetData() {
 
         <div className={styles.pet__row}>
           <label className={styles.pet__label}>Country of Birth</label>
-          <CountrySelect value={pet.country_of_birth} onChange={(value) => setPet({ ...pet, country_of_birth: value })} />
+          <CountrySelect
+            value={pet.country_of_birth}
+            onChange={(value) => setPet({ ...pet, country_of_birth: value })}
+          />
         </div>
 
         {error ? <p className={styles.pet__error}>{error}</p> : null}
 
-        <button type="submit" className={styles.pet__submit} disabled={submitting} aria-disabled={submitting}>
+        <button
+          type="submit"
+          className={styles.pet__submit}
+          disabled={submitting}
+          aria-disabled={submitting}
+        >
           {submitting ? "Saving..." : "Create Pet"}
         </button>
       </form>

@@ -1,33 +1,42 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import api from "@/lib/api"; 
 
 export default function useFetchUserPetData(id) {
   const [pets, setPets] = useState(null);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!!id);
 
   useEffect(() => {
-    if (!id) return;
+    let cancel = false;
 
-    const fetchData = async () => {
+    if (!id) {
+      setIsLoading(false);
+      setPets(null);
+      setError(null);
+      return;
+    }
+
+    (async () => {
+      setIsLoading(true);
+      setError(null);
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pets/${id}`);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch pets");
-        }
-
-        const data = await response.json();
-        setPets(data);
-      } catch (err) {
-        setError(err.message);
+        const data = await api(`/api/pets/${encodeURIComponent(id)}`, {
+          cache: "no-store",
+        });
+        const list = Array.isArray(data) ? data : data?.pets ?? data ?? [];
+        if (!cancel) setPets(list);
+      } catch (e) {
+        if (!cancel) setError(e?.message || "Failed to fetch pets");
       } finally {
-        setIsLoading(false);
+        if (!cancel) setIsLoading(false);
       }
-    };
+    })();
 
-    fetchData();
+    return () => {
+      cancel = true;
+    };
   }, [id]);
 
   return { pets, error, isLoading };

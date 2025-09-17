@@ -1,32 +1,26 @@
 import "./globals.css";
-
 import { Inter } from "next/font/google";
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
-import Providers from "./providers";
 import Navbar from "@/app/components/Navbar/Navbar";
 import Footer from "@/app/components/Footer/Footer";
+import AuthProvider from "./providers"; 
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "PetPass - Everything Your Pet Needs",
   description: "Pet expert advice, and caring services for your beloved companions.",
-  icons: {
-    icon: "/icons/favicon.png",
-  },
+  icons: { icon: "/icons/favicon.png" },
 };
 
-export default async function RootLayout({ children }) {
-  const session = await getServerSession(authOptions);
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers session={session}>
+        <AuthProvider>
           <Navbar />
           {children}
           <Footer />
-        </Providers>
+        </AuthProvider>
       </body>
     </html>
   );

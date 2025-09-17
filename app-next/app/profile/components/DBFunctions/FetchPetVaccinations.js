@@ -1,33 +1,41 @@
 import { useState, useEffect } from "react";
+import api from "@/lib/api"; 
 
 export default function useVaccinationData(petId) {
   const [vaccinations, setVaccinations] = useState([]);
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(!!petId);
 
   useEffect(() => {
+    let cancel = false;
+
     if (!petId) {
+      setVaccinations([]);
       setError("Pet is missing");
       setIsLoading(false);
       return;
     }
 
-    const fetchData = async () => {
+    (async () => {
       setIsLoading(true);
-      setError(null);
+      setError("");
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pets/${petId}/vaccinations`);
-        const data = await response.json();
-        setVaccinations(data);
-        setError("");
-      } catch (error) {
-        setError(error.message || "Error");
+        const data = await api(
+          `/api/pets/${encodeURIComponent(petId)}/vaccinations`,
+          { cache: "no-store" }
+        );
+        const list = Array.isArray(data) ? data : (data.vaccinations || []);
+        if (!cancel) setVaccinations(list);
+      } catch (e) {
+        if (!cancel) setError(e?.message || "Failed to fetch vaccinations");
       } finally {
-        setIsLoading(false);
+        if (!cancel) setIsLoading(false);
       }
-    };
+    })();
 
-    fetchData();
+    return () => {
+      cancel = true;
+    };
   }, [petId]);
 
   return { vaccinations, error, isLoading };

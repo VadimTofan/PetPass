@@ -3,7 +3,7 @@ import * as db from "../database/pets.js";
 import multer from "multer";
 import path from "path";
 import crypto from "crypto";
-
+import { requireAuth } from '../middlewares/auth.js';
 const petsRouter = express.Router();
 
 const storage = multer.diskStorage({
@@ -23,7 +23,7 @@ const upload = multer({
   },
 });
 
-petsRouter.post("/api/pets", upload.single("photo"), async (request, response, next) => {
+petsRouter.post("/api/pets",requireAuth, upload.single("photo"), async (request, response, next) => {
   try {
     const pet = request.body;
     const petError = validatePetData(pet);
@@ -36,7 +36,7 @@ petsRouter.post("/api/pets", upload.single("photo"), async (request, response, n
   }
 });
 
-petsRouter.get("/api/pet/:id", async (request, response, next) => {
+petsRouter.get("/api/pet/:id",requireAuth, async (request, response, next) => {
   try {
     const id = Number(request.params.id);
     if (!id) return response.status(400).send({ error: `No pets here` });
@@ -50,7 +50,7 @@ petsRouter.get("/api/pet/:id", async (request, response, next) => {
   }
 });
 
-petsRouter.get("/api/allpets", async (request, response, next) => {
+petsRouter.get("/api/allpets",requireAuth, async (request, response, next) => {
   try {
     const pets = await db.getAllPets();
     return response.send(pets);
@@ -59,7 +59,7 @@ petsRouter.get("/api/allpets", async (request, response, next) => {
   }
 });
 
-petsRouter.get("/api/pets/:id", async (request, response, next) => {
+petsRouter.get("/api/pets/:id",requireAuth, async (request, response, next) => {
   try {
     const id = Number(request.params.id);
     if (!id) return response.status(400).send({ error: `This user has no pets` });
@@ -73,7 +73,7 @@ petsRouter.get("/api/pets/:id", async (request, response, next) => {
   }
 });
 
-petsRouter.get("/api/pets", async (request, response) => {
+petsRouter.get("/api/pets",requireAuth, async (request, response) => {
   const filter = request.query;
 
   try {
@@ -92,7 +92,7 @@ petsRouter.get("/api/pets", async (request, response) => {
   }
 });
 
-petsRouter.put("/api/pet/:id", async (request, response, next) => {
+petsRouter.put("/api/pet/:id",requireAuth, async (request, response, next) => {
   try {
     const id = Number(request.params.id);
     const pet = request.body;
@@ -111,7 +111,7 @@ petsRouter.put("/api/pet/:id", async (request, response, next) => {
   }
 });
 
-petsRouter.delete("/api/pets/:id", async (request, response, next) => {
+petsRouter.delete("/api/pets/:id",requireAuth, async (request, response, next) => {
   try {
     const id = Number(request.params.id);
     if (!id) return response.status(400).send({ error: `Id is mandatory` });

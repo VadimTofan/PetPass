@@ -1,16 +1,16 @@
 import express from "express";
 import * as db from "../database/vaccinations.js";
-
+import { requireAuth,requireRole } from '../middlewares/auth.js';
 const router = express.Router();
 
 // GET
 
-router.get("/pets/:petId/vaccinations", async (req, res) => {
+router.get("/pets/:petId/vaccinations",requireAuth, async (req, res) => {
   try {
     const { petId } = req.params;
     if (!petId) return res.status(400).send({ error: `No petId is provided` });
     const rows = await db.getVaccinationsByPetId(petId);
-    if (rows.length === 0) return res.status(400).json({ message: `Pet ID ${petId} has no vaccinations record.` });
+    if (rows.length === 0) return res.status(200).json({ message: `Pet ID ${petId} has no vaccinations record.` });
     res.json(rows);
   } catch (err) {
     console.error("GET /pets/:petId/vaccinations", err);
@@ -19,7 +19,7 @@ router.get("/pets/:petId/vaccinations", async (req, res) => {
 });
 
 // POST
-router.post("/pets/:petId/vaccinations", async (req, res) => {
+router.post("/pets/:petId/vaccinations",requireAuth, requireRole('admin'), async (req, res) => {
   try {
     const { petId } = req.params;
     const { vaccine_name, date_administered, next_due, veterinarian, notes } = req.body;
@@ -31,7 +31,7 @@ router.post("/pets/:petId/vaccinations", async (req, res) => {
 
     const payload = {
       vaccine_name: String(vaccine_name).trim(),
-      date_administered, // expect YYYY-MM-DD
+      date_administered, 
       next_due: next_due || null,
       veterinarian: veterinarian ? String(veterinarian).trim() : null,
       notes: notes ? String(notes).trim() : null,
@@ -55,7 +55,7 @@ router.post("/pets/:petId/vaccinations", async (req, res) => {
 });
 
 // Update
-router.patch("/vaccinations/:id", async (req, res) => {
+router.patch("/vaccinations/:id",requireAuth, requireRole('admin'), async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -78,7 +78,7 @@ router.patch("/vaccinations/:id", async (req, res) => {
 });
 
 // DELETE
-router.delete("/vaccinations/:id", async (req, res) => {
+router.delete("/vaccinations/:id",requireAuth, requireRole('admin'), async (req, res) => {
   try {
     const { id } = req.params;
     const exists = await db.getVaccinationById(id);

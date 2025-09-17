@@ -1,45 +1,42 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Cookies from 'js-cookie';
+import api from "@/lib/api";
+
 export default function FetchUserData(email) {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!!email);
 
   useEffect(() => {
-    if (!email) return;
+    let cancel = false;
 
-    const fetchData = async () => {
+    if (!email) {
+      setIsLoading(false);
+      setUser(null);
+      setError(null);
+      return;
+    }
 
-       const token = Cookies.get('token'); // Reads the cookie
-        if (token) {
-          try {
-            setToken(token);
-            const decoded = jwtDecode(token);
-            setUserProfile(decoded);
-          } catch (err) {
-            console.log("Invalid token");
-          }
-        }
+    (async () => {
       setIsLoading(true);
       setError(null);
-
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/users/${email}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch user");
-        }
-        const data = await response.json();
-        setUser(data);
-      } catch (err) {
-        setError(err.message);
+        // adjust the path if your backend uses a different route
+        const data = await api(`/api/users/${encodeURIComponent(email)}`, {
+          cache: "no-store",
+        });
+        if (!cancel) setUser(data); // if your API returns { user }, use: setUser(data.user)
+      } catch (e) {
+        if (!cancel) setError(e.message || "Failed to fetch user");
       } finally {
-        setIsLoading(false);
+        if (!cancel) setIsLoading(false);
       }
-    };
+    })();
 
-    fetchData();
+    return () => {
+      cancel = true;
+    };
   }, [email]);
 
   return { user, error, isLoading };

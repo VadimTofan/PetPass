@@ -11,7 +11,7 @@ export default function VaccinationList({ items, canEdit, onEdit, onDelete, page
   const totalPages = Math.max(1, Math.ceil(data.length / pageSize));
 
   useEffect(() => {
-    setPage((page) => Math.min(Math.max(1, page), totalPages));
+    setPage((p) => Math.min(Math.max(1, p), totalPages));
   }, [data.length, pageSize, totalPages]);
 
   const pages = useMemo(() => {
@@ -47,10 +47,14 @@ export default function VaccinationList({ items, canEdit, onEdit, onDelete, page
                 <div className={styles.vaccination__cell}>{vaccination.vaccine_name}</div>
               </td>
               <td>
-                <div className={styles.vaccination__cell}>{vaccination.date_administered ? formatDate(vaccination.date_administered) : "-"}</div>
+                <div className={styles.vaccination__cell}>
+                  {vaccination.date_administered ? formatDate(vaccination.date_administered) : "-"}
+                </div>
               </td>
               <td>
-                <div className={styles.vaccination__cell}>{vaccination.next_due ? formatDate(vaccination.next_due) : "-"}</div>
+                <div className={styles.vaccination__cell}>
+                  {vaccination.next_due ? formatDate(vaccination.next_due) : "-"}
+                </div>
               </td>
               <td>
                 <div className={styles.vaccination__cell}>{vaccination.veterinarian || "-"}</div>
@@ -58,11 +62,21 @@ export default function VaccinationList({ items, canEdit, onEdit, onDelete, page
               <td className={styles.vaccination__notes}>{vaccination.notes || "-"}</td>
               {canEdit && (
                 <td className={styles.vaccination__action}>
-                  <button type="button" className={styles.vaccination__buttonLink} onClick={() => onEdit?.(v)} aria-label={`Edit vaccination ${vaccination.vaccine_name}`}>
+                  <button
+                    type="button"
+                    className={styles.vaccination__buttonLink}
+                    onClick={() => onEdit?.(vaccination)}
+                    aria-label={`Edit vaccination ${vaccination.vaccine_name}`}
+                  >
                     Edit
                   </button>
                   <span className={styles.vaccination__separator}>·</span>
-                  <button type="button" className={styles.vaccination__buttonDanger} onClick={() => onDelete?.(v.id)} aria-label={`Delete vaccination ${vaccination.vaccine_name}`}>
+                  <button
+                    type="button"
+                    className={styles.vaccination__buttonDanger}
+                    onClick={() => onDelete?.(vaccination.id)}
+                    aria-label={`Delete vaccination ${vaccination.vaccine_name}`}
+                  >
                     Delete
                   </button>
                 </td>
@@ -77,7 +91,13 @@ export default function VaccinationList({ items, canEdit, onEdit, onDelete, page
           {startIdx}–{endIdx} of {data.length}
         </div>
         <div className={styles.vaccination__controls}>
-          <button type="button" className={styles.vaccination__buttonPage} onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} aria-label="Previous page">
+          <button
+            type="button"
+            className={styles.vaccination__buttonPage}
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            aria-label="Previous page"
+          >
             ‹ Prev
           </button>
 
@@ -96,7 +116,13 @@ export default function VaccinationList({ items, canEdit, onEdit, onDelete, page
             );
           })}
 
-          <button type="button" className={styles.vaccination__buttonPage} onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages} aria-label="Next page">
+          <button
+            type="button"
+            className={styles.vaccination__buttonPage}
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            aria-label="Next page"
+          >
             Next ›
           </button>
         </div>

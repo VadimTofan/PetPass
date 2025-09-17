@@ -6,12 +6,13 @@ import ListVaccination from "../ListVaccination/VaccinationList";
 import FormVaccination from "../FormVaccination/FormVaccination";
 import EditVaccination from "../EditVaccination/EditVaccination";
 
-import { useEffect, useMemo, useState, useCallback } from "react";
-import { useSession } from "next-auth/react";
+import { useEffect, useState, useCallback } from "react";
+import { useAuth } from "@/app/providers";
+import api from "@/lib/api"; // or "@/app/lib/api" if that's where your file is
 
 export default function AddVaccination({ petId }) {
-  const { data: session } = useSession();
-  const isAdmin = useMemo(() => session?.user?.role === "admin", [session]);
+  const { user } = useAuth();
+  const isAdmin = !!user && user.role === "admin";
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +21,7 @@ export default function AddVaccination({ petId }) {
   const [editOpen, setEditOpen] = useState(false);
   const [editing, setEditing] = useState(null);
 
-  const base = process.env.NEXT_PUBLIC_DB_ACCESS;
+
 
   const load = useCallback(async () => {
     if (!petId) {
@@ -30,18 +31,15 @@ export default function AddVaccination({ petId }) {
     }
     try {
       setLoading(true);
-      const res = await fetch(`${base}/api/pets/${petId}/vaccinations`, {
-        cache: "no-store",
-      });
-      const data = await res.json();
-      setItems(data);
       setErr("");
+      const data = await api(`/api/pets/${encodeURIComponent(petId)}/vaccinations`, { cache: "no-store" });
+      setItems(Array.isArray(data) ? data : data?.vaccinations || []);
     } catch (e) {
-      setErr(e.message || "Error");
+      setErr(e?.message || "Error");
     } finally {
       setLoading(false);
     }
-  }, [petId, base]);
+  }, [petId]);
 
   useEffect(() => {
     load();
@@ -58,18 +56,10 @@ export default function AddVaccination({ petId }) {
     if (!ok) return;
 
     try {
-      const res = await fetch(`${base}/api/vaccinations/${id}`, {
-        method: "DELETE",
-      });
-      if (res.status === 404) {
-        alert("Vaccination not found (maybe already deleted).");
-      } else if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data?.error || "Failed to delete vaccination");
-      }
+      await api(`/api/vaccinations/${encodeURIComponent(id)}`, { method: "DELETE" });
       await load();
     } catch (e) {
-      alert(e.message || "Error");
+      alert(e?.message || "Error");
     }
   };
 
@@ -88,7 +78,6 @@ export default function AddVaccination({ petId }) {
               open={editOpen}
               onClose={() => setEditOpen(false)}
               vaccination={editing}
-              baseUrl={base}
               onSaved={async () => {
                 setEditOpen(false);
                 setEditing(null);
