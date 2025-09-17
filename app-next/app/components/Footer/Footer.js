@@ -49,19 +49,19 @@ const Footer = () => {
             <h4 className={styles.footer__sectionTitle}>Support</h4>
             <ul className={styles.footer__list}>
               <li className={styles.footer__listItem}>
-                <a href="#" className={styles.footer__link}>
+                <Link href="/faq" className={styles.footer__link}>
                   FAQ
-                </a>
+                </Link>
               </li>
               <li className={styles.footer__listItem}>
-                <a href="#" className={styles.footer__link}>
+                <Link href="/privacy" className={styles.footer__link}>
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li className={styles.footer__listItem}>
-                <a href="#" className={styles.footer__link}>
+                <Link href="/tos" className={styles.footer__link}>
                   Terms of Service
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
