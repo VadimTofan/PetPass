@@ -26,7 +26,10 @@ export default function Navbar() {
 
   useEffect(() => {
     function handleClickOutside(e) {
-      if (profileMenuRef.current && !profileMenuRef.current.contains(e.target)) {
+      if (
+        profileMenuRef.current &&
+        !profileMenuRef.current.contains(e.target)
+      ) {
         setShowProfileMenu(false);
       }
     }
@@ -36,16 +39,20 @@ export default function Navbar() {
 
   const navItems = (() => {
     const items = [
-      { name: "Home", path: "/home", icon: "/icons/home.png" },
-      { name: "Contact", path: "/contact", icon: "/icons/contact.png" },
+      { name: "Home", path: "/home", icon: "/icons/icons-home.svg" },
+      { name: "Contact", path: "/contact", icon: "/icons/contacts.svg" },
     ];
 
     if (!isAuthed) {
-      items.push({ name: "About", path: "/about", icon: "/icons/about.png" });
+      items.push({ name: "About", path: "/about", icon: "/icons/about.svg" });
     } else if (isAdmin) {
-      items.push({ name: "Pets Dashboard", path: "/profile/pets/all", icon: "/icons/spreadsheet.png" });
+      items.push({
+        name: "Pets Dashboard",
+        path: "/profile/pets/all",
+        icon: "/icons/spreadsheet-updated.svg",
+      });
     } else {
-      items.push({ name: "Pets", path: "/profile", icon: "/icons/paw.png" });
+      items.push({ name: "Pets", path: "/profile", icon: "/icons/paw.svg" });
     }
 
     return items;
@@ -61,7 +68,14 @@ export default function Navbar() {
       <nav className={styles.navbar}>
         <Link href="/home">
           <div className={styles.navbar__logo}>
-            <Image className={styles.navbar__logoImg} src="/images/logo.png" alt="PetPass Logo" width={50} height={50} priority />
+            <Image
+              className={styles.navbar__logoImg}
+              src="/images/logo.png"
+              alt="PetPass Logo"
+              width={50}
+              height={50}
+              priority
+            />
             <span className={styles.navbar__logoText}>PetPass</span>
           </div>
         </Link>
@@ -79,10 +93,16 @@ export default function Navbar() {
         </div>
 
         {status === "loading" ? (
-          <div className={styles.navbar__auth} style={{ width: 120, height: 40 }} />
+          <div
+            className={styles.navbar__auth}
+            style={{ width: 120, height: 40 }}
+          />
         ) : !isAuthed ? (
           <div className={styles.navbar__auth}>
-            <button className={styles.navbar__loginButton} onClick={() => setShowLoginModal(true)}>
+            <button
+              className={styles.navbar__loginButton}
+              onClick={() => setShowLoginModal(true)}
+            >
               <User size={20} />
               <span className={styles.navbar__loginText}>Login</span>
             </button>
@@ -90,13 +110,27 @@ export default function Navbar() {
         ) : (
           profile && (
             <div ref={profileMenuRef} className={styles.navbar__profile}>
-              <Image src={profile} alt="Profile" width={150} height={150} className={styles.navbar__image} onClick={() => setShowProfileMenu((p) => !p)} />
+              <Image
+                src={profile}
+                alt="Profile"
+                width={150}
+                height={150}
+                className={styles.navbar__image}
+                onClick={() => setShowProfileMenu((p) => !p)}
+              />
               {showProfileMenu && (
                 <div className={styles.navbar__dropdown}>
-                  <button onClick={handleProfileClick} className={styles.navbar__button}>
+                  <button
+                    onClick={handleProfileClick}
+                    className={styles.navbar__button}
+                  >
                     Profile
                   </button>
-                  <button type="button" onClick={handleSignOut} className={styles.navbar__button}>
+                  <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className={styles.navbar__button}
+                  >
                     Sign out
                   </button>
                 </div>
@@ -110,9 +144,17 @@ export default function Navbar() {
           <li key={item.name} className={styles.navbar__itemMobile}>
             <Link href={item.path} className={styles.navbar__linkMobile}>
               {item.icon ? (
-                <Image src={item.icon} alt={item.name} width={24} height={24} className={styles.navbar__iconMobile} />
+                <Image
+                  src={item.icon}
+                  alt={item.name}
+                  width={24}
+                  height={24}
+                  className={styles.navbar__iconMobile}
+                />
               ) : (
-                <span className={styles.navbar__linkTextMobile}>{item.name}</span>
+                <span className={styles.navbar__linkTextMobile}>
+                  {item.name}
+                </span>
               )}
             </Link>
           </li>
@@ -123,11 +165,23 @@ export default function Navbar() {
         <div className={styles.navbar__modal}>
           <div className={styles.navbar__modalContent}>
             <h2 style={{ marginBottom: "1rem" }}>Sign in with Google</h2>
-            <button type="button" className={styles.navbar__signup} onClick={() => signIn("google", { callbackUrl: pathname })}>
-              <Image src="/icons/google.svg" width={25} height={25} alt="google logo" />
+            <button
+              type="button"
+              className={styles.navbar__signup}
+              onClick={() => signIn("google", { callbackUrl: pathname })}
+            >
+              <Image
+                src="/icons/google.svg"
+                width={25}
+                height={25}
+                alt="google logo"
+              />
               Continue with Google
             </button>
-            <button onClick={() => setShowLoginModal(false)} className={styles.navbar__cancelButton}>
+            <button
+              onClick={() => setShowLoginModal(false)}
+              className={styles.navbar__cancelButton}
+            >
               Cancel
             </button>
           </div>
