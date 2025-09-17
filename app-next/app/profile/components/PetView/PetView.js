@@ -11,6 +11,8 @@ import useFetchUserPetData from "../DBFunctions/FetchUserPetData";
 import FetchUserData from "../DBFunctions/FetchUserData";
 
 export default function FetchPetData() {
+  const [pet, setPet] = useState(null);
+  const [petLoading, setPetLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState(null);
@@ -27,15 +29,34 @@ export default function FetchPetData() {
     isLoading,
   } = useFetchUserPetData(user?.id);
 
-  // Find the specific pet from user's pets
-  const pet = pets?.find((userPet) => userPet.id.toString() === id);
+  // Fetch individual pet data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pet/${id}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch pet");
+        }
+        const data = await response.json();
+        setPet(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setPetLoading(false);
+      }
+    };
+
+    if (id) fetchData();
+  }, [id]);
 
   const isAuthed = status === "authenticated";
   const role = session?.user?.role;
   const isAdmin = isAuthed && role === "admin";
   const isOwner = pets?.some((userPet) => userPet.id.toString() === id);
 
-  if (isLoading) {
+  if (isLoading || petLoading) {
     return (
       <section className={styles.pet}>
         <div className={styles.pet__card}>
@@ -104,7 +125,8 @@ export default function FetchPetData() {
 
       if (!res.ok) throw new Error("Failed to update pet info");
 
-      await res.json();
+      const updated = await res.json();
+      setPet(updated);
       window.location.reload();
     } catch (e) {
       setError(e.message);
