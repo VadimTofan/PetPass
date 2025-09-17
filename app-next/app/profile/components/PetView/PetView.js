@@ -3,37 +3,37 @@
 import styles from "./PetView.module.css";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { PetProfileDisplay } from "./components/PetProfileDisplay";
 import { PetProfileEdit } from "./components/PetProfileEdit";
 import formatDate from "@/app/components/FormatDate/FormatDate";
+import useFetchUserPetData from "../DBFunctions/FetchUserPetData";
+import FetchUserData from "../DBFunctions/FetchUserData";
 
 export default function FetchPetData() {
-  const [pet, setPet] = useState(null);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState(null);
 
+  const { data: session, status } = useSession();
   const id = useParams().pet;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pet/${id}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch pet");
-        }
-        const data = await response.json();
-        setPet(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // Get user data for permission checking
+  const email = session?.user?.email ?? "";
+  const { user, error: userError } = FetchUserData(email);
+  const {
+    pets = [],
+    error: petsError,
+    isLoading,
+  } = useFetchUserPetData(user?.id);
 
-    fetchData();
-  }, [id]);
+  // Find the specific pet from user's pets
+  const pet = pets?.find((userPet) => userPet.id.toString() === id);
+
+  const isAuthed = status === "authenticated";
+  const role = session?.user?.role;
+  const isAdmin = isAuthed && role === "admin";
+  const isOwner = pets?.some((userPet) => userPet.id.toString() === id);
 
   if (isLoading) {
     return (
@@ -45,11 +45,13 @@ export default function FetchPetData() {
     );
   }
 
-  if (error) {
+  if (error || userError || petsError) {
     return (
       <section className={styles.pet}>
         <div className={styles.pet__card}>
-          <p className={styles.pet__loading}>Error: {error}</p>
+          <p className={styles.pet__loading}>
+            Error: {error || userError || petsError}
+          </p>
         </div>
       </section>
     );
@@ -60,6 +62,19 @@ export default function FetchPetData() {
       <section className={styles.pet}>
         <div className={styles.pet__card}>
           <p>No pet data found.</p>
+        </div>
+      </section>
+    );
+  }
+
+  // Check permissions
+  if (!isOwner && !isAdmin) {
+    return (
+      <section className={styles.pet}>
+        <div className={styles.pet__card}>
+          <p className={styles.pet__loading}>
+            ❌ You don't have access to this pet.
+          </p>
         </div>
       </section>
     );
@@ -78,16 +93,18 @@ export default function FetchPetData() {
 
   const handleSaveProfile = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pet/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(draft),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pet/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(draft),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to update pet info");
 
-      const updated = await res.json();
-      setPet(updated);
+      await res.json();
       window.location.reload();
     } catch (e) {
       setError(e.message);
@@ -101,9 +118,20 @@ export default function FetchPetData() {
     <section className={styles.pet}>
       <div className={styles.pet__card}>
         {isEditing ? (
-          <PetProfileEdit draft={draft} setDraft={setDraft} onSave={handleSaveProfile} onCancel={handleCancel} />
+          <PetProfileEdit
+            draft={draft}
+            setDraft={setDraft}
+            onSave={handleSaveProfile}
+            onCancel={handleCancel}
+          />
         ) : (
-          <PetProfileDisplay pet={pet} onEdit={handleEditProfile} formatDate={formatDate} />
+          <PetProfileDisplay
+            pet={pet}
+            onEdit={handleEditProfile}
+            formatDate={formatDate}
+            isAdmin={isAdmin}
+            isOwner={isOwner}
+          />
         )}
       </div>
     </section>

@@ -2,28 +2,19 @@
 
 import styles from "./PetProfile.module.css";
 
-import useFetchUserPetData from "../../DBFunctions/FetchUserPetData";
-import FetchUserData from "../../DBFunctions/FetchUserData";
 import AddVaccination from "./vaccination/AddVaccination/AddVaccination";
 import ProfileVaccination from "./vaccination/ProfileVaccination/ProfileVaccination";
 
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
-export function PetProfileDisplay({ pet, onEdit, formatDate }) {
-  const { data: session, status } = useSession();
-
-  const isAuthed = status === "authenticated";
-  const role = session?.user?.role;
-  const isAdmin = isAuthed && role === "admin";
-
-  const email = session?.user?.email ?? "";
-  const { user, error: userError } = FetchUserData(email);
-  const { pets = [], error: petsError, isLoading } = useFetchUserPetData(user?.id);
-
-  const isOwner = pets?.some((userPet) => userPet.id === pet.id);
-
+export function PetProfileDisplay({
+  pet,
+  onEdit,
+  formatDate,
+  isAdmin,
+  isOwner,
+}) {
   const [isVaccinationOpen, setIsVaccinationOpen] = useState(false);
 
   useEffect(() => {
@@ -48,24 +39,30 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [isVaccinationOpen]);
 
-  if (isLoading) return <p className={styles.pet__loading}>Loading pet data...</p>;
-  if (userError || petsError) return <p>Error loading data.</p>;
-  if (!isOwner && !isAdmin) {
-    return <p className={styles.pet__error}>❌ You don’t have access to this pet.</p>;
-  }
-
   return (
     <form className={styles.pet__form} onSubmit={(e) => e.preventDefault()}>
       <header className={styles.pet__header}>
         <div className={styles.pet__avatarWrap}>
-          <Image src={pet?.photo_url || "/images/loading.svg"} alt={pet.name || "loading"} width={160} height={160} className={styles.pet__avatar} priority />
+          <Image
+            src={pet?.photo_url || "/images/loading.svg"}
+            alt={pet.name || "loading"}
+            width={160}
+            height={160}
+            className={styles.pet__avatar}
+            priority
+          />
         </div>
         <div className={styles.pet__headerInfo}>
           <h1 className={styles.pet__name}>{pet.name}</h1>
           <span className={styles.pet__species}>{pet.species}</span>
         </div>
         <div className={styles.pet__headerActions}>
-          <button type="button" onClick={onEdit} className={styles.pet__editButton} aria-label="Edit">
+          <button
+            type="button"
+            onClick={onEdit}
+            className={styles.pet__editButton}
+            aria-label="Edit"
+          >
             <Image src="/icons/edit.png" alt="Edit" width={22} height={22} />
           </button>
         </div>
@@ -81,7 +78,11 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
             </div>
             <div className={styles.pet__field}>
               <label>Sex</label>
-              <span>{pet.sex ? pet.sex.charAt(0).toUpperCase() + pet.sex.slice(1) : ""}</span>
+              <span>
+                {pet.sex
+                  ? pet.sex.charAt(0).toUpperCase() + pet.sex.slice(1)
+                  : ""}
+              </span>
             </div>
             <div className={styles.pet__field}>
               <label>Color / Markings</label>
@@ -178,7 +179,12 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
               <h3 id="vaccinationModalTitle" className={styles.modal__title}>
                 Add / Edit Vaccinations
               </h3>
-              <button ref={closeBtnRef} className={styles.modal__close} aria-label="Close dialog" onClick={() => setIsVaccinationOpen(false)}>
+              <button
+                ref={closeBtnRef}
+                className={styles.modal__close}
+                aria-label="Close dialog"
+                onClick={() => setIsVaccinationOpen(false)}
+              >
                 ×
               </button>
             </header>
@@ -186,7 +192,11 @@ export function PetProfileDisplay({ pet, onEdit, formatDate }) {
               <AddVaccination petId={pet.id} />
             </div>
             <footer className={styles.modal__footer}>
-              <button type="button" className={styles.modal__secondary} onClick={() => setIsVaccinationOpen(false)}>
+              <button
+                type="button"
+                className={styles.modal__secondary}
+                onClick={() => setIsVaccinationOpen(false)}
+              >
                 Done
               </button>
             </footer>
