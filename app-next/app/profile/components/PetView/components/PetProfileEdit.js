@@ -9,7 +9,7 @@ import { useMemo } from "react";
 
 export function PetProfileEdit({ draft, setDraft, onSave, onCancel }) {
   const { data: session, status } = useSession();
-
+  const today = new Date().toISOString().slice(0, 10);
   const isAuthed = status === "authenticated";
   const role = session?.user?.role;
   const isAdmin = isAuthed && role === "admin";
@@ -28,8 +28,16 @@ export function PetProfileEdit({ draft, setDraft, onSave, onCancel }) {
       return false;
     }
   };
-
   const imageSrc = isValidUrl(draft?.photo_url) ? draft.photo_url : "/images/loading.svg";
+
+  const dateFix = (isoString) => {
+    if (!isoString) return "";
+    const date = new Date(isoString);
+
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date.toISOString().slice(0, 10);
+  };
+
   return (
     <form
       className={styles.pet__form}
@@ -81,8 +89,8 @@ export function PetProfileEdit({ draft, setDraft, onSave, onCancel }) {
               <label>Sex</label>
               <select value={draft?.sex ?? ""} onChange={(e) => setDraft({ ...draft, sex: e.target.value })}>
                 <option value="">— Select —</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
             </div>
 
@@ -93,7 +101,7 @@ export function PetProfileEdit({ draft, setDraft, onSave, onCancel }) {
 
             <div className={styles.pet__field}>
               <label>Date of Birth</label>
-              <input type="date" value={(draft?.date_of_birth ?? "").slice(0, 10)} onChange={(e) => setDraft({ ...draft, date_of_birth: e.target.value })} />
+              <input type="date" value={dateFix(draft?.date_of_birth ?? "").slice(0, 10)} onChange={(e) => setDraft({ ...draft, date_of_birth: e.target.value })} />
             </div>
 
             <div className={styles.pet__field}>
@@ -117,7 +125,7 @@ export function PetProfileEdit({ draft, setDraft, onSave, onCancel }) {
                   <label>Implant Date</label>
                   <input
                     type="date"
-                    value={(draft?.microchip_implant_date ?? "").slice(0, 10)}
+                    value={dateFix(draft?.microchip_implant_date ?? today).slice(0, 10)}
                     onChange={(e) =>
                       setDraft({
                         ...draft,

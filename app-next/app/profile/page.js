@@ -117,7 +117,7 @@ export default function ProfilePage() {
   return (
     <section className={styles.profile}>
       <div className={styles.profile__header}>
-        <Image src={userPicture} alt="Profile" width={300} height={300} className={styles.profile__avatar} referrerpolicy="no-referrer" priority />
+        <Image src={userPicture} alt="Profile" width={300} height={300} className={styles.profile__avatar} priority />
         <div className={styles.profile__edit}>
           <h1 className={styles.profile__name}>{user?.full_name}</h1>
           <Image onClick={handleSettingsClick} className={styles.profile__settings} src="/icons/settings.png" width={35} height={5} alt="settings button" />
@@ -147,7 +147,7 @@ export default function ProfilePage() {
                     aria-label={pet.name || "Pet"}
                     tabIndex={0}
                   >
-                    <Image src={imgSrc} alt={pet.name || "Pet"} width={220} height={220} className={styles.profile__carouselImg} referrerpolicy="no-referrer" priority />
+                    <Image src={imgSrc} alt={pet.name || "Pet"} width={220} height={220} className={styles.profile__carouselImg} priority />
                     <figcaption className={styles.profile__carouselName}>{pet.name}</figcaption>
                   </figure>
                 );
