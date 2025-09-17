@@ -49,7 +49,7 @@ export default function Navbar() {
       items.push({
         name: "Pets Dashboard",
         path: "/profile/pets/all",
-        icon: "/icons/spreadsheet.svg",
+        icon: "/icons/spreadsheet-updated.svg",
       });
     } else {
       items.push({ name: "Pets", path: "/profile", icon: "/icons/paw.svg" });
