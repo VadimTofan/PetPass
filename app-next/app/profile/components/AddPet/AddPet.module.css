@@ -115,12 +115,19 @@
   filter: brightness(1.08);
 }
 
-@media (max-width: 640px) {
-  .pet__form {
-    padding: 20px;
+
+@media (max-width: 768px) {
+  .pet__container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
   }
-  .pet__submit {
-    inline-size: 100%;
+  .pet__image {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    margin-bottom: 1rem;
+    order: -1; 
   }
 }
 
