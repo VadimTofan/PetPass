@@ -22,7 +22,7 @@ const {
 const isProd = NODE_ENV === "production";
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://petpass-fulf.onrender.com"
+  "https://petpass404.netlify.app"
 ];
 const app = express();
 
