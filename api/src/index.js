@@ -34,14 +34,10 @@ if (isProd) app.set("trust proxy", 1);
 // --- CORS (must NOT be "*", otherwise cookies won't be accepted) ---
 app.use(
   cors({
-        origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
+    origin: (origin, callback) => {
+      callback(null, origin || true); // reflect the request origin
     },
-    credentials: true,
+    credentials: true, // allow cookies
   })
 );
 
