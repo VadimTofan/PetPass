@@ -1,7 +1,6 @@
 // next.config.mjs
 
-const BACKEND_URL =
-  process.env.NEXT_PUBLIC_DB_ACCESS ;
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || process.env.BACKEND_URL || "http://localhost:8000";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -16,7 +15,7 @@ const nextConfig = {
       {
         source: "/auth/:path*",
         destination: `${BACKEND_URL}/auth/:path*`,
-      }
+      },
     ];
   },
 

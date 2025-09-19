@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const router = Router();
-const { Frontend_URL = "http://localhost:3000" } = process.env;
+const Frontend_URL = process.env.Frontend_URL;
 
 // Start Google OAuth
 router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"], prompt: "select_account" }));
