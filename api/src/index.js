@@ -22,7 +22,6 @@ const {
 const isProd = NODE_ENV === "production";
 const allowedOrigins = [
   "http://localhost:3000",
-  "http://localhost:8000",
   "https://petpass-fulf.onrender.com"
 ];
 const app = express();
@@ -35,9 +34,14 @@ if (isProd) app.set("trust proxy", 1);
 app.use(
   cors({
     origin: (origin, callback) => {
-      callback(null, origin || true); // reflect the request origin
+      // allow requests with no origin (like mobile apps, curl, Postman)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
     },
-    credentials: true, // allow cookies
+    credentials: true,
   })
 );
 
@@ -55,9 +59,9 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite:
-        process.env.NODE_ENV === "production"
-          ? "none" // cross-site in prod
-          : "lax",
+        process.env.NODE_ENV === "development"
+          ? "lax"
+          : "none", // cross-site in prod,
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     },
   })
