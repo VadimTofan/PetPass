@@ -2,27 +2,27 @@
 
 import styles from "./page.module.css";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+
 import FetchUserData from "./components/DBFunctions/FetchUserData";
 import useFetchUserPetData from "./components/DBFunctions/FetchUserPetData";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-
+import { useAuth } from "@/app/providers";
 export default function ProfilePage() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
 
-  const email = session?.user?.email ?? "";
-  const { user, isLoading: userLoading, error: userError } = FetchUserData(email);
+  const router = useRouter();
+  const { user: userprofile, loading: loading } = useAuth();
+
+  const { user, isLoading: userLoading, error: userError } = FetchUserData(userprofile?.email);
   const { pets = [], isLoading: petsLoading } = useFetchUserPetData(user?.id);
 
-  const userPicture = session?.user?.image ?? "/images/loading.svg";
+  const userPicture = userprofile?.photo ?? "/images/loading.svg";
 
   const count = (pets?.length || 0) + 1;
   const [index, setIndex] = useState(0);
   const carouselRef = useRef(null);
-
+  const isAuthed = !!userprofile;
   const goTo = (i) => {
     const next = (i + count) % count;
     setIndex(next);
@@ -63,8 +63,8 @@ export default function ProfilePage() {
       el.removeEventListener("touchend", onTouchEnd);
     };
   }, [index, count]);
-
-  if (status === "unauthenticated") {
+ 
+  if (isAuthed === false) {
     return (
       <section className={styles.profile}>
         <div className={styles.profile__header}>
@@ -74,7 +74,7 @@ export default function ProfilePage() {
     );
   }
 
-  if (status === "loading" || userLoading) {
+  if (loading || userLoading) {
     return (
       <section className={styles.profile}>
         <div className={styles.profile__header}>

@@ -70,7 +70,7 @@ export default function AddVaccination({ petId }) {
 
       {!loading && !err && (
         <>
-          {isAdmin && <FormVaccination petId={petId} baseUrl={base} onCreated={load} />}
+          {isAdmin && <FormVaccination petId={petId}  onCreated={load} />}
           <ListVaccination items={items} canEdit={isAdmin} onEdit={handleEdit} onDelete={handleDelete} />
 
           {editOpen && editing && (

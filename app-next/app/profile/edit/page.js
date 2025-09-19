@@ -4,21 +4,23 @@ import styles from "./page.module.css";
 import FetchUserData from "../components/DBFunctions/FetchUserData";
 
 import { useState, useEffect } from "react";
-import { useSession, signIn } from "next-auth/react";
+//import { useSession, signIn } from "next-auth/react";
+import { useAuth } from "@/app/providers";
 import Image from "next/image";
 import Link from "next/link";
+import api from "@/lib/api";
 
 export default function SignupPage() {
   const today = new Date().toISOString().slice(0, 10);
-  const { data: session, status } = useSession();
+  const { user: authUser, loading: status } = useAuth();
   const [draft, setDraft] = useState({
     name: "",
     species: "",
     sex: "",
     date_of_birth: today,
   });
-  const isAuthed = status === "authenticated";
-  const email = session?.user?.email ?? "";
+  const isAuthed = !!authUser;
+  const email = authUser?.email ?? "";
   const { user } = FetchUserData(email);
   const [success, setSuccess] = useState(false);
 
@@ -37,7 +39,8 @@ export default function SignupPage() {
 
   const handleGoogle = async () => {
     setErr("");
-    await signIn("google", { callbackUrl: "/profile/edit" });
+    localStorage.setItem("returnTo", pathname || "/profile/edit");
+    window.location.href = `${API_URL}/auth/google`;
   };
 
   const handleSubmit = async () => {
@@ -46,9 +49,8 @@ export default function SignupPage() {
     try {
       const now = new Date().toISOString();
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/users/${email}`, {
+      const res = await api(`/api/users/${email}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...draft,
           email: draft?.email ?? email,
@@ -56,8 +58,6 @@ export default function SignupPage() {
           updated_at: now,
         }),
       });
-
-      if (!res.ok) throw new Error("Failed to update user info");
 
       setSuccess(true);
       setDraft(null);
