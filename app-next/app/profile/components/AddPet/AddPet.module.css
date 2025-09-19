@@ -119,8 +119,25 @@
   .pet__form {
     padding: 20px;
   }
+
   .pet__submit {
     inline-size: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .pet__container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .pet__image {
+    max-height: 250px;
+    width: auto;
+    max-width: 320px;
+    height: auto;
+    margin-bottom: 1rem;
+    order: -1;
   }
 }
 
