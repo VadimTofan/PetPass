@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useAuth } from "@/app/providers";
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_URL = process.env.NEXT_PUBLIC_DB_ACCESS || "http://localhost:8000";
 export default function Navbar() {
   const { user, loading, logout } = useAuth();
 
