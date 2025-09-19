@@ -3,15 +3,15 @@
 import styles from "./PetProfile.module.css";
 import Image from "next/image";
 import CountrySelect from "./api/flags";
+import { useAuth } from "@/app/providers";
 
-import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 
 export function PetProfileEdit({ draft, setDraft, onSave, onCancel }) {
-  const { data: session, status } = useSession();
+  const { user: session } = useAuth();
   const today = new Date().toISOString().slice(0, 10);
-  const isAuthed = status === "authenticated";
-  const role = session?.user?.role;
+  const isAuthed = !!session;
+  const role = session?.role;
   const isAdmin = isAuthed && role === "admin";
 
   const species = useMemo(

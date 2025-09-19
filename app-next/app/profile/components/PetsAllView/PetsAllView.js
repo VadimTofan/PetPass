@@ -5,19 +5,18 @@ import Error404 from "@/app/components/Error404/Error404";
 import formatDate from "@/app/components/FormatDate/FormatDate";
 
 import { useState, useEffect, useMemo } from "react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/providers";
+import api from "@/lib/api"; 
 
 const ITEMS_PER_PAGE = 20;
 
 export default function PetsAllView() {
-  const { data: session, status } = useSession();
+  const { user, loading: isLoadingSession } = useAuth();
   const router = useRouter();
 
-  const isLoadingSession = status === "loading";
-  const isAuthed = status === "authenticated";
-  const role = session?.user?.role;
-  const isAdmin = isAuthed && role === "admin";
+  const isAuthed = !!user;
+  const isAdmin = isAuthed && user?.role === "admin";
 
   const [pets, setPets] = useState(null);
   const [petsError, setPetsError] = useState(null);
@@ -46,12 +45,13 @@ export default function PetsAllView() {
   useEffect(() => setPage(1), [debouncedSearchTerm, sortConfig]);
 
   useEffect(() => {
-    if (!isAdmin) return;
+    if (!isAdmin) return; 
     let cancel = false;
 
     async function fetchPets() {
       setPetsLoading(true);
       setPetsError(null);
+
       try {
         const params = new URLSearchParams();
         if (debouncedSearchTerm) params.set("title", debouncedSearchTerm);
@@ -60,12 +60,10 @@ export default function PetsAllView() {
           params.set("sortOrder", sortConfig.direction);
         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_DB_ACCESS}/api/pets?${params.toString()}`, {
-          headers: { "Content-Type": "application/json" },
+        const data = await api(`/api/pets?${params.toString()}`, {
           cache: "no-store",
         });
-        if (!res.ok) throw new Error("Failed to fetch pets");
-        const data = await res.json();
+
         if (!cancel) setPets(data);
       } catch (e) {
         if (!cancel) setPetsError(e.message || "Unknown error");
@@ -80,20 +78,42 @@ export default function PetsAllView() {
     };
   }, [isAdmin, debouncedSearchTerm, sortConfig]);
 
-  if (isLoadingSession) return <div className={styles.pets__loading}>Loading…</div>;
+  if (isLoadingSession) {
+    return <div className={styles.pets__loading}>Loading…</div>;
+  }
 
   if (!isAuthed) return <Error404 />;
 
-  if (!isAdmin) return <div className={styles.pets__denied}>You don't have access</div>;
+  if (!isAdmin) {
+    return <div className={styles.pets__denied}>You don&apos;t have access</div>;
+  }
 
-  if (petsError) return <div className={styles.pets__error}>Pets error: {petsError}</div>;
+  if (petsError)
+    return <div className={styles.pets__error}>Pets error: {petsError}</div>;
   if (petsLoading) return <div className={styles.pets__loading}>Loading…</div>;
 
-  const cell = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
-  const columns = ["Name", "Species", "Breed", "Sex", "Birthday", "Country", "Passport", "Microchip", "Owner", "Email", "Phone"];
+  const cell = (v) =>
+    v === null || v === undefined || v === "" ? "—" : String(v);
+  const columns = [
+    "Name",
+    "Species",
+    "Breed",
+    "Sex",
+    "Birthday",
+    "Country",
+    "Passport",
+    "Microchip",
+    "Owner",
+    "Email",
+    "Phone",
+  ];
 
   const handleSort = (column) => {
-    setSortConfig((prev) => (prev.key === column ? { key: column, direction: prev.direction === "asc" ? "desc" : "asc" } : { key: column, direction: "asc" }));
+    setSortConfig((prev) =>
+      prev.key === column
+        ? { key: column, direction: prev.direction === "asc" ? "desc" : "asc" }
+        : { key: column, direction: "asc" }
+    );
   };
 
   const handlePetClick = (id) => router.push(`/profile/pets/${id}`);
@@ -102,11 +122,21 @@ export default function PetsAllView() {
     <section className={styles.pets}>
       <div className={styles.pets__header}>
         <h2 className={styles.pets__h2}>Full list of pets</h2>
-        <form className={styles.pets__search} onSubmit={(e) => e.preventDefault()}>
-          <input className={styles.pets__input} type="text" placeholder="Search pets..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+        <form
+          className={styles.pets__search}
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <input
+            className={styles.pets__input}
+            type="text"
+            placeholder="Search pets..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </form>
         <span className={styles.pets__pages}>
-          Showing {(safePage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(safePage * ITEMS_PER_PAGE, totalItems)} of {totalItems}
+          Showing {(safePage - 1) * ITEMS_PER_PAGE + 1}–
+          {Math.min(safePage * ITEMS_PER_PAGE, totalItems)} of {totalItems}
         </span>
       </div>
 
@@ -116,24 +146,51 @@ export default function PetsAllView() {
             <thead>
               <tr>
                 {columns.map((column) => (
-                  <th key={column} className={`${styles.pets__title} ${styles[`pets__${column}`]}`} onClick={() => handleSort(column)}>
+                  <th
+                    key={column}
+                    className={`${styles.pets__title} ${
+                      styles[`pets__${column}`]
+                    }`}
+                    onClick={() => handleSort(column)}
+                  >
                     {column}
-                    <span className={sortConfig.key === column ? (sortConfig.direction === "asc" ? styles.pets__arrowUp : styles.pets__arrowDown) : ""} />
+                    <span
+                      className={
+                        sortConfig.key === column
+                          ? sortConfig.direction === "asc"
+                            ? styles.pets__arrowUp
+                            : styles.pets__arrowDown
+                          : ""
+                      }
+                    />
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {pageItems.map((pet, index) => (
-                <tr key={pet.id || index} onClick={() => handlePetClick(pet.id)}>
-                  <td className={`${styles.pets__cell} ${styles.pets__name}`}>{cell(pet.name)}</td>
+                <tr
+                  key={pet.id || index}
+                  onClick={() => handlePetClick(pet.id)}
+                >
+                  <td className={`${styles.pets__cell} ${styles.pets__name}`}>
+                    {cell(pet.name)}
+                  </td>
                   <td className={styles.pets__cell}>{cell(pet.species)}</td>
                   <td className={styles.pets__cell}>{cell(pet.breed)}</td>
                   <td className={styles.pets__cell}>{cell(pet.sex)}</td>
-                  <td className={styles.pets__cell}>{formatDate(pet.date_of_birth)}</td>
-                  <td className={styles.pets__cell}>{cell(pet.country_of_birth)}</td>
-                  <td className={styles.pets__cell}>{cell(pet.passport_number)}</td>
-                  <td className={styles.pets__cell}>{cell(pet.microchip_number)}</td>
+                  <td className={styles.pets__cell}>
+                    {formatDate(pet.date_of_birth)}
+                  </td>
+                  <td className={styles.pets__cell}>
+                    {cell(pet.country_of_birth)}
+                  </td>
+                  <td className={styles.pets__cell}>
+                    {cell(pet.passport_number)}
+                  </td>
+                  <td className={styles.pets__cell}>
+                    {cell(pet.microchip_number)}
+                  </td>
                   <td className={styles.pets__cell}>{cell(pet.full_name)}</td>
                   <td className={styles.pets__cell}>{cell(pet.email)}</td>
                   <td className={styles.pets__cell}>{cell(pet.phone)}</td>
@@ -145,13 +202,21 @@ export default function PetsAllView() {
       </div>
 
       <nav className={styles.pets__pages} aria-label="Pets pages">
-        <button className={styles.pets__button} disabled={safePage === 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>
+        <button
+          className={styles.pets__button}
+          disabled={safePage === 1}
+          onClick={() => setPage((p) => Math.max(1, p - 1))}
+        >
           ‹ Prev
         </button>
         <span className={styles.pets__status}>
           Page {safePage} of {totalPages}
         </span>
-        <button className={styles.pets__button} disabled={safePage === totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>
+        <button
+          className={styles.pets__button}
+          disabled={safePage === totalPages}
+          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+        >
           Next ›
         </button>
       </nav>

@@ -1,6 +1,6 @@
 import express from "express";
 import * as db from "../database/users.js";
-
+import { requireAuth } from '../middlewares/auth.js';
 const usersRouter = express.Router();
 
 usersRouter.post("/api/users", async (request, response) => {
@@ -14,7 +14,7 @@ usersRouter.post("/api/users", async (request, response) => {
   response.status(201).json({ message: "user added successfully." });
 });
 
-usersRouter.get("/api/users/:email", async (request, response) => {
+usersRouter.get("/api/users/:email",requireAuth, async (request, response) => {
   const email = request.params.email;
   if (!email) return response.status(400).send({ error: `No email is provided` });
 
@@ -25,7 +25,7 @@ usersRouter.get("/api/users/:email", async (request, response) => {
   response.send(user);
 });
 
-usersRouter.put("/api/users/:email", async (request, response) => {
+usersRouter.put("/api/users/:email",requireAuth, async (request, response) => {
   const email = request.params.email;
   const user = request.body;
 
@@ -49,7 +49,7 @@ usersRouter.put("/api/users/:email", async (request, response) => {
   response.status(201).send({ message: "user updated successfully." });
 });
 
-usersRouter.delete("/api/users/:id", async (request, response) => {
+usersRouter.delete("/api/users/:id",requireAuth, async (request, response) => {
   const id = Number(request.params.id);
 
   if (!id) return response.status(400).send({ error: `Id is mandatory` });

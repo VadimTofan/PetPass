@@ -1,11 +1,10 @@
 "use client";
 
 import styles from "./EditVaccination.module.css";
-
 import { useEffect, useState } from "react";
+import api from "@/lib/api"; // or "@/app/lib/api" if that's where your file is
 
-export default function EditVaccination({ open, onClose, vaccination, baseUrl, onSaved }) {
-  const API_BASE = baseUrl || (typeof window !== "undefined" ? process.env.NEXT_PUBLIC_DB_ACCESS : "");
+export default function EditVaccination({ open, onClose, vaccination,  onSaved }) {
 
   const [form, setForm] = useState({
     vaccine_name: "",
@@ -66,25 +65,16 @@ export default function EditVaccination({ open, onClose, vaccination, baseUrl, o
 
     try {
       setSaving(true);
-      const url = `${API_BASE}/api/vaccinations/${vaccination.id}`;
-      const res = await fetch(url, {
+
+      // Use api() so cookies (session) are included automatically
+      await api(`/api/vaccinations/${encodeURIComponent(vaccination.id)}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      if (res.status === 404) {
-        setErr("Vaccination not found (maybe deleted).");
-        return;
-      }
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data?.error || "Failed to update vaccination");
-      }
-
       onSaved?.();
     } catch (e) {
-      setErr(e.message || "Error");
+      setErr(e?.message || "Failed to update vaccination");
     } finally {
       setSaving(false);
     }
@@ -105,27 +95,57 @@ export default function EditVaccination({ open, onClose, vaccination, baseUrl, o
         <div className={styles.vaccination__body}>
           <div className={styles.vaccination__row}>
             <label>Vaccine name*</label>
-            <input name="vaccine_name" value={form.vaccine_name} onChange={onChange} required className={styles.vaccination__field} />
+            <input
+              name="vaccine_name"
+              value={form.vaccine_name}
+              onChange={onChange}
+              required
+              className={styles.vaccination__field}
+            />
           </div>
 
           <div className={styles.vaccination__row}>
             <label>Date administered*</label>
-            <input type="date" name="date_administered" value={form.date_administered} onChange={onChange} required className={styles.vaccination__field} />
+            <input
+              type="date"
+              name="date_administered"
+              value={form.date_administered}
+              onChange={onChange}
+              required
+              className={styles.vaccination__field}
+            />
           </div>
 
           <div className={styles.vaccination__row}>
             <label>Next due</label>
-            <input type="date" name="next_due" value={form.next_due} onChange={onChange} className={styles.vaccination__field} />
+            <input
+              type="date"
+              name="next_due"
+              value={form.next_due}
+              onChange={onChange}
+              className={styles.vaccination__field}
+            />
           </div>
 
           <div className={styles.vaccination__row}>
             <label>Veterinarian</label>
-            <input name="veterinarian" value={form.veterinarian} onChange={onChange} className={styles.vaccination__field} />
+            <input
+              name="veterinarian"
+              value={form.veterinarian}
+              onChange={onChange}
+              className={styles.vaccination__field}
+            />
           </div>
 
           <div className={styles.vaccination__row}>
             <label>Notes</label>
-            <textarea name="notes" value={form.notes} onChange={onChange} rows={3} className={styles.vaccination__field} />
+            <textarea
+              name="notes"
+              value={form.notes}
+              onChange={onChange}
+              rows={3}
+              className={styles.vaccination__field}
+            />
           </div>
 
           {err && <p className={styles.vaccination__error}>{err}</p>}

@@ -4,18 +4,18 @@ import styles from "./Navbar.module.css";
 import Image from "next/image";
 import { User } from "lucide-react";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useAuth } from "@/app/providers";
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 export default function Navbar() {
-  const { data: session, status } = useSession();
+  const { user, loading, logout } = useAuth();
 
-  const isAuthed = status === "authenticated";
-  const role = session?.user?.role;
+  const isAuthed = !!user;
+  const role = user?.role;
   const isAdmin = isAuthed && role === "admin";
 
-  const profile = session?.user?.image ?? "";
+  const profile = user?.photo || user?.image || "";
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const profileMenuRef = useRef(null);
@@ -58,11 +58,18 @@ export default function Navbar() {
     return items;
   })();
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     setShowProfileMenu(false);
-    signOut({ callbackUrl: "/home" });
+    try {
+      await fetch(`${API_URL}/auth/logout`, { method: "POST", credentials: "include" });
+    } catch (_) { }
+    await logout();
+    router.push("/home");
   };
-
+  const handleLoginRedirect = () => {
+    localStorage.setItem("returnTo", pathname || "/home");
+    window.location.href = `${API_URL}/auth/google`;
+  };
   return (
     <>
       <nav className={styles.navbar}>
@@ -92,7 +99,7 @@ export default function Navbar() {
           </ul>
         </div>
 
-        {status === "loading" ? (
+        {loading ? (
           <div
             className={styles.navbar__auth}
             style={{ width: 120, height: 40 }}
@@ -168,7 +175,7 @@ export default function Navbar() {
             <button
               type="button"
               className={styles.navbar__signup}
-              onClick={() => signIn("google", { callbackUrl: pathname })}
+              onClick={handleLoginRedirect}
             >
               <Image
                 src="/icons/google.svg"
