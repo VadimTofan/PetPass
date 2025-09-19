@@ -16,12 +16,15 @@ import authRouter from "./routers/authRoutes.js";
 
 const {
   NODE_ENV = "development",
-  ORIGIN = "*",
   SESSION_SECRET = "dev-change-me",
 } = process.env;
 
 const isProd = NODE_ENV === "production";
-
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:8000",
+  "https://petpass-fulf.onrender.com"
+];
 const app = express();
 
 // If you're behind a reverse proxy (Heroku, Vercel, Render, Nginx), enable this
@@ -31,7 +34,13 @@ if (isProd) app.set("trust proxy", 1);
 // --- CORS (must NOT be "*", otherwise cookies won't be accepted) ---
 app.use(
   cors({
-    origin: ORIGIN,
+        origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
@@ -75,18 +84,13 @@ app.get("/", (req, res) => {
 
 // --- Routers ---
 // Auth first so /auth/google etc. are available
-app.use(authRouter);
 
 // Your app routes
 app.use(petsRouter);
 app.use(usersRouter);
 app.use("/api", vaccinationsRouter);
 
-// Optionally expose a simple whoami for the frontend
-app.get("/api/me", (req, res) => {
-  res.json({ user: req.user || null });
-});
-
+app.use(authRouter);
 // --- Error handler (must have 4 args!) ---
 app.use((err, req, res, next) => {
   console.error(err);
@@ -95,8 +99,8 @@ app.use((err, req, res, next) => {
   next(err); // Pass error to any additional error handlers if present
 });
 
-const PORT = process.env.PORT ? Number(process.env.PORT) : 80;
+const PORT = process.env.PORT ? Number(process.env.PORT) : 8000;
 app.listen(PORT, () => {
-  console.log(`Server is running on ${process.env.PUBLIC_BASE_URL}${PORT}`);
-  console.log(`CORS origin allowed: ${ORIGIN}`);
+  console.log(`Server is running on ${process.env.PUBLIC_BASE_URL}`);
+  console.log(`CORS origin allowed: ${allowedOrigins}`);
 });

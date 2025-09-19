@@ -6,18 +6,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const {
-  GOOGLE_CLIENT_ID,
-  GOOGLE_CLIENT_SECRET,
-  PUBLIC_BASE_URL = "https://petpass-fulf.onrender.com", // your API origin
-} = process.env;
 
 passport.use(
   new GoogleStrategy(
     {
-      clientID: GOOGLE_CLIENT_ID,
-      clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: `${PUBLIC_BASE_URL}/auth/google/callback`,
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: `${process.env.PUBLIC_BASE_URL}/auth/google/callback`,
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
