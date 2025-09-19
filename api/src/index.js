@@ -95,8 +95,8 @@ app.use((err, req, res, next) => {
   next(err); // Pass error to any additional error handlers if present
 });
 
-const PORT = process.env.PORT ? Number(process.env.PORT) : 8000;
+const PORT = process.env.PORT ? Number(process.env.PORT) : 80;
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on ${process.env.PUBLIC_BASE_URL}${PORT}`);
   console.log(`CORS origin allowed: ${ORIGIN}`);
 });
