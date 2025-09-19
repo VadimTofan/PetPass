@@ -9,7 +9,7 @@ dotenv.config();
 const {
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
-  PUBLIC_BASE_URL = "http://localhost:8000", // your API origin
+  PUBLIC_BASE_URL = "https://petpass-fulf.onrender.com", // your API origin
 } = process.env;
 
 passport.use(
