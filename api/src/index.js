@@ -16,7 +16,7 @@ import authRouter from "./routers/authRoutes.js";
 
 const {
   NODE_ENV = "development",
-  ORIGIN = "http://localhost:3000",
+  ORIGIN = "*",
   SESSION_SECRET = "dev-change-me",
 } = process.env;
 
