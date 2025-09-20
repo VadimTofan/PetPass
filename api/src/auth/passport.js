@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import * as db from "../database/users.js"; // your DB helpers
+import * as db from "../database/users.js"; 
 
 import dotenv from "dotenv";
 
@@ -16,13 +16,12 @@ passport.use(
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
-        // Pull what you need from Google profile
+      
         const googleId = profile.id;
         const email = profile.emails?.[0]?.value;
         const full_name = profile.displayName;
         const photo = profile.photos?.[0]?.value;
 
-        // Upsert / fetch your user
         let user = await db.getUserByEmail(email);
         if (!user) {
           user = await db.createUser({
@@ -32,7 +31,7 @@ passport.use(
             photo,
           });
         }
-        // Attach minimal identity for the session
+      
         return done(null, {
           id: user.id,
           email,
@@ -48,12 +47,12 @@ passport.use(
   )
 );
 
-// Store the minimal user object (or just user.id) in the session
+
 passport.serializeUser((user, done) => {
-  done(null, user); // or done(null, user.id)
+  done(null, user); 
 });
 
-// Hydrate from session on each request (if you serialized just id, look it up here)
+
 passport.deserializeUser((user, done) => {
   done(null, user);
 });

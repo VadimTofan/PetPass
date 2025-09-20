@@ -1,4 +1,3 @@
-// index.js
 import express from "express";
 import cors from "cors";
 import path from "path";
@@ -27,14 +26,13 @@ const allowedOrigins = [
 
 const app = express();
 
-// Behind proxy (Render/Vercel/Heroku) → required for Secure cookies
+
 app.set("trust proxy", 1);
 
-// --- CORS (must NOT be "*", otherwise cookies won't be accepted) ---
 app.use(
   cors({
     origin: (origin, callback) => {
-      // allow requests with no origin (mobile apps, curl, Postman)
+     
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -48,15 +46,14 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// --- Sessions BEFORE passport ---
+
 app.use(
   session({
     name: "sid",
     secret: GOOGLE_CLIENT_SECRET,
     resave: false,
     saveUninitialized: false,
-    proxy: true, // important behind proxy for secure cookies
-    // TODO: In production, use a shared store like Redis or PG (not MemoryStore)
+    proxy: true, 
     cookie: {
       httpOnly: true,
       secure: isProd,                       // ✅ required with SameSite: "none"
@@ -66,34 +63,33 @@ app.use(
   })
 );
 
-// --- Passport ---
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-// --- Static uploads ---
 const uploadsRoot = path.join(process.cwd(), "uploads");
 const petUploads = path.join(uploadsRoot, "pets");
 fs.mkdirSync(petUploads, { recursive: true });
 app.use("/uploads", express.static(uploadsRoot));
 
-// --- Health / root ---
+
 app.get("/", (req, res) => {
   res.send("Welcome to Pet Pass");
 });
 
-// --- Auth routes first (optional but tidy) ---
+
 app.use(authRouter);
 
-// --- App routes ---
+
 app.use(petsRouter);
 app.use(usersRouter);
 app.use("/api", vaccinationsRouter);
 
-// --- Error handler (do NOT call next after sending) ---
+
 app.use((err, req, res, next) => {
   console.error(err);
   const status = err.status || 500;
-  // avoid leaking internals
+ 
   const message = err.expose ? err.message : (err.message || "Internal Server Error");
   if (!res.headersSent) {
     res.status(status).json({ error: message });
