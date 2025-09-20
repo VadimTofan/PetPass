@@ -16,7 +16,7 @@ import authRouter from "./routers/authRoutes.js";
 
 const {
   NODE_ENV = "development",
-  SESSION_SECRET = "dev-change-me",
+  GOOGLE_CLIENT_SECRET = "dev-change-me",
 } = process.env;
 
 const isProd = NODE_ENV === "production";
@@ -52,7 +52,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     name: "sid",
-    secret: SESSION_SECRET,
+    secret: GOOGLE_CLIENT_SECRET,
     resave: false,
     saveUninitialized: false,
     // TODO: In production, use a shared store like Redis instead of MemoryStore
