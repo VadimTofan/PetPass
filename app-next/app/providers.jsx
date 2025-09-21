@@ -9,8 +9,8 @@ const AuthContext = createContext({
   logout: async () => {},
 });
 
-const API_URL = process.env.NEXT_PUBLIC_DB_ACCESS ;
-console.log("API_URL", API_URL);
+const API_URL = process.env.NEXT_PUBLIC_DB_ACCESS;
+
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -46,11 +46,7 @@ export default function AuthProvider({ children }) {
     refresh();
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, loading, refresh, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, loading, refresh, logout }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
