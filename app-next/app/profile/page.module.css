@@ -117,6 +117,7 @@
   perspective-origin: 50% 42%;
   overflow: visible;
   container-type: inline-size;
+  will-change: transform;
 }
 
 .profile__carousel[data-count="2"],
@@ -161,6 +162,8 @@
   transform-style: preserve-3d;
   transition: transform var(--duration) var(--easing);
   transform: translateZ(calc(-1 * var(--radius))) rotateY(calc(var(--index) * var(--theta) * -1));
+  will-change: transform;
+  backface-visibility: visible;
 }
 
 .profile__carouselItem {
@@ -317,10 +320,19 @@
   }
 }
 
-@container (max-width: 520px) {
+@media (max-width: 520px) {
   .profile__carousel {
-    --radius: clamp(170px, 50vmin, 460px);
-    --item-w: clamp(150px, 32vmin, 260px);
-    --item-h: clamp(140px, 28vmin, 240px);
+    --radius: 180px;
+    --item-w: 150px;
+    --item-h: 140px;
+    padding: 0 1rem 2rem 1rem;
+  }
+  .profile__carouselStage {
+    width: var(--item-w);
+    height: var(--item-h);
+    transform: translateZ(-180px) rotateY(calc(var(--index) * var(--theta) * -1));
+  }
+  .profile__carouselItem {
+    transform: rotateY(calc(var(--i) * var(--theta))) translateZ(180px);
   }
 }
