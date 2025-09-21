@@ -2,8 +2,6 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import * as db from "../database/users.js";
 
-// No dotenv here—load it once in your server entry file.
-
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET || !process.env.PUBLIC_BASE_URL) {
   console.warn("[auth] Missing GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET/PUBLIC_BASE_URL");
 }
@@ -14,7 +12,6 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: `${process.env.PUBLIC_BASE_URL}/auth/google/callback`,
-      // state: true, // optional: enable CSRF protection via state param
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
@@ -24,7 +21,6 @@ passport.use(
         const photo = profile.photos?.[0]?.value || "";
 
         if (!email) {
-          // Very rare: user may hide email / have none. Fail gracefully.
           return done(null, false, { message: "Google account has no email" });
         }
 
@@ -38,11 +34,9 @@ passport.use(
             photo,
           });
         } else if (!user.googleid || user.googleid !== googleId) {
-          // Optional: link/update Google ID if it was missing or changed
           try {
             await db.updateUser(user.id, {
               googleid: googleId,
-              // optionally refresh profile info:
               full_name,
               photo,
             });
@@ -52,7 +46,6 @@ passport.use(
           }
         }
 
-        // What you store here goes into the session (server-side)
         return done(null, {
           id: user.id,
           email,
@@ -68,7 +61,6 @@ passport.use(
   )
 );
 
-// Keeping this is fine (you’re storing the whole user object server-side)
 passport.serializeUser((user, done) => {
   done(null, user);
 });

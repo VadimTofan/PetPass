@@ -18,7 +18,7 @@ const { NODE_ENV = "development", GOOGLE_CLIENT_SECRET = "dev-change-me" } = pro
 
 const isProd = NODE_ENV === "production";
 
-const allowedOrigins = ["http://localhost:3000", "https://192.168.0.136"];
+const allowedOrigins = ["http://localhost:3000", "https://petpass404.netlify.app", "https://petpass-fulf.onrender.com", "http://localhost:8000"];
 
 const app = express();
 
