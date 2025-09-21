@@ -1,9 +1,6 @@
 // authRoutes.js
 import { Router } from "express";
 import passport from "../auth/passport.js";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const router = Router();
 
