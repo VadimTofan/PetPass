@@ -47,9 +47,9 @@ app.use(
     proxy: true,
     cookie: {
       httpOnly: true,
-      secure: isProd, // ✅ required with SameSite: "none"
-      sameSite: isProd ? "none" : "lax", // ✅ cross-site in prod
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
+      maxAge: 1000 * 60 * 60 * 24 * 7,
     },
   })
 );

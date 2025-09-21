@@ -9,9 +9,7 @@ const AuthContext = createContext({
   logout: async () => {},
 });
 
-// use relative paths so Next rewrites proxy to your Express API
-const ME_URL = "/auth/me";
-const LOGOUT_URL = "/auth/logout"; // adjust method to match your server
+const API_URL = process.env.NEXT_PUBLIC_DB_ACCESS;
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -19,17 +17,14 @@ export default function AuthProvider({ children }) {
 
   async function refresh() {
     try {
-      const res = await fetch(ME_URL, {
+      const res = await fetch(`${API_URL}/api/me`, {
         credentials: "include",
         cache: "no-store",
       });
-      console.log("[AuthProvider] /auth/me status:", res.status);
       if (!res.ok) throw new Error("not ok");
       const data = await res.json();
-      console.log("[AuthProvider] /auth/me payload:", data);
       setUser(data.user || null);
     } catch (e) {
-      console.warn("[AuthProvider] /auth/me failed:", e);
       setUser(null);
     } finally {
       setLoading(false);
@@ -38,11 +33,10 @@ export default function AuthProvider({ children }) {
 
   async function logout() {
     try {
-      const res = await fetch(LOGOUT_URL, {
-        method: "POST", // change to "GET" if your route is GET
+      await fetch(`${API_URL}/auth/logout`, {
+        method: "POST",
         credentials: "include",
       });
-      console.log("[AuthProvider] /auth/logout status:", res.status);
     } finally {
       setUser(null);
     }
