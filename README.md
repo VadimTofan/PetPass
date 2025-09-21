@@ -1,7 +1,7 @@
 <pre>
 # PetPass
 
-You can access the live version of our web-site on: https://petpass404.netlify.app/
+You can access the live version of our web-site on: https://petpass-1.onrender.com/
 
 PetPass is a full-stack web application that manages users and pets. It includes:
 - Backend API for CRUD operations on users and pets .  
