@@ -12,19 +12,27 @@ import usersRouter from "./routers/usersRouter.js";
 import vaccinationsRouter from "./routers/vaccinationsRouter.js";
 import authRouter from "./routers/authRoutes.js";
 
-const { NODE_ENV = "development", GOOGLE_CLIENT_SECRET = "dev-change-me" } = process.env;
+const {
+  NODE_ENV = "development",
+  GOOGLE_CLIENT_SECRET = "dev-change-me",
+} = process.env;
 
 const isProd = NODE_ENV === "production";
 
-const allowedOrigins = ["http://localhost:3000", "https://petpass404.netlify.app"];
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://petpass404.netlify.app",
+];
 
 const app = express();
+
 
 app.set("trust proxy", 1);
 
 app.use(
   cors({
     origin: (origin, callback) => {
+     
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -38,21 +46,23 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 app.use(
   session({
     name: "sid",
     secret: GOOGLE_CLIENT_SECRET,
     resave: false,
     saveUninitialized: false,
-    proxy: true,
+    proxy: true, 
     cookie: {
       httpOnly: true,
-      secure: isProd,
-      sameSite: "none",
-      maxAge: 1000 * 60 * 60 * 24 * 7,
+      secure: isProd,                       // ✅ required with SameSite: "none"
+      sameSite: isProd ? "none" : "lax",    // ✅ cross-site in prod
+      maxAge: 1000 * 60 * 60 * 24 * 7,      // 7 days
     },
   })
 );
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -62,21 +72,25 @@ const petUploads = path.join(uploadsRoot, "pets");
 fs.mkdirSync(petUploads, { recursive: true });
 app.use("/uploads", express.static(uploadsRoot));
 
+
 app.get("/", (req, res) => {
   res.send("Welcome to Pet Pass");
 });
 
+
 app.use(authRouter);
+
 
 app.use(petsRouter);
 app.use(usersRouter);
 app.use("/api", vaccinationsRouter);
 
+
 app.use((err, req, res, next) => {
   console.error(err);
   const status = err.status || 500;
-
-  const message = err.expose ? err.message : err.message || "Internal Server Error";
+ 
+  const message = err.expose ? err.message : (err.message || "Internal Server Error");
   if (!res.headersSent) {
     res.status(status).json({ error: message });
   }
