@@ -4,19 +4,21 @@ import path from "path";
 import fs from "fs";
 import session from "express-session";
 import passport from "passport";
-
 import "./auth/passport.js";
-
 import petsRouter from "./routers/petsRouter.js";
 import usersRouter from "./routers/usersRouter.js";
 import vaccinationsRouter from "./routers/vaccinationsRouter.js";
 import authRouter from "./routers/authRoutes.js";
 
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const { NODE_ENV = "development", GOOGLE_CLIENT_SECRET = "dev-change-me" } = process.env;
 
 const isProd = NODE_ENV === "production";
 
-const allowedOrigins = ["http://localhost:3000", "https://petpass404.netlify.app"];
+const allowedOrigins = ["http://localhost:3000", "https://192.168.0.136"];
 
 const app = express();
 
@@ -47,9 +49,9 @@ app.use(
     proxy: true,
     cookie: {
       httpOnly: true,
-      secure: isProd, // ✅ required with SameSite: "none"
-      sameSite: isProd ? "none" : "lax", // ✅ cross-site in prod
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
+      maxAge: 1000 * 60 * 60 * 24 * 7,
     },
   })
 );
@@ -72,7 +74,7 @@ app.use(petsRouter);
 app.use(usersRouter);
 app.use("/api", vaccinationsRouter);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err);
   const status = err.status || 500;
 

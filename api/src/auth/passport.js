@@ -2,9 +2,11 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import * as db from "../database/users.js";
 
-import dotenv from "dotenv";
+// No dotenv here—load it once in your server entry file.
 
-dotenv.config();
+if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET || !process.env.PUBLIC_BASE_URL) {
+  console.warn("[auth] Missing GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET/PUBLIC_BASE_URL");
+}
 
 passport.use(
   new GoogleStrategy(
@@ -12,15 +14,22 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: `${process.env.PUBLIC_BASE_URL}/auth/google/callback`,
+      // state: true, // optional: enable CSRF protection via state param
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
         const googleId = profile.id;
-        const email = profile.emails?.[0]?.value;
-        const full_name = profile.displayName;
-        const photo = profile.photos?.[0]?.value;
+        const email = profile.emails?.[0]?.value || null;
+        const full_name = profile.displayName || "";
+        const photo = profile.photos?.[0]?.value || "";
+
+        if (!email) {
+          // Very rare: user may hide email / have none. Fail gracefully.
+          return done(null, false, { message: "Google account has no email" });
+        }
 
         let user = await db.getUserByEmail(email);
+
         if (!user) {
           user = await db.addUser({
             email,
@@ -28,23 +37,38 @@ passport.use(
             googleid: googleId,
             photo,
           });
+        } else if (!user.googleid || user.googleid !== googleId) {
+          // Optional: link/update Google ID if it was missing or changed
+          try {
+            await db.updateUser(user.id, {
+              googleid: googleId,
+              // optionally refresh profile info:
+              full_name,
+              photo,
+            });
+            user = await db.getUserByEmail(email);
+          } catch {
+            //
+          }
         }
 
+        // What you store here goes into the session (server-side)
         return done(null, {
           id: user.id,
           email,
-          full_name,
-          googleid: googleId,
-          photo,
+          full_name: user.full_name ?? full_name,
+          googleid: user.googleid ?? googleId,
+          photo: user.photo ?? photo,
           role: user.admin ? "admin" : "user",
         });
       } catch (err) {
-        done(err);
+        return done(err);
       }
     }
   )
 );
 
+// Keeping this is fine (you’re storing the whole user object server-side)
 passport.serializeUser((user, done) => {
   done(null, user);
 });
