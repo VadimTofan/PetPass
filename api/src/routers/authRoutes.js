@@ -34,7 +34,7 @@ router.get(
   (req, res) => {
     // success
     console.log("[AUTH] Success. req.user =", req.user);
-    res.redirect(process.env.FRONTEND_URL || "https://petpass404.netlify.app");
+    res.redirect(process.env.FRONTEND_URL || "http://localhost:3000/");
   }
 );
 
