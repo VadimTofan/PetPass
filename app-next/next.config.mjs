@@ -14,6 +14,9 @@ const nextConfig = {
         source: "/auth/:path*",
         destination: `${BACKEND_URL}/auth/:path*`,
       },
+      { source: "/api/:path*", destination: `${process.env.NEXT_PUBLIC_DB_ACCESS}/api/:path*` },
+
+      { source: "/auth/:path*", destination: `${process.env.NEXT_PUBLIC_DB_ACCESS}/auth/:path*` },
     ];
   },
 
