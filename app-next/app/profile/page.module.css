@@ -117,7 +117,6 @@
   perspective-origin: 50% 42%;
   overflow: visible;
   container-type: inline-size;
-  will-change: transform;
 }
 
 .profile__carousel[data-count="2"],
@@ -162,8 +161,6 @@
   transform-style: preserve-3d;
   transition: transform var(--duration) var(--easing);
   transform: translateZ(calc(-1 * var(--radius))) rotateY(calc(var(--index) * var(--theta) * -1));
-  will-change: transform;
-  backface-visibility: visible;
 }
 
 .profile__carouselItem {
@@ -320,27 +317,10 @@
   }
 }
 
-@media (max-width: 520px) {
-  .profile__carouselStage {
-    transform: none !important;
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    width: 100%;
-    height: auto;
-    perspective: none;
-  }
-  .profile__carouselItem {
-    position: relative !important;
-    transform: none !important;
-    flex: 0 0 auto;
-    width: 140px;
-    height: 140px;
-  }
-  .profile__carouselArrow {
-    display: none;
-  }
-  .profile__carouselDots {
-    display: none;
+@container (max-width: 520px) {
+  .profile__carousel {
+    --radius: clamp(170px, 50vmin, 460px);
+    --item-w: clamp(150px, 32vmin, 260px);
+    --item-h: clamp(140px, 28vmin, 240px);
   }
 }
