@@ -8,7 +8,6 @@ export default function RequireAuth({ children }) {
   if (checking) return <div>Loading...</div>;
 
   if (!user) {
-
     return <Navigate to="/" replace state={{ from: location }} />;
   }
 
