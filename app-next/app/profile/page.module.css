@@ -321,18 +321,26 @@
 }
 
 @media (max-width: 520px) {
-  .profile__carousel {
-    --radius: 180px;
-    --item-w: 150px;
-    --item-h: 140px;
-    padding: 0 1rem 2rem 1rem;
-  }
   .profile__carouselStage {
-    width: var(--item-w);
-    height: var(--item-h);
-    transform: translateZ(-180px) rotateY(calc(var(--index) * var(--theta) * -1));
+    transform: none !important;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    perspective: none;
   }
   .profile__carouselItem {
-    transform: rotateY(calc(var(--i) * var(--theta))) translateZ(180px);
+    position: relative !important;
+    transform: none !important;
+    flex: 0 0 auto;
+    width: 140px;
+    height: 140px;
+  }
+  .profile__carouselArrow {
+    display: none;
+  }
+  .profile__carouselDots {
+    display: none;
   }
 }
