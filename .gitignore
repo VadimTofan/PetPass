@@ -1,3 +1,4 @@
 .DS_STORE
 *.min.css
 *.scss
+/AGENTS.md
