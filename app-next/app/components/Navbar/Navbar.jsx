@@ -37,7 +37,7 @@ export default function Navbar() {
     { name: "Home", path: "/home" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
-    { name: isAdmin ? "Dashboard" : "Pets", path: isAuthed ? "/profile" : "/faq" },
+    { name: isAdmin ? "Dashboard" : "Pets", path: !isAuthed ? "/faq" : isAdmin ? "/profile/pets/all" : "/profile" },
   ];
 
   async function handleSignOut() {
