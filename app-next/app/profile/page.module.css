@@ -188,7 +188,7 @@
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: minmax(0, 1fr) auto;
   gap: 14px;
   padding: 14px;
   border: 1px solid var(--line);
@@ -198,11 +198,14 @@
   backface-visibility: hidden;
   transform: rotateY(calc(var(--i) * var(--theta))) translateZ(var(--radius));
   cursor: pointer;
+  overflow: hidden;
 }
 
 .profile__carouselImg {
   width: 100%;
   height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: cover;
   border-radius: 24px;
 }

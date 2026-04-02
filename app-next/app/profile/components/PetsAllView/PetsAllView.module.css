@@ -5,6 +5,8 @@
 .pets__shell {
   display: grid;
   gap: 18px;
+  width: min(100%, var(--content-width));
+  margin: 0 auto;
 }
 
 .pets__header {
@@ -40,12 +42,16 @@
 
 .pets__tableWrap {
   padding: 12px;
+  width: 100%;
+  overflow: hidden;
 }
 
 .pets__tableScroller {
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: 26px;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 .pets__table {
