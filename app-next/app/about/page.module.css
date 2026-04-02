@@ -1,190 +1,101 @@
 .about {
-  padding: 6rem 0;
-  background: var(--bg);
+  padding-top: 24px;
 }
 
-.about__container {
-  margin: 0 auto;
-  max-width: 1200px;
-}
-
-.about__content {
+.about__shell {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
+  gap: 22px;
 }
 
-.about__text {
-  padding-right: 2rem;
-  text-align: justify;
+.about__intro {
+  max-width: 780px;
 }
 
-.about__title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 2rem;
-  line-height: 1.2;
+.about__intro h1 {
+  margin-bottom: 14px;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
 }
 
-.about__description {
-  font-size: 1.125rem;
-  color: var(--ink);
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
+.about__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  gap: 18px;
 }
 
-.about__features {
-  margin: 2.5rem 0;
+.about__story {
+  padding: 30px;
 }
 
-.about__feature {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  color: var(--ink);
+.about__story h2 {
+  margin-bottom: 12px;
+  font-size: 2rem;
 }
 
-.about__featureIcon {
-  width: 24px;
-  height: 24px;
-  background: var(--lime);
-  color: #fff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-right: 1rem;
-  flex-shrink: 0;
+.about__principles {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
 }
 
-.about__media {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.about__principle {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
 }
 
-.about__imageContainer {
+.about__principle span {
+  color: var(--accent-deep);
+  font-weight: 800;
+}
+
+.about__visualWrap {
   position: relative;
-  width: 100%;
-  max-width: 400px;
-  height: 500px;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  min-height: 100%;
 }
 
-.about__imageContainer:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+.about__visualCard {
+  overflow: hidden;
+  height: 100%;
+  min-height: 520px;
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  box-shadow: var(--shadow-lg);
 }
 
 .about__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
 }
 
-.about__imageContainer:hover .about__image {
-  transform: scale(1.05);
-}
-
-.about__overlay {
+.about__note {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-  padding: 3rem 2rem 2rem;
-  color: #fff;
-  text-align: center;
+  right: 20px;
+  bottom: 20px;
+  max-width: 240px;
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(23, 50, 44, 0.78);
+  color: var(--text-inverse);
+  backdrop-filter: blur(14px);
 }
 
-.about__overlayContent h3 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: var(--lime);
+.about__note p {
+  color: rgba(238, 245, 239, 0.76);
 }
 
-.about__overlayContent p {
-  font-size: 1rem;
-  opacity: 0.9;
-}
-
-@media (max-width: 968px) {
-  .about__content {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-
-  .about__text {
-    padding-right: 0;
-    order: 2;
-  }
-
-  .about__media {
-    order: 1;
-  }
-
-  .about__title {
-    font-size: 2rem;
-    text-align: center;
-  }
-
-  .about__description {
-    text-align: center;
-  }
-
-  .about__features {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .about {
-    padding: 4rem 0;
-  }
-
-  .about__container {
-    padding: 0 1rem;
-  }
-
-  .about__content {
-    gap: 2rem;
-  }
-
-  .about__title {
-    font-size: 1.75rem;
-  }
-
-  .about__description {
-    font-size: 1rem;
-  }
-
-  .about__features {
+@media (max-width: 900px) {
+  .about__grid {
     grid-template-columns: 1fr;
   }
 
-  .about__image-container {
-    height: 400px;
-  }
-}
-
-@media (max-width: 480px) {
-  .about__title {
-    font-size: 1.5rem;
+  .about__story {
+    padding: 22px 18px;
   }
 
-  .about__imageContainer {
-    height: 350px;
+  .about__visualCard {
+    min-height: 420px;
   }
 }
