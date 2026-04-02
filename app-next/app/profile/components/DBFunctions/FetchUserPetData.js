@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import api from "@/lib/api"; 
 
 export default function useFetchUserPetData(id) {
-  const [pets, setPets] = useState(null);
+  const [pets, setPets] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(!!id);
 
@@ -13,7 +13,7 @@ export default function useFetchUserPetData(id) {
 
     if (!id) {
       setIsLoading(false);
-      setPets(null);
+      setPets([]);
       setError(null);
       return;
     }

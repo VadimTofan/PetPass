@@ -14,10 +14,11 @@ export default function ProfilePage() {
   const router = useRouter();
   const { user: authUser, loading } = useAuth();
   const { user, isLoading: userLoading, error: userError } = FetchUserData(authUser?.email);
-  const { pets = [], isLoading: petsLoading } = useFetchUserPetData(user?.id);
+  const { pets, isLoading: petsLoading } = useFetchUserPetData(user?.id);
+  const safePets = Array.isArray(pets) ? pets : [];
 
   const userPicture = authUser?.photo ?? "/images/loading.svg";
-  const count = (pets?.length || 0) + 1;
+  const count = safePets.length + 1;
   const [index, setIndex] = useState(0);
   const carouselRef = useRef(null);
   const isAuthed = Boolean(authUser);
@@ -128,7 +129,7 @@ export default function ProfilePage() {
   }
 
   const profileStats = [
-    { label: "Pets on file", value: pets.length },
+    { label: "Pets on file", value: safePets.length },
     { label: "Profile status", value: user?.passport_number ? "Ready" : "Needs details" },
     { label: "Primary contact", value: user?.phone || "Missing" },
   ];
@@ -184,7 +185,7 @@ export default function ProfilePage() {
           ) : (
             <div className={styles.profile__carousel} ref={carouselRef} data-count={count} style={{ "--count": count, "--index": index }} aria-roledescription="carousel" aria-label="Pets carousel">
               <div className={styles.profile__carouselStage}>
-                {pets.map((pet, petIndex) => {
+                {safePets.map((pet, petIndex) => {
                   const imageSrc = isValidUrl(pet?.photo_url) ? pet.photo_url : "/images/logo.png";
 
                   return (
@@ -206,7 +207,7 @@ export default function ProfilePage() {
                   );
                 })}
 
-                <figure className={`${styles.profile__carouselItem} ${styles.profile__carouselItemAdd}`} style={{ "--i": pets.length }} onClick={handleAddPetClick} role="button" aria-label="Add new pet" tabIndex={0}>
+                <figure className={`${styles.profile__carouselItem} ${styles.profile__carouselItemAdd}`} style={{ "--i": safePets.length }} onClick={handleAddPetClick} role="button" aria-label="Add new pet" tabIndex={0}>
                   <span className={styles.profile__carouselAddIcon}>+</span>
                   <figcaption className={styles.profile__carouselCaption}>
                     <strong>Add new pet</strong>
