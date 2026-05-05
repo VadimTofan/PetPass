@@ -5,10 +5,12 @@ import * as db from "../database/users.js";
 const router = Router();
 
 const FRONTEND_URL = process.env.FRONTEND_URL;
+const PUBLIC_BASE_URL = process.env.PUBLIC_BASE_URL;
+const redirectBase = FRONTEND_URL || PUBLIC_BASE_URL || "/";
 
 router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"], prompt: "select_account" }));
 
-router.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: `${FRONTEND_URL || "/"}` }), async (req, res, next) => {
+router.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: redirectBase }), async (req, res, next) => {
   try {
     const userInfo = await db.getUserByEmail(req.user.email);
     if (!userInfo) {
@@ -17,7 +19,7 @@ router.get("/auth/google/callback", passport.authenticate("google", { failureRed
 
     req.session.save((err) => {
       if (err) return next(err);
-      return res.redirect(`${FRONTEND_URL}/home`);
+      return res.redirect(`${redirectBase}/home`);
     });
   } catch (e) {
     return next(e);

@@ -14,11 +14,22 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const { NODE_ENV = "development", GOOGLE_CLIENT_SECRET = "dev-change-me" } = process.env;
+const {
+  NODE_ENV = "development",
+  SESSION_SECRET,
+  GOOGLE_CLIENT_SECRET = "dev-change-me",
+  PUBLIC_BASE_URL,
+  FRONTEND_URL,
+  ALLOWED_ORIGINS,
+} = process.env;
 
 const isProd = NODE_ENV === "production";
-
-const allowedOrigins = ["http://localhost:3000", "https://petpass404.netlify.app", "https://petpass-fulf.onrender.com", "http://localhost:8000"];
+const defaultOrigins = ["http://localhost:3000", "http://localhost:8000", "https://petpass404.netlify.app", "https://petpass-fulf.onrender.com"];
+const envOrigins = (ALLOWED_ORIGINS || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const allowedOrigins = Array.from(new Set([...defaultOrigins, ...envOrigins, FRONTEND_URL].filter(Boolean)));
 
 const app = express();
 
@@ -43,7 +54,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     name: "sid",
-    secret: GOOGLE_CLIENT_SECRET,
+    secret: SESSION_SECRET || GOOGLE_CLIENT_SECRET,
     resave: false,
     saveUninitialized: false,
     proxy: true,
@@ -85,7 +96,9 @@ app.use((err, req, res) => {
 });
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 8000;
-app.listen(PORT, () => {
-  console.log(`Server is running on ${process.env.PUBLIC_BASE_URL || `http://localhost:${PORT}`}`);
+const HOST = process.env.HOST || "0.0.0.0";
+
+app.listen(PORT, HOST, () => {
+  console.log(`Server is running on ${PUBLIC_BASE_URL || `http://${HOST}:${PORT}`}`);
   console.log(`CORS origins allowed: ${allowedOrigins.join(", ")}`);
 });
