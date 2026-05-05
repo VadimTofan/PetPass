@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const backendBaseUrl = (process.env.NEXT_PUBLIC_DB_ACCESS || process.env.NEXT_PUBLIC_API_URL || "https://petpass.fly.dev").replace(/\/$/, "");
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -17,8 +19,8 @@ const nextConfig = {
 
   async rewrites() {
     return [
-      { source: "/api/:path*", destination: "https://petpass-fulf.onrender.com/api/:path*" },
-      { source: "/auth/:path*", destination: "https://petpass-fulf.onrender.com/auth/:path*" },
+      { source: "/api/:path*", destination: `${backendBaseUrl}/api/:path*` },
+      { source: "/auth/:path*", destination: `${backendBaseUrl}/auth/:path*` },
     ];
   },
 };
